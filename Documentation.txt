@@ -1,0 +1,15 @@
+-------------------------------------------------------------------------------
+This Document Contains route usage and functionality Documentation.
+-------------------------------------------------------------------------------
+
+------------
+Index:
+
+Auth: Auth section assumes responsibility of login, logout and user registration and setting Permission
+    auth/forms verifies emails and phone numbers it is essential that you enter country code when entering.
+    Permissions always needs a single master without any master you may lose certain items.
+    management can place management and below, in their own Academy.
+    senior management can place in all.
+
+
+------------

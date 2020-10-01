@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<h1> Hi. {{ current_user.name }} You are a {{ current_user.position }}</h1>
+
+{% endblock %}
