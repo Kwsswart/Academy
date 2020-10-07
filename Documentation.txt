@@ -11,5 +11,7 @@ Auth: Auth section assumes responsibility of login, logout and user registration
     management can place management and below, in their own Academy.
     senior management can place in all.
 
+staff: Staff section deals with editing, removing, avatars
+    Avatars are stored: 
 
 ------------

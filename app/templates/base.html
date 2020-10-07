@@ -1,5 +1,7 @@
 {% extends 'bootstrap/base.html' %}
 
+
+
 {% block title %}
     {% if title %}{{ title }} - Number16 {% else %} Welcome to Number 16 {% endif %}
 {% endblock %}
@@ -19,15 +21,16 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('staff.user', name=current_user.name) }}">Profile</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     {% else %}
                     
-                        {% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
-                        <li><a href="{{ url_for('auth.register') }}">Register Staff</a></li>
-                        {% endif %}
+                    {% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
+                    <li><a href="{{ url_for('auth.register') }}">Register Staff</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% endif %}
                 </ul>
@@ -48,9 +51,14 @@
 
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
+
     </div>
+    <hr>
 {% endblock %}
 
 
 {% block scripts %}
+    {{ super() }}
+
+    
 {% endblock %}

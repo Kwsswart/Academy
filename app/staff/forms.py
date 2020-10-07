@@ -1,24 +1,12 @@
 import phonenumbers
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
-
-
-class LoginForm(FlaskForm):
-
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
-
-
-class UserRegistrationForm(FlaskForm):
-
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+class EditProfileForm(FlaskForm):
+    
     name = StringField('Full Name', validators=[DataRequired()])
     phone = StringField('Phone Number', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -36,36 +24,42 @@ class UserRegistrationForm(FlaskForm):
         ('Nuevos Ministerios','Nuevos Ministerios'),
         ('Online', 'Online'),
         ('Rambla Catalunya','Rambla Catalunya'),
-        ('San Miguel','San Miguel')])
+        ('San Miguel','San Miguel')
+        ])
     trained = SelectMultipleField('Trained to teach', choices=[
         ('General English', 'General English'),
         ('Exam', 'Exam'),
         ('Children', 'Children'),
         ('Level Test', 'Level Test'),
         ('Admin', 'Admin')
-    ])
-    submit = SubmitField('Register')
-    
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different username.')
-    
+        ])
+    submit = SubmitField('Confirm')
+
+    def __init__(self, obj, *args, **kwargs):
+        self.user = int(obj)
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+
     def validate_name(self, name):
-        user = User.query.filter_by(name=name.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different name.')
+        user = User.query.filter_by(id=self.user).first()
+        if name.data != user.name:
+            user1 = User.query.filter_by(name=name.data).first()
+            if user1 is not None:
+                raise ValidationError('Name already in use.')
+
+    def validate_phone2(self, phone):
+        user = User.query.filter_by(id=self.user).first()
+        if phone.data != user.phone:
+            new = User.query.filter_by(phone=phone.data).first()
+            if new is not None:
+                raise ValidationError('Phone number already in use.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address.')
-    
-    def validate_phone2(self, phone):
-        user = User.query.filter_by(phone=phone.data).first()
-        if user is not None:
-            raise ValidationError('Use different phone number.')
-    
+        user = User.query.filter_by(id=self.user).first()
+        if email.data != user.email:
+            new = User.query.filter_by(email=email.data).first()
+            if new is not None:
+                raise ValidationError('Email already in use.')
+
     def validate_phone(self, phone):
         try:
             p = phonenumbers.parse(phone.data)
@@ -75,3 +69,15 @@ class UserRegistrationForm(FlaskForm):
             raise ValidationError('Invalid phone number')
 
 
+class RemoveUserForm(FlaskForm):
+    affirmation = SelectField('Are you sure?', validators=[DataRequired()], choices=[
+        ('Yes','Yes'),
+        ('No','No')
+    ])
+    submit = SubmitField('Confirm')
+
+
+class AvatarUploadForm(FlaskForm):
+    file = FileField('File', validators=[FileRequired(), FileAllowed(
+        ['jpg', 'jpeg','png'], 'Only "gif", "jpg", "jpeg" and "png" files are supported')])
+    submit = SubmitField('Submit field')

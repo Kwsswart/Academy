@@ -1,4 +1,5 @@
 from datetime import datetime
+from hashlib import md5
 from functools import wraps
 from flask import redirect, url_for, flash
 from flask_login import UserMixin, current_user
@@ -34,11 +35,6 @@ class PermissionGroups(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(40))
 
-    user_access = db.relationship(
-                        'User', secondary=user_permissions,
-                        backref=db.backref('user_permissions', lazy='dynamic'),
-                        lazy='dynamic')
-
     def __repr__(self):
         return '<Permission Group : {} '.format(self.group_name)
 
@@ -48,6 +44,22 @@ class PermissionGroups(db.Model):
         groups.sort(key=lambda x: x.group_name)
         return groups
 
+class TrainedIn(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40))
+
+    teacher = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Trained In : {} >'.format(self.name)
+
+    @staticmethod
+    def get_all_groups():
+        groups = TrainedIn.query.all()
+        groups.sort(key=lambda x: x.name)
+        return groups
+
 # Teachers
 class User(UserMixin, db.Model):
 
@@ -55,16 +67,19 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(255), index=True, unique=True)
-    phone = db.Column(db.String(20), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    phone = db.Column(db.String(20), index=True)
+    email = db.Column(db.String(120), index=True)
     position = db.Column(db.String(20), index=True)
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+
+    academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
+    trained_in = db.relationship('TrainedIn', backref='TrainedIn', lazy='dynamic')
+
 
     access_groups = db.relationship(
                         'PermissionGroups', secondary=user_permissions,
                         backref=db.backref('user_permissions', lazy='dynamic'),
                         lazy='dynamic')
-    # relationships
-    academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
     lessons = db.relationship('Lessons', backref='teacher', lazy='dynamic')
     student = db.relationship('Student', backref='teacher', lazy='dynamic')
 
@@ -79,6 +94,7 @@ class User(UserMixin, db.Model):
 
     def add_access(self, access_group):
         """ Add new access group priviledge to user """
+
         if not self.has_auth_access(access_group):
             self.access_groups.append(access_group)
 
@@ -97,6 +113,7 @@ class User(UserMixin, db.Model):
 
     def is_master(self):
         """ Check for master """ 
+
         master_access = (PermissionGroups.query
                                 .filter_by(group_name="Master")
                                 .first())
@@ -104,7 +121,6 @@ class User(UserMixin, db.Model):
             return True
         else:
             return False
-
    
     def has_academy_access(self, acad_id):
         """ Check whether user has authorisation to make edits in this academy """ 
@@ -120,8 +136,12 @@ class User(UserMixin, db.Model):
             return True
         else:
             return False
-            
 
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
+            
     @staticmethod
     def get_user_permissions():
         permissions = User.query.all()

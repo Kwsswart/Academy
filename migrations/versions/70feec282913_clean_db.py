@@ -1,8 +1,8 @@
-"""User, academy, permissions
+"""Clean db
 
-Revision ID: 33fa6df05410
+Revision ID: 70feec282913
 Revises: 
-Create Date: 2020-10-01 13:34:33.807524
+Create Date: 2020-10-05 13:48:27.454083
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '33fa6df05410'
+revision = '70feec282913'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,13 +37,14 @@ def upgrade():
     sa.Column('phone', sa.String(length=20), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('position', sa.String(length=20), nullable=True),
+    sa.Column('last_seen', sa.DateTime(), nullable=True),
     sa.Column('academy_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['academy_id'], ['academy.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
+    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=False)
     op.create_index(op.f('ix_user_name'), 'user', ['name'], unique=True)
-    op.create_index(op.f('ix_user_phone'), 'user', ['phone'], unique=True)
+    op.create_index(op.f('ix_user_phone'), 'user', ['phone'], unique=False)
     op.create_index(op.f('ix_user_position'), 'user', ['position'], unique=False)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('lessons',
@@ -65,6 +66,13 @@ def upgrade():
     op.create_index(op.f('ix_lessons_length'), 'lessons', ['length'], unique=False)
     op.create_index(op.f('ix_lessons_name'), 'lessons', ['name'], unique=True)
     op.create_index(op.f('ix_lessons_time'), 'lessons', ['time'], unique=False)
+    op.create_table('trained_in',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=40), nullable=True),
+    sa.Column('teacher', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['teacher'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('user_permissions',
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('permission_id', sa.Integer(), nullable=True),
@@ -103,6 +111,7 @@ def downgrade():
     op.drop_index(op.f('ix_user_permissions_user_id'), table_name='user_permissions')
     op.drop_index(op.f('ix_user_permissions_permission_id'), table_name='user_permissions')
     op.drop_table('user_permissions')
+    op.drop_table('trained_in')
     op.drop_index(op.f('ix_lessons_time'), table_name='lessons')
     op.drop_index(op.f('ix_lessons_name'), table_name='lessons')
     op.drop_index(op.f('ix_lessons_length'), table_name='lessons')

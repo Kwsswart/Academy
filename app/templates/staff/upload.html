@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Upload Avatar for: {{ user.name }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <hr>
+    {% for file in files %}
+        <img src="{{ url_for('staff.upload', filename=file) }}" style="width: 64px">
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

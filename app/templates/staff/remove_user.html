@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Remove User: {{ user.name }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <hr>
+    <p style="color:red;"> 
+        Are you certain that you wish to remove {{ user.name }}. 
+        This action cannot be undone.
+    </p>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    // Confirmation Dialogue
+    $(function() {
+        $('.form').on('submit', function(e){
+            const confirmed = confirm("Are you sure?")
+            if (!confirmed) {
+                e.preventDefault();
+            }
+    });
+    });
+</script>
+{% endblock %}

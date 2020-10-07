@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, UserRegistrationForm
-from app.models import User , PermissionGroups, group_required, Academy
+from app.models import User , PermissionGroups, group_required, Academy, TrainedIn
 
 
 @bp.route('/login', methods=['GET','POST'])
@@ -44,7 +44,6 @@ def register():
         
         if dict(form.position.choices).get(form.position.data) == "Upper Management":
             if not current_user.is_master() and current_user.position != "Upper Management":
-                print('True')
                 flash("You don't have permissions to set Upper Management.")
                 return redirect(url_for('auth.register'))
 
@@ -65,6 +64,13 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        trained = form.trained.data
+
+        for t in trained:
+            i = TrainedIn(name=t, teacher=user.id)
+            db.session.add(i)
+            db.session.commit()
+
         user.academy_id = academy.id
 
         new_permission = PermissionGroups(group_name=dict(form.position.choices).get(form.position.data))
@@ -76,6 +82,6 @@ def register():
         db.session.commit()
 
         flash('Registration successful.')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('staff.user', name= user.name))
 
     return render_template('auth/user_register.html', title="Register Staff", form=form)
