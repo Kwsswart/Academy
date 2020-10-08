@@ -11,4 +11,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     MAX_CONTENT_LENGTH = 1024 * 1024
-    UPLOAD_PATH = 'app/uploads/'
+    UPLOAD_PATH = 'app/static/uploads/'

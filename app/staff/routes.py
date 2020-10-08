@@ -146,7 +146,7 @@ def upload_file(name):
 
     user = User.query.filter_by(name=name).first()
     form = AvatarUploadForm()
-    print(user.id)
+
     files = os.listdir(current_app.config['UPLOAD_PATH'] + 'avatars')
 
     if form.validate_on_submit():
@@ -162,7 +162,6 @@ def upload_file(name):
 
 @bp.route('/uploads/<filename>')
 def upload(filename):
-    print(os.path.join(current_app.config['UPLOAD_PATH'], 'avatars/') + filename)
     return send_from_directory(os.path.join(current_app.config['UPLOAD_PATH'], 'avatars'),filename=filename)
 
 
