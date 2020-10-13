@@ -4,7 +4,12 @@
 {% block app_content %}
 <table>
     <tr valign='top'>
-        <td><img src="{{ user.avatar(128) }}"></td>
+        <td>{% if avatar == None %}
+            <img src="{{ user.avatar(128) }}">
+            {% else %}
+            <img src="{{ url_for('staff.upload', filename=avatar) }}" style="width: 128px">
+            {% endif %}
+        </td>
         <td style="padding-left: 15px">
             <h1>{{ user.name }}</h1>
  
@@ -23,11 +28,14 @@
         </td>
     </tr>
     <tr>
-        {% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
         
         <td>
             <p><a href="{{ url_for('staff.upload_file', name=user.name) }}" class="btn btn-default">Upload Avatar</a></p>
         </td>
+        {% if user.name != current_user.name %}
+        <td><p><a href="{{ url_for('staff.email_user', name=user.name) }}" class="btn btn-default">Send E-mail</a></p></td>
+        {% endif %}
+        {% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
         <td>
             <p><a href="{{ url_for('staff.edit_user', name=user.name) }}" class="btn btn-default">Edit Profile</a>      <a href="{{ url_for('staff.remove_user', name=user.name) }}" class="btn btn-default">Remove user</a></p>
             

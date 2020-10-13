@@ -1,8 +1,8 @@
 import phonenumbers
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, SelectMultipleField, TextAreaField
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
 
 class EditProfileForm(FlaskForm):
@@ -79,5 +79,13 @@ class RemoveUserForm(FlaskForm):
 
 class AvatarUploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired(), FileAllowed(
-        ['jpg', 'jpeg','png'], 'Only "gif", "jpg", "jpeg" and "png" files are supported')])
+        ['jpg', 'jpeg','png'], 'Only "jpg", "jpeg" and "png" files are supported')])
     submit = SubmitField('Submit field')
+
+
+
+class EmailForm(FlaskForm):
+
+    subject = StringField('Subject', validators=[DataRequired(), Length(min=0, max=50)])
+    body = TextAreaField('Message', validators=[DataRequired(), Length(min=0, max=500)])
+    submit = SubmitField('Send Email')

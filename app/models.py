@@ -72,6 +72,10 @@ class User(UserMixin, db.Model):
     position = db.Column(db.String(20), index=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
+    email_confirmation_sent_on = db.Column(db.DateTime, nullable=True)
+    email_confirmed = db.Column(db.Boolean, nullable=True, default=False)
+    email_confirmed_on = db.Column(db.DateTime, nullable=True)
+
     academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
     trained_in = db.relationship('TrainedIn', backref='TrainedIn', lazy='dynamic')
 

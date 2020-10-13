@@ -12,6 +12,8 @@ Auth: Auth section assumes responsibility of login, logout and user registration
     senior management can place in all.
 
 staff: Staff section deals with editing, removing, avatars
-    Avatars are stored: 
+    Avatars are stored: need to find where to store in container
+
+Email: Look into making the application more secure to allow to send emails without errors
 
 ------------

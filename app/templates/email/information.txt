@@ -1,0 +1,30 @@
+Hello {{ user }}!
+
+Welcome to Number16!
+
+Your login details for our class managment system are:
+
+
+Username: {{ username }}
+
+
+Phone Number: {{ phone }}
+
+
+E-mail: {{ email }}
+
+
+Academy: {{ academy }}
+
+
+Position: {{ position }}
+
+
+Due to sensitivity, please request your password from the director of your centre.
+
+
+We look forward to working with you!
+
+
+Sincerly,
+The Number 16 Team

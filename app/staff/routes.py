@@ -7,9 +7,10 @@ from werkzeug.utils import secure_filename
 from wtforms.validators import ValidationError
 from app import  db
 from app.utils import validate_image
+from app.email import send_email, send_confirmation_email, send_user_email
 from app.models import User , PermissionGroups, group_required, Academy, TrainedIn
 from app.staff import bp
-from app.staff.forms import EditProfileForm, RemoveUserForm, AvatarUploadForm
+from app.staff.forms import EditProfileForm, RemoveUserForm, AvatarUploadForm, EmailForm
 
 @bp.route('/user/<name>')
 @login_required
@@ -18,8 +19,16 @@ def user(name):
     user = User.query.filter_by(name=name).first_or_404()
     academy = Academy.query.filter_by(id=user.academy_id).first()
     trained = TrainedIn.query.filter_by(teacher=user.id).all()
+
+    # Display avatarç
+    avatar = None
+    files = os.listdir(current_app.config['UPLOAD_PATH'] + 'avatars')
+    for f in files:
+        file_ext = os.path.splitext(f)[1]
+        if str(user.id) + file_ext == f:
+            avatar = f
     
-    return render_template('staff/user.html', title="Profile", user=user, academy=academy, trained=trained)
+    return render_template('staff/user.html', title="Profile", academy=academy, avatar=avatar, trained=trained, user=user)
 
 @bp.route('/edit_user/<name>', methods=['GET', 'POST']) #make it click and save the name of use user here
 @login_required
@@ -57,6 +66,8 @@ def edit_user(name):
 
         if user.email != form.email.data:
             user.email = form.email.data
+            send_confirmation_email(form.email.data)
+            flash('Please check given email to confirm the email address.', 'success')
             db.session.commit()
 
         if user.position != form.position.data and not user.is_master:
@@ -110,6 +121,14 @@ def remove_user(name):
 
     form = RemoveUserForm()
 
+    avatar = None
+    files = os.listdir(current_app.config['UPLOAD_PATH'] + 'avatars')
+
+    for f in files:
+        file_ext = os.path.splitext(f)[1]
+        if str(user.id) + file_ext == f:
+            avatar = f
+
     if user.id == current_user.id:
         flash("You can't delete youself!")
         return redirect(url_for('staff.user', name=name))
@@ -130,7 +149,10 @@ def remove_user(name):
             for t in trained:
                 db.session.delete(t)
             flash('{} deleted!'.format(user.name))
+            if avatar is not None:
+                os.remove(os.path.join(current_app.config['UPLOAD_PATH'] + 'avatars/' + avatar))
             db.session.commit()
+            
             return redirect(url_for('main.index'))
         else:
             flash('{} not deleted!'.format(user.name))
@@ -165,3 +187,23 @@ def upload(filename):
     return send_from_directory(os.path.join(current_app.config['UPLOAD_PATH'], 'avatars'),filename=filename)
 
 
+@bp.route('/email/<name>', methods=['GET','POST'])
+@login_required
+def email_user(name):
+    user = User.query.filter_by(name=name).first()
+
+    form = EmailForm()
+
+    if form.validate_on_submit():
+        senders = [current_user.email]
+        
+        send_user_email(
+            subject=form.subject.data, 
+            sender=senders[0],
+            recipients=[user.email],
+            body=form.body.data,
+            user=user)
+
+        flash('E-mail has been sent!')
+        return redirect(url_for('main.index'))
+    return render_template('staff/email_user.html', user=user, form=form)

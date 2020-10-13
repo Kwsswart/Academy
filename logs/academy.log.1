@@ -1,0 +1,130 @@
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 245, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 59, in register
+    send_confirmation_email(form.email.data,form.name.data, form.username.data, form.password.data)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\email.py", line 27, in send_confirmation_email
+    html = render_template(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 137, in render_template
+    return _render(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\email\confirmation.html", line 6, in top-level template code
+    <a href="{{ url_for(auth.confirm_url) }}"> confirm</a>
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 471, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'auth' is undefined
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 245, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 59, in register
+    send_confirmation_email(form.email.data,form.name.data, form.username.data, form.password.data)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\email.py", line 34, in send_confirmation_email
+    text_body=render_template('email/confirmation.txt'),
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 137, in render_template
+    return _render(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\email\confirmation.txt", line 8, in top-level template code
+    {{ url_for('confirm_url') }}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'confirm_url'. Did you mean 'auth.confirm_email' instead?
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 119, in confirm_email
+    password=user.password),
+AttributeError: 'User' object has no attribute 'password'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+TypeError: confirm_email() missing 1 required positional argument: 'password'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]

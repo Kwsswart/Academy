@@ -1,0 +1,12 @@
+
+Welcome to Number16!
+
+    
+    :
+
+    <a href="{{ confirm_url }}">Please Confirm your email address</a>
+
+
+Look forward to working with you!
+
+Number 16 Team
