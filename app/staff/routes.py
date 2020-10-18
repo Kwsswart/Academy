@@ -191,12 +191,11 @@ def upload(filename):
 @login_required
 def email_user(name):
     user = User.query.filter_by(name=name).first()
-
     form = EmailForm()
 
     if form.validate_on_submit():
         senders = [current_user.email]
-        
+       
         send_user_email(
             subject=form.subject.data, 
             sender=senders[0],
