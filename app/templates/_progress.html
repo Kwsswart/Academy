@@ -1,0 +1,33 @@
+<table class='table'>
+    <thead>
+        <tr>
+            <th scope="col">Class Number</th>
+            <th scope="col">Teacher</th>
+            <th scope="col">Lesson Number</th>
+            <th scope="col">Last Page</th>
+            <th scope="col">Last Word</th>
+            <th scope="col">Exercises</th>
+            <th scope="col">Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for actual in actual_progress %}
+        <tr>
+            <th scope="row">{{ actual.class_number }}</th>
+            <td>
+                {% for user in users %}
+                    {% if user.id == actual.user_id %}
+                        {{ user.name }}
+                    {% endif %}
+                {% endfor %} 
+            </td>
+          <td>{{ actual.lesson_number }}</td>
+          <td>{{ actual.last_page }}</td>
+          <td>{{ actual.last_word }}</td>
+          <td>{{ actual.exercises }}</td>
+          <td>{{ actual.comment }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+</table>

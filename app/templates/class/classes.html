@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+    <h1>Create Class in {{ academy.name }}</h1>
+
+    <table class='table'>
+        <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">Name</th>
+              <th scope="col">Days</th>
+              <th scope="col">Time</th>
+              <th scope="col">Length</th>
+              <th scope="col">Number of Classes</th>
+              <th scope="col">Amount of Students</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for group in groups %}
+            
+            <tr>
+              <th scope="row">{{ group.step.name }}</th>
+              <td><a href="{{ url_for('classes.view_class', name=group.name, academy=academy.name) }}">{{ group.name }}</a></td>
+              <td>
+                {% for day in days %}
+                  {% if day.lessons == group.id %}
+                
+                    {{ day.name }}
+                  {% endif %}
+                {% endfor %}
+              </td>
+              <td>{{ group.time }}</td>
+              <td>{{ group.LengthOfClass.name }}</td>
+              <td>{{ group.class_number }}</td>
+              <td>{{ group.amount_of_students }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+    </table>
+
+{% endblock %}

@@ -1,8 +1,8 @@
-"""empty message
+"""Reset
 
-Revision ID: ffe91d7ff601
+Revision ID: 6c41043970fc
 Revises: 
-Create Date: 2020-10-18 14:14:06.406965
+Create Date: 2020-10-20 15:12:10.407739
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ffe91d7ff601'
+revision = '6c41043970fc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -115,17 +115,17 @@ def upgrade():
     sa.Column('length_of_class', sa.Integer(), nullable=True),
     sa.Column('academy_id', sa.Integer(), nullable=True),
     sa.Column('step_id', sa.Integer(), nullable=True),
-    sa.Column('Type_of_class', sa.Integer(), nullable=True),
+    sa.Column('type_of_class', sa.Integer(), nullable=True),
     sa.Column('classes121_id', sa.Integer(), nullable=True),
     sa.Column('step_expected_id', sa.Integer(), nullable=True),
     sa.Column('step_actual_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['Type_of_class'], ['type_of_class.id'], ),
     sa.ForeignKeyConstraint(['academy_id'], ['academy.id'], ),
     sa.ForeignKeyConstraint(['classes121_id'], ['classes121.id'], ),
     sa.ForeignKeyConstraint(['length_of_class'], ['length_of_class.id'], ),
     sa.ForeignKeyConstraint(['step_actual_id'], ['step_actual_tracker.id'], ),
     sa.ForeignKeyConstraint(['step_expected_id'], ['step_expected_tracker.id'], ),
     sa.ForeignKeyConstraint(['step_id'], ['step.id'], ),
+    sa.ForeignKeyConstraint(['type_of_class'], ['type_of_class.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

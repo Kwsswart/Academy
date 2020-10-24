@@ -1,0 +1,40 @@
+{% from "_formhelpers.html" import render_field %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+
+<table class='table'>
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Average Grade</th>
+            <th scope="col">Classes Not Attended</th>
+            <th scope="col">Attended?</th>
+            <th scope="col">Score</th>
+            <th scope="col">Issue</th>
+        </tr>
+      </thead>
+      <tbody><!--
+        {% for student in students %}
+        {% if student.class_id == lesson.id %}
+        <tr>
+            <th scope="row">{{ student.name }}</th>
+            <td>
+                mark calculation 
+            </td>
+            <td>{{ student.days_missed }}</td>
+            <td>{{ render_field(attendance.attended, id="attended-" + student.id, class='form-control', style="width:5%;") }}</td>
+            <td>
+                {{ render_field(attendance.score, id="score-" + student.id, class='form-control', style="width:5%;") }}
+                {% if expected_progress.last_word == 'END OF STEP EXAM' %}
+                {{ render_field(attendance.writing, id="writing-" +  student.id , class='form-control', style="width:5%;") }}
+                {{ render_field(attendance.speaking, id="speaking-" +  student.id , class='form-control', style="width:5%;") }}
+                {% endif %}
+                
+            </td>
+            <td><a href="">Report Problem.</a></td> <!--  Implement email sending student details with email
+        </tr>
+        {% endif %}
+        {% endfor %}--->
+      </tbody>
+
+</table>

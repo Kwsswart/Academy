@@ -15,6 +15,7 @@ def importer(filename, time, step):
         
         length = time
         steps = step
+        
         length = LengthOfClass.query.filter_by(name=length).first()
         step = Step.query.filter_by(name=steps).first()
         step_expected_tracker = StepExpectedTracker(length_of_class=length.id, step_id=step.id)

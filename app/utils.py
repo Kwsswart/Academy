@@ -2,7 +2,6 @@ import imghdr
 import csv
 
 
-
 def atoi(text):
     return int(text) if text.isdigit() else text
 
@@ -18,9 +17,6 @@ def validate_image(stream):
     if not format:
         return None
     return '.' + (format if format != 'jpeg' else 'jpg')
-
-
-
 
 
 

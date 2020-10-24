@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block styles %}
+{{ super()}}
+{% endblock %}
+
+{% block app_content %}
+<h3>Class View</h3>
+        {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
+        <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="" class="btn btn-default">Insert Custom Progress</a> <a href="" class="btn btn-default">Move Forward</a></p>
+        {% endif %}
+<table class='table'>
+    <tr>
+        <th scope="col">
+            Class Details
+        </th>
+        <th scope="col">
+            Expected Progress
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Step: {{ lesson.step.name }}
+        </td>
+        <td>
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number %}
+                Last Lesson: {{ i.lesson_number }}
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Name: {{ lesson.name }}
+        </td>
+        <td>
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number %}
+                Last Page: {{ i.last_page }}
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Special Instructions: {{ lesson.comment }}
+        </td>
+        <td>
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number %}
+                Last Word: {{ i.last_word }}
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Amount of Students: {{ lesson.amount_of_students }}
+        </td>
+        <td>
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number %}
+                Exercises to do: {{ i.exercises }}
+            {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="col">
+            Exercises already done:
+        </th>
+        <td>
+            {% for i in actual_progress %}
+            {{ i.exercises}}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="col">
+            New Progress:
+        </th>
+        <th scope="col">
+            Attendance
+        </th>
+    </tr>
+    <tr>
+        <td>
+            render_field(update_form.lesson_number, id="lesson_number", class='form-control lesson_number', style="width:33%;")
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            {% include '_updateprogress.html' %}
+        </td>
+        <td>
+            <!--{% include '_students.html' %} -->
+        </td>
+    </tr>
+    <tr>
+        {% if actual_progress != None %}
+        {% include '_progress.html' %}
+        {% endif %}
+    </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

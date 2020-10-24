@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    .step {
+        display: inline;
+    }
+    .exams{
+        display: none;
+    }
+    .kids{
+        display: none;
+    }
+    .agerange{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block app_content %}
+    <h1>Create Class</h1>
+
+
+    <form action="" method="post" class="form" role="form" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
+
+        <dl>
+            {{ render_field(form.name, id="name", class='form-control', style="width:33%;") }}
+            {{ render_field(form.time, id="time", class='form-control', style="width:33%;") }}
+            {{ render_field(form.academy, id="academy", class='form-control', style="width:33%;") }}
+            {{ render_field(form.daysdone, id="daysdone", class='form-control', style="width:33%;") }}
+            {{ render_field(form.lengthofclass, id="lengthofclass", class='form-control', style="width:33%;") }}
+            {{ render_field(form.comment, id="comment", class='form-control', style="width:33%;") }}
+            {{ render_field(form.typeofclass, id="typeofclass", class='form-control', style="width:33%;") }}
+            {{ render_field(form.step, class='form-control step', style="width:33%;") }}
+            {{ render_field(form.startat, id="startat", class='form-control startat', style="width:33%;") }}
+            {{ render_field(form.exams, class='form-control exams', style="width:33%;") }}
+            {{ render_field(form.kids, class='form-control kids', style="width:33%;") }}
+            {{ render_field(form.agerange, class='form-control kids', style="width:33%;") }}
+            {{ wtf.form_field(form.submit) }}
+        </dl>
+
+        <hr>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+$(document).ready(function(){
+    var start = $('#step').val() * 10 - 9
+    $('#startat').val(start)
+    $('#typeofclass').change(function(){
+        var selected = $(this).children("option:selected").val();
+        if (selected == '121-General English' || 
+            selected == '121-Business English' || 
+            selected == 'Group General English' || 
+            selected == 'Group Business English' ||
+            selected == 'In-Company-121' || 
+            selected == 'In-Company General English' || 
+            selected == 'In-Company Business English' ||
+            selected == 'Group Intensive') {
+            $('.exams').hide()
+            $('.kids').hide()
+            $('.step').show('slow')
+            $('.startat').show('slow')
+            $('.agerange').hide()
+        } else if (selected == '121-Exam Class' || selected == 'Group Exam'){
+            $('.exams').show('slow')
+            $('.kids').hide()
+            $('.step').hide()
+            $('.startat').hide()
+            $('.agerange').hide()
+        } else if (selected == '121-Children' || selected == 'Group Children'){
+            $('.exams').hide()
+            $('.startat').hide()
+            $('.kids').show('slow')
+            $('.agerange').show('slow')
+            $('.step').hide()
+        }
+    });
+    $('#step').change(function(){
+        var selected = $(this).children("option:selected").val();
+        console.log(selected)
+        if (selected == 1) {
+            $('#startat').val(1)
+        } else {
+            var value = selected * 10 - 9
+            console.log(value)
+            $('#startat').val(value)
+        }        
+    });
+});
+</script>
+{% endblock %}

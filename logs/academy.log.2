@@ -1,4 +1,3 @@
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -15,12 +14,11 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 241, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\staff\routes.py", line 149, in remove_user
-    os.remove(os.path.join(current_app.config['UPLOAD_PATH'] + 'avatars/' + avatar))
-TypeError: can only concatenate str (not "NoneType") to str
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in get_classes
+    choices =['Name: {}, Students: {}/8, Time: {}, '.format(
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 41, in <listcomp>
+    ) + 'Days: {}'.format(d.name) for d in days if d.lessons == i.id
+UnboundLocalError: local variable 'i' referenced before assignment
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -37,15 +35,12 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 241, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\staff\routes.py", line 149, in remove_user
-    os.remove(os.path.join(current_app.config['UPLOAD_PATH'] + 'avatars/' + avatar))
-TypeError: can only concatenate str (not "NoneType") to str
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in get_classes
+    choices =['Name: {}, Students: {}/8, Time: {}, '.format(
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 41, in <listcomp>
+    ) + 'Days: {}'.format(d.name) for d in days if d.lessons == i.id
+UnboundLocalError: local variable 'i' referenced before assignment
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -62,28 +57,11 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 245, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 59, in register
-    send_confirmation_email(form.email.data,form.name.data, form.username.data, form.password.data)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\email.py", line 27, in send_confirmation_email
-    html = render_template(
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 115, in load
-    source, filename, uptodate = self.get_source(environment, name)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 60, in get_source
-    return self._get_source_fast(environment, template)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 89, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: confirmation.html
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in get_classes
+    choices =['Name: {}, Students: {}/8, Time: {}, Days:'.format(
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in <listcomp>
+    choices =['Name: {}, Students: {}/8, Time: {}, Days:'.format(
+TypeError: can only concatenate str (not "generator") to str
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -100,25 +78,68 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 245, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 59, in register
-    send_confirmation_email(form.email.data,form.name.data, form.username.data, form.password.data)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\email.py", line 27, in send_confirmation_email
-    html = render_template(
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 115, in load
-    source, filename, uptodate = self.get_source(environment, name)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 60, in get_source
-    return self._get_source_fast(environment, template)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 89, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: confirmation.html
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:81]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in get_classes
+    choices =['Name: {}, Students: {}/8, Time: {}, Days:'.format(
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 37, in <listcomp>
+    choices =['Name: {}, Students: {}/8, Time: {}, Days:'.format(
+TypeError: can only concatenate str (not "generator") to str
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 46, in get_classes
+    choice = 'Name: {}, Students: {}/8, Time: {}, Days: '.format(
+TypeError: can only concatenate str (not "generator") to str
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]

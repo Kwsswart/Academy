@@ -227,7 +227,7 @@ class Lessons(db.Model):
     length_of_class = db.Column(db.Integer, db.ForeignKey('length_of_class.id'))
     academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
     step_id = db.Column(db.Integer, db.ForeignKey('step.id'))
-    Type_of_class = db.Column(db.Integer, db.ForeignKey('type_of_class.id'))
+    type_of_class = db.Column(db.Integer, db.ForeignKey('type_of_class.id'))
     classes121_id = db.Column(db.Integer, db.ForeignKey('classes121.id'))
 
     step_expected_id = db.Column(db.Integer, db.ForeignKey('step_expected_tracker.id'))
@@ -304,7 +304,7 @@ class DaysDone(db.Model):
     lessons = db.Column(db.Integer, db.ForeignKey('lessons.id'))
 
     def __repr__(self):
-        return '<Days Done : {} >'.format(self.name)
+        return '<Days Done : {} {}>'.format(self.name, self.lessons)
 
     @staticmethod
     def get_all_groups():
