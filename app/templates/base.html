@@ -27,7 +27,9 @@
                     <li><a href="{{ url_for('main.index') }}">Home</a></li>
                     {% if not current_user.is_anonymous %}
                     <li><a href="{{ url_for('staff.user', name=current_user.name) }}">Profile</a></li>
-                    <li><a href="{{ url_for('classes.classes', academy='all') }}">View All Classes</a></li>
+                    <li><a href="{{ url_for('classes.classes', academy='all') }}" >View All Classes</a></li>
+                    <li><a href="{{ url_for('students.students', academy='all') }}" >View All Students</a></li>
+                    <li><a href="{{ url_for('staff.view_staff', academy='all') }}">View All Staff</a></li>
                     {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

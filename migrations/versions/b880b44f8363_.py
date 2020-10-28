@@ -1,8 +1,8 @@
-"""Reset
+"""empty message
 
-Revision ID: 6c41043970fc
+Revision ID: b880b44f8363
 Revises: 
-Create Date: 2020-10-20 15:12:10.407739
+Create Date: 2020-10-26 14:11:32.768002
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6c41043970fc'
+revision = 'b880b44f8363'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,6 +41,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_step_name'), 'step', ['name'], unique=True)
+    op.create_table('studentonclass',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('studentonclass2',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('type_of_class',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=128), nullable=True),
@@ -117,6 +125,8 @@ def upgrade():
     sa.Column('step_id', sa.Integer(), nullable=True),
     sa.Column('type_of_class', sa.Integer(), nullable=True),
     sa.Column('classes121_id', sa.Integer(), nullable=True),
+    sa.Column('student_on_class', sa.Integer(), nullable=True),
+    sa.Column('student_on_class2', sa.Integer(), nullable=True),
     sa.Column('step_expected_id', sa.Integer(), nullable=True),
     sa.Column('step_actual_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['academy_id'], ['academy.id'], ),
@@ -125,11 +135,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['step_actual_id'], ['step_actual_tracker.id'], ),
     sa.ForeignKeyConstraint(['step_expected_id'], ['step_expected_tracker.id'], ),
     sa.ForeignKeyConstraint(['step_id'], ['step.id'], ),
+    sa.ForeignKeyConstraint(['student_on_class'], ['studentonclass.id'], ),
+    sa.ForeignKeyConstraint(['student_on_class2'], ['studentonclass2.id'], ),
     sa.ForeignKeyConstraint(['type_of_class'], ['type_of_class.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_lessons_name'), 'lessons', ['name'], unique=True)
+    op.create_index(op.f('ix_lessons_name'), 'lessons', ['name'], unique=False)
     op.create_index(op.f('ix_lessons_time'), 'lessons', ['time'], unique=False)
     op.create_table('step_actual_progress',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -190,6 +202,8 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('days_missed', sa.Integer(), nullable=True),
     sa.Column('comment', sa.String(length=500), nullable=True),
+    sa.Column('student_on_class', sa.Integer(), nullable=True),
+    sa.Column('student_on_class2', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('class_id', sa.Integer(), nullable=True),
     sa.Column('academy_id', sa.Integer(), nullable=True),
@@ -197,6 +211,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['academy_id'], ['academy.id'], ),
     sa.ForeignKeyConstraint(['class_id'], ['lessons.id'], ),
     sa.ForeignKeyConstraint(['step_id'], ['step.id'], ),
+    sa.ForeignKeyConstraint(['student_on_class'], ['studentonclass.id'], ),
+    sa.ForeignKeyConstraint(['student_on_class2'], ['studentonclass2.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -250,6 +266,8 @@ def downgrade():
     op.drop_table('classes121')
     op.drop_index(op.f('ix_type_of_class_name'), table_name='type_of_class')
     op.drop_table('type_of_class')
+    op.drop_table('studentonclass2')
+    op.drop_table('studentonclass')
     op.drop_index(op.f('ix_step_name'), table_name='step')
     op.drop_table('step')
     op.drop_table('permission_groups')

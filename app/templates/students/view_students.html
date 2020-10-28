@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+    <h1>Students</h1>
+
+    
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+              <th scope="col">Academy</th>
+              <th scope="col">Class</th>
+              <th scope="col">Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Consecutive Days Missed</th>
+              <th scope="col">Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <th scope="row">
+                {% for a in academy %}
+                {% if a.id == student.academy_id %}
+
+                  {{ a.name }}
+                
+              </th>
+              <td>{{ student.lessons.name }}</td>
+              <td><a href="{{ url_for('students.student_profile', name=student.name, academy=a.name) }}" class="btn btn-default">{{ student.name }}</a></td>
+              {% endif %}
+              {% endfor %}
+              <td>{{ student.phone }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.days_missed }}</td>
+              <td>
+                {% for s in step %}
+                {% if student.step_id == s.id %}
+                  {{ s.name }}
+
+                <!-- Else if exam or kids show level-->
+                {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td>
+                {% if prev_url %}
+                  <a href="{{ prev_url }}" class="btn btn-default">Previous Students</a>
+                {% endif %}
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                {% if next_url %}
+                  <a href="{{ next_url }}" class="btn btn-default">More Students</a>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+
+    </table>
+
+{% endblock %}

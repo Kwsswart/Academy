@@ -17,13 +17,19 @@
     .agerange{
         display: none;
     }
+    .name {
+        display: none;
+    }
+    #name {
+        display: none;
+    }
 </style>
 {% endblock %}
 
 {% block app_content %}
     <h1>Create Class</h1>
 
-
+    <p>If making a 121 class please do this in either with the add student page or edit student page</p>
     <form action="" method="post" class="form" role="form" novalidate>
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
@@ -51,38 +57,41 @@
 {{ super() }}
 
 <script>
-$(document).ready(function(){
-    var start = $('#step').val() * 10 - 9
-    $('#startat').val(start)
-    $('#typeofclass').change(function(){
-        var selected = $(this).children("option:selected").val();
-        if (selected == '121-General English' || 
-            selected == '121-Business English' || 
-            selected == 'Group General English' || 
-            selected == 'Group Business English' ||
-            selected == 'In-Company-121' || 
-            selected == 'In-Company General English' || 
-            selected == 'In-Company Business English' ||
-            selected == 'Group Intensive') {
+    var type_of = null;
+    var step_options = ['121-General English', '121-Business English', 'Group General English', 'Group Business English', 'In-Company-121', 'In-Company General English', 'In-Company Business English', 'Group Intensive'];
+    var exam_options = ['121-Exam Class', 'Group Exam']
+    var kids_options = ['121-Children', 'Group Children']
+
+    function show_options() {
+        var selected = $('#typeofclass').children("option:selected").val();
+        type_of = selected;
+        if (step_options.includes(selected)) {
             $('.exams').hide()
             $('.kids').hide()
             $('.step').show('slow')
             $('.startat').show('slow')
             $('.agerange').hide()
-        } else if (selected == '121-Exam Class' || selected == 'Group Exam'){
+        } else if (exam_options.includes(selected)){
             $('.exams').show('slow')
             $('.kids').hide()
             $('.step').hide()
             $('.startat').hide()
             $('.agerange').hide()
-        } else if (selected == '121-Children' || selected == 'Group Children'){
+        } else if (kids_options.includes(selected)){
             $('.exams').hide()
             $('.startat').hide()
             $('.kids').show('slow')
             $('.agerange').show('slow')
             $('.step').hide()
         }
-    });
+    }
+    
+$(document).ready(function(){
+    show_options()
+    var start = $('#step').val() * 10 - 9
+    $('#startat').val(start)
+    
+    
     $('#step').change(function(){
         var selected = $(this).children("option:selected").val();
         console.log(selected)
@@ -93,6 +102,19 @@ $(document).ready(function(){
             console.log(value)
             $('#startat').val(value)
         }        
+    });
+    $('#typeofclass').change(function() {
+        show_options()
+        var ic_options = ['In-Company-121', 'In-Company General English', 'In-Company Business English']
+        var selected = $(this).children("option:selected").val();
+        if (ic_options.includes(selected)) {
+            $('#name').show('slow');
+            $('.name').show('slow');
+
+        } else {
+            $('#name').hide('slow');
+            $('.name').hide('slow');
+        }
     });
 });
 </script>

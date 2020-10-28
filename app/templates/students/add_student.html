@@ -29,6 +29,9 @@
     #lesson_name {
         display: none;
     }
+    .companyname {
+        display: none;
+    }
 </style>
 {% endblock %}
 {% block app_content %}
@@ -52,6 +55,7 @@
             {{ render_field(form.kids, id='kid', class='form-control kids', style="width:33%;") }}
             {{ render_field(form.agerange, id='age', class='form-control kids', style="width:33%;") }}
             {{ render_field(form.lesson, id='lesson_name', class='form-control lesson_name', style="width:33%;") }}
+            {{ render_field(form.companyname, id='companyname', class='form-control companyname', style="width:33%;") }}
             {{ wtf.form_field(form.submit) }}
         </dl>
 
@@ -68,6 +72,7 @@
     var step_options = ['121-General English', '121-Business English', 'Group General English', 'Group Business English', 'In-Company-121', 'In-Company General English', 'In-Company Business English', 'Group Intensive'];
     var exam_options = ['121-Exam Class', 'Group Exam']
     var kids_options = ['121-Children', 'Group Children']
+    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ]
 
     // Function for displaying options as required
     function show_options() {
@@ -156,7 +161,16 @@
 
         
         $('#step').change(function() {
-            if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
+            $('.companyname').hide('slow')
+            var selected = $('#typeofclass').children("option:selected").val();
+            if (options_121.includes(selected)) {
+                $('.lesson').hide('slow')
+                $('#lesson_name').hide('slow')
+                if (selected=='In-Company-121') {
+                    $('.companyname').show('slow')
+                }
+            }
+            else if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
                 run_ajax()
             }
         });
@@ -177,7 +191,16 @@
         });
         $('#typeofclass').change(function(){
             show_options()
-            if ($('#step').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
+            $('.companyname').hide('slow')
+            var selected = $(this).children("option:selected").val();
+            if (options_121.includes(selected)) {
+                $('.lesson').hide('slow')
+                $('#lesson_name').hide('slow')
+                if (selected=='In-Company-121') {
+                    $('.companyname').show('slow')
+                }
+            }
+            else if ($('#step').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
                 run_ajax()
             }
         });       

@@ -16,89 +16,116 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
     return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 21, in add_student
-    return render_template('students/add_student.html', form=form)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 127, in load
-    code = environment.compile(source, name, filename)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 638, in compile
-    self.handle_exception(source=source_hint)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\add_student.html", line 47, in template
-    {{ render_field(form.agerange, id='age' class='form-control kids', style="width:33%;") }}
-jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'class'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 211, in edit_student
+    if form.submit1.data and form.validate():
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 318, in validate
+    return super(Form, self).validate(extra)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 150, in validate
+    if not field.validate(self, extra):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\fields\core.py", line 226, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\fields\core.py", line 246, in _run_validation_chain
+    validator(form, self)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\forms.py", line 239, in validate_name
+    if name.data != student.name:
+AttributeError: 'NoneType' object has no attribute 'name'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2097, in make_response
-    raise TypeError(
-TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2097, in make_response
-    raise TypeError(
-TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 239, in edit_student
+    return redirect(url_for('edit_profile', name=student.name, academy=academy.name))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'edit_profile' with values ['academy', 'name']. Did you mean 'students.student_profile' instead?
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2097, in make_response
-    raise TypeError(
-TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 239, in edit_student
+    return redirect(url_for('edit_profile', name=student.name, academy=academy.name))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'edit_profile' with values ['academy', 'name']. Did you mean 'students.student_profile' instead?
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2097, in make_response
-    raise TypeError(
-TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2097, in make_response
-    raise TypeError(
-TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 239, in edit_student
+    return redirect(url_for('edit_profile', name=student.name, academy=academy.name))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'edit_profile' with values ['academy', 'name']. Did you mean 'students.student_profile' instead?
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:89]

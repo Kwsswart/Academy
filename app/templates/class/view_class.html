@@ -10,66 +10,68 @@
         {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
         <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="" class="btn btn-default">Insert Custom Progress</a> <a href="" class="btn btn-default">Move Forward</a></p>
         {% endif %}
-<table class='table'>
-    <tr>
+<table class='table table-hover'>
+    <thead>
+        <tr>
         <th scope="col">
             Class Details
         </th>
         <th scope="col">
             Expected Progress
         </th>
-    </tr>
+        </tr>
+    </thead>
     <tr>
         <td>
-            Step: {{ lesson.step.name }}
+            <b>Step:</b> {{ lesson.step.name }}
         </td>
         <td>
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
-                Last Lesson: {{ i.lesson_number }}
+                <b>Last Lesson:</b> {{ i.lesson_number }}
             {% endif %}
             {% endfor %}
         </td>
     </tr>
     <tr>
         <td>
-            Name: {{ lesson.name }}
+            <b>Name:</b> {{ lesson.name }}
         </td>
         <td>
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
-                Last Page: {{ i.last_page }}
+                <b>Last Page:</b> {{ i.last_page }}
             {% endif %}
             {% endfor %}
         </td>
     </tr>
     <tr>
         <td>
-            Special Instructions: {{ lesson.comment }}
+           <b>Special Instructions:</b> {{ lesson.comment }}
         </td>
         <td>
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
-                Last Word: {{ i.last_word }}
+                <b>Last Word:</b> {{ i.last_word }}
             {% endif %}
             {% endfor %}
         </td>
     </tr>
     <tr>
         <td>
-            Amount of Students: {{ lesson.amount_of_students }}
+            <b>Amount of Students:</b> {{ lesson.amount_of_students }}
         </td>
         <td>
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
-                Exercises to do: {{ i.exercises }}
+                <b>Exercises to do:</b> {{ i.exercises }}
             {% endif %}
             {% endfor %}
         </td>
     </tr>
     <tr>
         <th scope="col">
-            Exercises already done:
+            <b>Exercises already done:</b>
         </th>
         <td>
             {% for i in actual_progress %}

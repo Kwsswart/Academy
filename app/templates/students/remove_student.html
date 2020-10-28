@@ -2,7 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Remove: {{ user.name }}</h1>
+    <h1>Remove: {{ student.name }}</h1>
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
@@ -10,7 +10,7 @@
     </div>
     <hr>
     <p style="color:red;"> 
-        Are you certain that you wish to remove {{ user.name }}. 
+        Are you certain that you wish to remove {{ student.name }}. 
         This action cannot be undone.
     </p>
 {% endblock %}
@@ -21,11 +21,13 @@
     // Confirmation Dialogue
     $(function() {
         $('.form').on('submit', function(e){
-            const confirmed = confirm("Are you sure?")
-            if (!confirmed) {
-                e.preventDefault();
+            if ($('#affirmation').val() == 'Yes') {
+                const confirmed = confirm("Are you sure?")
+                if (!confirmed) {
+                    e.preventDefault();
+                }
             }
-    });
+        });
     });
 </script>
 {% endblock %}

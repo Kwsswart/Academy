@@ -205,4 +205,30 @@ def email_user(name):
 
         flash('E-mail has been sent!')
         return redirect(url_for('main.index'))
-    return render_template('staff/email_user.html', user=user, form=form)
+    return render_template('staff/email_user.html', title="send Email", user=user, form=form)
+
+
+
+@bp.route('/view_staff/<academy>', methods=['GET'])
+@login_required
+def view_staff(academy):
+    
+    if academy == 'all':
+        page = request.args.get('page', 1, type=int)
+        academy = Academy.query.all()
+        users = User.query.group_by(User.position).order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        next_url = url_for('staff.view_staff', academy='all', page=users.next_num) \
+        if users.has_next else None
+        prev_url = url_for('staff.view_staff', academy='all', page=users.prev_num) \
+        if users.has_prev else None
+
+    else: 
+        page = request.args.get('page', 1, type=int)
+        academy = Academy.query.filter_by(name=academy).first()
+        users = User.query.filter_by(academy_id=academy.id).group_by(User.position).order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        next_url = url_for('staff.view_staff', academy=academy.name, page=users.next_num) \
+        if users.has_next else None
+        prev_url = url_for('staff.view_staff', academy=academy.name, page=users.prev_num) \
+        if users.has_prev else None
+
+    return render_template('staff/view_staff.html', title="View Staff", academy=academy, users=users.items, next_url=next_url, prev_url=prev_url)

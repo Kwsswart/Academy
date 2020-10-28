@@ -216,7 +216,7 @@ def group_required(*groups):
 class Lessons(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), index=True, unique=True)
+    name = db.Column(db.String(128), index=True)
     time = db.Column(db.String(128), index=True)
     comment = db.Column(db.String(500))
     amount_of_students = db.Column(db.Integer)
@@ -229,6 +229,8 @@ class Lessons(db.Model):
     step_id = db.Column(db.Integer, db.ForeignKey('step.id'))
     type_of_class = db.Column(db.Integer, db.ForeignKey('type_of_class.id'))
     classes121_id = db.Column(db.Integer, db.ForeignKey('classes121.id'))
+    student_on_class = db.Column(db.Integer, db.ForeignKey('studentonclass.id'))
+    student_on_class2 = db.Column(db.Integer, db.ForeignKey('studentonclass2.id'))
 
     step_expected_id = db.Column(db.Integer, db.ForeignKey('step_expected_tracker.id'))
     step_actual_id = db.Column(db.Integer, db.ForeignKey('step_actual_tracker.id'))
@@ -241,6 +243,17 @@ class Lessons(db.Model):
     def __repr__(self):
         return '<Lesson {}, {}, {}, {}>'.format(self.name, self.time, self.comment, self.amount_of_students)
 
+# many to many relationships student to academy and class
+
+class Studentonclass(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student = db.relationship('Student', backref='Studentonclass', lazy='dynamic')
+    lesson = db.relationship('Lessons', backref='Studentofclass', lazy='dynamic')
+
+class Studentonclass2(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student = db.relationship('Student', backref='Studentonclass2', lazy='dynamic')
+    lesson = db.relationship('Lessons', backref='Studentofclass2', lazy='dynamic')
 
 class Student(db.Model):
 
@@ -252,6 +265,8 @@ class Student(db.Model):
     comment = db.Column(db.String(500))
 
     # relationship
+    student_on_class = db.Column(db.Integer, db.ForeignKey('studentonclass.id'))
+    student_on_class2 = db.Column(db.Integer, db.ForeignKey('studentonclass2.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     class_id = db.Column(db.Integer, db.ForeignKey('lessons.id'))
     academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))

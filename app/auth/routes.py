@@ -132,3 +132,5 @@ def confirm_email(token):
         flash('Thank you for confirming the email address!')
  
     return redirect(url_for('main.index'))
+
+

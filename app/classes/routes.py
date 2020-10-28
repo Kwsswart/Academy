@@ -9,6 +9,7 @@ from app import  db
 from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker
 from app.classes import bp
 from app.classes.forms import CreateClassForm, AttendanceForm, StepProgressForm
+from app.classes.helpers import get_name
 
 
 @bp.route('/create_class', methods=['GET', 'POST'])
@@ -28,7 +29,7 @@ def create_class():
                 return redirect(url_for('classes.create_class'))
 
         class_type = dict(form.typeofclass.choices).get(form.typeofclass.data)
-
+        print(class_type)
         # Adding General English Class
         if class_type == 'Group General English':
 
@@ -46,8 +47,10 @@ def create_class():
             db.session.add(actualtracker)
             db.session.commit()
 
+            name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
+            
             lesson = Lessons(
-                name=form.name.data,
+                name=name,
                 time=str(form.time.data),
                 comment=form.comment.data,
                 amount_of_students=0,
@@ -72,25 +75,45 @@ def create_class():
 
             flash('Class Added.')
             return redirect(url_for('classes.classes', academy=academy.name))
-
+        
+        elif class_type == 'Group Exam Class':
+            print('hi')
+            name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
+            print(name)
         return redirect(url_for('classes.classes', academy=academy.name))
 
-    return render_template('class/create_class.html', form=form)
+    return render_template('class/create_class.html', title="Create Class", form=form)
 
 
 @bp.route('/classes/<academy>', methods=['GET'])
 @login_required
 def classes(academy):
+    
     if academy == 'all':
-        return 'todo'
-    else: 
-        academy = Academy.query.filter_by(name=academy).first()
-    
-        groups = Lessons.query.filter_by(academy_id=academy.id).join(Step).join(LengthOfClass).group_by(Lessons.step_id).order_by(Lessons.step_id.asc()).all()
+        page = request.args.get('page', 1, type=int)
+        academy1 = Academy.query.all()
+        groups = Lessons.query.outerjoin(LengthOfClass).outerjoin(Academy).group_by(Lessons.academy_id, Lessons.id).order_by(Lessons.academy_id.asc()).order_by(Lessons.step_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        next_url = url_for('classes.classes', academy='all', page=groups.next_num) \
+        if groups.has_next else None
+        prev_url = url_for('classes.classes', academy='all', page=groups.prev_num) \
+        if groups.has_prev else None
+
+        step = Step.query.all()
         days = DaysDone.query.join(Lessons).all()
-        
+    else: 
+        page = request.args.get('page', 1, type=int)
+
+        academy1 = Academy.query.filter_by(name=academy).first()
+        groups = Lessons.query.filter_by(academy_id=academy1.id).join(LengthOfClass).join(Academy).group_by(Lessons.step_id).order_by(Lessons.step_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        next_url = url_for('classes.classes', academy=academy1.name, page=groups.next_num) \
+        if groups.has_next else None
+        prev_url = url_for('classes.classes', academy=academy1.name, page=groups.prev_num) \
+        if groups.has_prev else None
+
+        days = DaysDone.query.join(Lessons).all()
+        step = Step.query.all()        
     
-        return render_template('class/classes.html', academy=academy, groups=groups, days=days)
+    return render_template('class/classes.html', title="View Classes", academy=academy1, groups=groups.items, days=days, step=step, next_url=next_url, prev_url=prev_url)
 
 
 @bp.route('/view_class/<name>/<academy>', methods=['GET', 'POST'])
@@ -121,6 +144,7 @@ def view_class(name, academy):
 
     return render_template(
         'class/view_class.html', 
+        title="View Class",
         lesson=lesson, 
         academy=academy, 
         expected=expected_progress, 

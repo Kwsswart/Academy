@@ -9,19 +9,14 @@ from app.models import Academy, Lessons, Student, LengthOfClass, TypeOfClass, Da
 
 
 class CreateClassForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name')
     time = TimeField('Time of Lesson', validators=[DataRequired()])
     typeofclass = SelectField('Type Of Class', validators=[DataRequired()], choices=[
-        ('121-General English', '121-General English'),
-        ('121-Exam Class', '121-Exam Class'),
-        ('121-Business English', '121-Business English'),
-        ('121-Children', '121-Children'),
         ('Group Exam', 'Group Exam Class'),
         ('Group Intensive', 'Group Intensive'),
         ('Group Children', 'Group Children'),
         ('Group General English', 'Group General English'),
         ('Group Business English', 'Group Business English'),
-        ('In-Company-121', 'In-Company-121'),
         ('In-Company General English', 'In-Company General English'),
         ('In-Company Business English', 'In-Company Business English')])
     step = SelectField('Step', choices=[
@@ -106,18 +101,18 @@ class CreateClassForm(FlaskForm):
 
     def validate_daysdone(self, lengthofclass):
         ''' Validate day and time combinations. '''
-
+        print(self.daysdone.data)
         # Check General english times and days
         if self.typeofclass.data == 'Group General English':
-        
-            if 'Monday' and 'Wednesday' in self.daysdone.data:
+            
+            if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
                     raise ValidationError('· Group classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif len(self.daysdone.data) > 3:
                     raise ValidationError('· Group classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif self.lengthofclass.data not in ('1 Hour',  '1,5 Hours'):
                     raise ValidationError('· Group classes on Monday and Wednesday can only be 1 Hour or 1,5 Hours long.')
-            elif 'Tuesday' and 'Thursday' in self.daysdone.data:
+            elif 'Tuesday' in self.daysdone.data and 'Thursday' in self.daysdone.data:
                 if len(self.daysdone.data) > 2:
                     raise ValidationError('· Group classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 if self.lengthofclass.data not in ('1 Hour',  '1,5 Hours'):
@@ -130,25 +125,18 @@ class CreateClassForm(FlaskForm):
                     raise ValidationError('· Two hour group classes can only take place on Fridays!')
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
-            if 'Monday' in self.daysdone.data and 'Wednesday' not in self.daysdone.data or \
-                'Wednesday' in self.daysdone.data and 'Monday' not in self.daysdone.data:
-                raise ValidationError('· Monday and Wednesday have group classes.')
-            if 'Tuesday' in self.daysdone.data and 'Thursday' not in self.daysdone.data or \
-                'Thursday' in self.daysdone.data and 'Tuesday' not in self.daysdone.data:
-                raise ValidationError('· Tuesday and Thursday have group classes together.')
+            
             
         # Check Exams times and days
         if self.typeofclass.data == 'Group Exam':
-            if 'Monday' and 'Wednesday' in self.daysdone.data:
+            if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
                     raise ValidationError('· Group Exam classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif len(self.daysdone.data) > 3:
                     raise ValidationError('· Group Exam classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif self.lengthofclass.data != '1,5 Hours':
                     raise ValidationError('· Group Exam classes on Monday and Wednesday can only be 1,5 Hours long.')
-                else:
-                    raise ValidationError('· Ensure Group class and times are correct')
-            elif 'Tuesday' and 'Thursay' in self.daysdone.data:
+            elif 'Tuesday' in self.daysdone.data and 'Thursay' in self.daysdone.data:
                 if len(self.daysdone.data) > 2:
                     raise ValidationError('· Group Exam classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif self.lengthofclass.data != '1,5 Hours':
@@ -163,17 +151,11 @@ class CreateClassForm(FlaskForm):
                     raise ValidationError('· Two and a half hour group classes can only take place on Saturdays!')
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
-            if 'Monday' in self.daysdone.data and 'Wednesday' not in self.daysdone.data or \
-                'Wednesday' in self.daysdone.data and 'Monday' not in self.daysdone.data:
-                raise ValidationError('· Monday and Wednesday have group classes.')
-            if 'Tuesday' in self.daysdone.data and 'Thursday' not in self.daysdone.data or \
-                'Thursday' in self.daysdone.data and 'Tuesday' not in self.daysdone.data:
-                raise ValidationError('· Tuesday and Thursday have group classes together.')
             
         # Check Children
         if self.typeofclass.data == 'Group Children':
 
-            if 'Monday' and 'Wednesday' in self.daysdone.data:
+            if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
                     raise ValidationError('· Group Children classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif len(self.daysdone.data) > 3:
@@ -182,7 +164,7 @@ class CreateClassForm(FlaskForm):
                     raise ValidationError('· Group Children classes on Monday and Wednesday can only be 1 Hour long.')
                 else:
                     raise ValidationError('· Ensure Group class and times are correct')
-            elif 'Tuesday' and 'Thursay' in self.daysdone.data:
+            elif 'Tuesday' in self.daysdone.data and 'Thursay' in self.daysdone.data:
                 if len(self.daysdone.data) > 2:
                     raise ValidationError('· Group Children classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
                 elif self.lengthofclass.data != '1 Hour':
@@ -197,12 +179,7 @@ class CreateClassForm(FlaskForm):
                     raise ValidationError('· Two and a half hour group classes can only take place on Saturdays!')
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
-            if 'Monday' in self.daysdone.data and 'Wednesday' not in self.daysdone.data or \
-                'Wednesday' in self.daysdone.data and 'Monday' not in self.daysdone.data:
-                raise ValidationError('· Monday and Wednesday have group classes.')
-            if 'Tuesday' in self.daysdone.data and 'Thursday' not in self.daysdone.data or \
-                'Thursday' in self.daysdone.data and 'Tuesday' not in self.daysdone.data:
-                raise ValidationError('· Tuesday and Thursday have group classes together.')
+            
 
         # Check Intensives
         if self.typeofclass.data == 'Group Intensive':
@@ -216,24 +193,7 @@ class CreateClassForm(FlaskForm):
         highest = int(self.step.data) * 10
         if self.startat.data < lowest or self.startat.data > highest:
             raise ValidationError('· Class can only start between lessons {} and {} at step {}'.format(lowest, highest, self.step.data))
-
-    def validate_class(self, name, academy):
-        ''' Check that the class name entered isn't in use at the academy. '''
-
-        acad = Academy.query.filter_by(name=academy).first()
-        lesson = Lessons.query.filter_by(name=name).filter_by(academy_id=acad.id).first()
-        if lesson is not None:
-            raise ValidationError('· Please use a different class name.')
-
-    ''' def validate_name(self, name):
-        """ Check that name structure matches those required. """
-        
-        if self.typeofclass.data == 'Group General English':
-            if 'Monday' and 'Wednesday' in self.daysdone.data:
-            elif 'Tuesday' and 'Thursay' in self.daysdone.data:
-            elif 'Friday' in self.daysdone.data and self.lengthofclass.data == '2 Hours':
-            elif 'Saturday' in self.daysdone.data and self.lengthofclass.data == '2,5 Hours':
-                '''
+  
                 
     def validate_step(self, typeofclass):
         ''' Check ensure that level is filled. '''
@@ -266,6 +226,20 @@ class CreateClassForm(FlaskForm):
             if time.data.hour == 11 and time.data.minute != 30:
                 raise ValidationError('· You cannot book a class for after 11:30 on a Saturday.')
 
+    def validate_class(self, name, academy):
+        ''' heck that company name filled in '''
+
+        
+        options_IC = [
+            'In-Company General English',
+            'In-Company Business English',
+        ]
+        if self.typeofclass.data in options_IC and name.data == None:
+            raise ValidationError('Please Fill in the company name')
+            
+
+
+
 
 class StepProgressForm(FlaskForm):
     ''' Step Progress Form. '''
@@ -289,3 +263,4 @@ class AttendanceForm(FlaskForm):
         if self.attended is True and self.score == None:
             raise ValidationError('You need to provide score if student attended!')
         
+

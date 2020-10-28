@@ -22,3 +22,7 @@ class Config(object):
     ADMINS = os.environ.get('ADMINS')
 
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+
+    # Pagination items
+    ITEMS_PER_PAGE = 25
+    PROGRESS_PER_PAGE = 6

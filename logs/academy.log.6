@@ -1,3 +1,8 @@
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -14,8 +19,10 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 122, in view_class
-    return render_template(
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 223, in edit_student
+    return render_template('students/edit_student.html', title="Edit Student", form=form, form2=form2, student=student, academy=academy)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 137, in render_template
     return _render(
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 120, in _render
@@ -26,8 +33,8 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\class\view_class.html", line 2, in top-level template code
-    {% import 'bootstrap/wtf.html' as wtf %}
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\edit_student.html", line 3, in top-level template code
+    {% from "_formhelpers.html" import render_field %}
   File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 1, in top-level template code
     {% extends 'bootstrap/base.html' %}
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
@@ -38,66 +45,18 @@ Traceback (most recent call last):
     {% block body -%}
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
     {% block content -%}
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 61, in block "content"
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 65, in block "content"
     {% block app_content %}{% endblock %}
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\class\view_class.html", line 46, in block "app_content"
-    <!--{% include '_students.html' %} -->
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\_students.html", line 38, in top-level template code
-    <td>{{ wtf.form_field(form.submit) }}</td>
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\edit_student.html", line 89, in block "app_content"
+    {{ wtf.form_field(form.submit2) }}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\runtime.py", line 679, in _invoke
+    rv = self._func(*arguments)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 36, in template
+    {% if field.flags.required and not required in kwargs %}
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 471, in getattr
     return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'form' is undefined
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:86]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 122, in view_class
-    return render_template(
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 137, in render_template
-    return _render(
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 120, in _render
-    rv = template.render(context)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 1090, in render
-    self.environment.handle_exception()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\class\view_class.html", line 2, in top-level template code
-    {% import 'bootstrap/wtf.html' as wtf %}
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block "doc"
-    {%- block html %}
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block "html"
-    {% block body -%}
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
-    {% block content -%}
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 61, in block "content"
-    {% block app_content %}{% endblock %}
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\class\view_class.html", line 51, in block "app_content"
-    {% include 'progress.html' %}
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 60, in get_source
-    return self._get_source_fast(environment, template)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 89, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: progress.html
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:86]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:86]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:86]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:86]
+jinja2.exceptions.UndefinedError: 'app.students.forms.EditStudentForm object' has no attribute 'submit2'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    
+</style>
+{% endblock %}
+{% block app_content %}
+    <h1>Student Profile</h1>
+    <p> Last Editted By: {{ editted_by.name }}</p>
+    {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
+        <p><a href="{{ url_for('students.edit_student', name=student.name, academy=academy.name) }}" class="btn btn-default">Edit Student</a> <a href="{{ url_for('students.remove_student', name=student.name, academy=academy.name) }}" class="btn btn-default">Remove Student</a> 
+    {% endif %}
+    <table class="table table-striped">
+        <tr>
+            <td><b>Academy:</b></td>
+            <td>{{ academy.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Name:</b></td>
+            <td>{{ student.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Phone Number:</b></td>
+            <td>{{ student.phone }}</td>
+        </tr>
+        <tr>
+            <td><b>Email:</b></td>
+            <td>{{ student.email }}</td>
+        </tr>
+        <tr>
+            <td><b>Consecutive Days Missed:</b></td>
+            <td>{{ student.days_missed }}</td>
+        </tr>
+        <tr>
+            <td><i><b>Lessons being taken:</b></i></td>
+        </tr>
+        <tr>
+            <td><b>Academy:</b></td>
+            <td>{{ academy.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Type Of Class:</b></td>
+            <td>{{ type_of_class.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Class:</b></td>
+            <td>
+                <a href="{{ url_for('classes.view_class', name=student.lessons.name, academy=academy.name) }}" class="btn btn-default">{{ student.lessons.name }}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Level:</b></td>
+            <td>
+                {% if step != None %}
+                {{ step.name }}
+                {% endif %}
+            </td>
+        </tr>
+        {% if additional_lesson_1 %}
+        <tr>
+            <td><b>Academy:</b></td>
+            <td>{{ additional_lesson_1.academy.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Type Of Class:</b></td>
+            <td>{{ additional_lesson_1.TypeOfClass.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Class:</b></td>
+            <td>
+                <a href="{{ url_for('classes.view_class', name=additional_lesson_1.name, academy=additional_lesson_1.academy.name) }}" class="btn btn-default">{{ additional_lesson_1.name }}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Level:</b></td>
+            <td>
+                {% if additional_lesson_1.step_id != None %}
+                {{ additional_lesson_1.step.name }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        {% if additional_lesson_2 %}
+        <tr>
+            <td><b>Academy:</b></td>
+            <td>{{ additional_lesson_2.academy.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Type Of Class:</b></td>
+            <td>{{ additional_lesson_2.TypeOfClass.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Class:</b></td>
+            <td>
+                <a href="{{ url_for('classes.view_class', name=additional_lesson_2.name, academy=additional_lesson_2.academy.name) }}" class="btn btn-default">{{ additional_lesson_2.name }}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Level:</b></td>
+            <td>
+                {% if additional_lesson_2.step_id != None %}
+                {{ additional_lesson_2.step.name }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td><b>Special Instructions:</b></td>
+            <td>{{ student.comment }}</td>
+        </tr>
+
+    </table>
+
+<hr>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock %}

@@ -1,0 +1,662 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    .lengthofclass {
+        display: none;
+    }
+    .typeofclass {
+        display: none;
+    }
+    .step {
+        display: none;
+    }
+    .exams{
+        display: none;
+    }
+    .kids{
+        display: none;
+    }
+    .agerange {
+        display: none;
+    }
+    #additional1 {
+        display: none;
+    }
+    .step_ {
+        display: none;
+    }
+    .exams_ {
+        display: none;
+    }
+    .lesson_ {
+        display: none;
+    }
+    .kids_{
+        display: none;
+    }
+    .agerange_ {
+        display: none;
+    }
+    #academy2_message {
+        display: none;
+    }
+    #typeofclass2_message {
+        display:none;
+    }
+    #additional2 {
+        display: none;
+    }
+    .step3 {
+        display: none;
+    }
+    .exams3 {
+        display: none;
+    }
+    .lesson3 {
+        display: none;
+    }
+    .kids3 {
+        display: none;
+    }
+    .agerange3 {
+        display: none;
+    }
+    #academy3_message {
+        display: none;
+    }
+    #typeofclass3_message {
+        display:none;
+    }
+    .companyname {
+        display: none;
+    }
+    .companyname_ {
+        display: none;
+    }
+    .companyname3 {
+        display: none;
+    }
+</style>
+{% endblock %}
+{% block app_content %}
+    <h1>Edit Student: {{ student.name }}</h1>
+
+
+    <form action="" method="post" class="form" role="form" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
+
+        <dl>
+            {{ render_field(form.name, id="name", class='form-control', style="width:33%;") }}
+            {{ render_field(form.phone, id="phone", class='form-control', style="width:33%;") }}
+            {{ render_field(form.email, id="email", class='form-control', style="width:33%;") }}
+            {{ render_field(form.comment, id="comment", class='form-control', style="width:33%;") }}
+            {{ render_field(form.academy, id="academy", class='form-control', style="width:33%;") }}
+            {{ render_field(form.lengthofclass, id="lengthofclass", class='form-control lengthofclass', style="width:33%;") }}
+            {{ render_field(form.typeofclass, id="typeofclass", class='form-control typeofclass', style="width:33%;") }}
+            {{ render_field(form.step, id="step", class='form-control step', style="width:33%;") }}
+            {{ render_field(form.exams, id="exam",class='form-control exams', style="width:33%;") }}
+            {{ render_field(form.kids, id='kid', class='form-control kids', style="width:33%;") }}
+            {{ render_field(form.agerange, id='age', class='form-control kids', style="width:33%;") }}
+            {{ render_field(form.lesson, id='lesson_name', class='form-control lesson_name', style="width:33%;") }}
+            {{ render_field(form.companyname, id='companyname', class='form-control companyname', style="width:33%;") }}
+        </dl>
+        <hr>
+        <dl id="additional1">
+            <h4>Additional Class</h4>
+            {{ render_field(form2.academy_, id="academy2", class='form-control', style="width:33%;") }}
+            <div id="academy2_message" class="alert alert-danger" role="alert"></div>
+            {{ render_field(form2.lengthofclass_, id="lengthofclass2", class='form-control lengthofclass', style="width:33%;") }}
+            {{ render_field(form2.typeofclass_, id="typeofclass2", class='form-control typeofclass', style="width:33%;") }}
+            <div id="typeofclass2_message" class="alert alert-danger" role="alert"></div>
+            {{ render_field(form2.step_, id="step2", class='form-control step_', style="width:33%;") }}
+            {{ render_field(form2.exams_, id="exam2",class='form-control exams_', style="width:33%;") }}
+            {{ render_field(form2.kids_, id='kid2', class='form-control kids_', style="width:33%;") }}
+            {{ render_field(form2.agerange_, id='age2', class='form-control kids_', style="width:33%;") }}
+            {{ render_field(form2.lesson_, id='lesson_name2', class='form-control lesson_', style="width:33%;") }}
+            {{ render_field(form2.companyname_, id='companyname_', class='form-control companyname_', style="width:33%;") }}
+            
+        </dl>
+    <hr>
+    <dl id="additional2">
+        <h4>Additional Class</h4>
+        {{ render_field(form3.academy3, id="academy3", class='form-control', style="width:33%;") }}
+        <div id="academy3_message" class="alert alert-danger" role="alert"></div>
+        {{ render_field(form3.lengthofclass3, id="lengthofclass3", class='form-control lengthofclass', style="width:33%;") }}
+        {{ render_field(form3.typeofclass3, id="typeofclass3", class='form-control typeofclass', style="width:33%;") }}
+        <div id="typeofclass3_message" class="alert alert-danger" role="alert"></div>
+        {{ render_field(form3.step3, id="step3", class='form-control step3', style="width:33%;") }}
+        {{ render_field(form3.exams3, id="exam3",class='form-control exams3', style="width:33%;") }}
+        {{ render_field(form3.kids3, id='kid3', class='form-control kids3', style="width:33%;") }}
+        {{ render_field(form3.agerange3, id='age3', class='form-control kids3', style="width:33%;") }}
+        {{ render_field(form3.lesson3, id='lesson_name3', class='form-control lesson3', style="width:33%;") }}
+        {{ render_field(form3.companyname3, id='companyname3', class='form-control companyname3', style="width:33%;") }}
+            
+    </dl>
+    <span>{{ wtf.form_field(form.submit1) }}<p id="add_additional" class="btn btn-default">Add Additional Class</p> </span>
+    </form>
+    <hr>
+    
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+    // global variables
+    var type_of = null;
+    var type_of2 = null;
+    var type_of3 = null;
+    var count = 0;
+    var step_options = ['121-General English', '121-Business English', 'Group General English', 'Group Business English', 'In-Company-121', 'In-Company General English', 'In-Company Business English', 'Group Intensive'];
+    var exam_options = ['121-Exam Class', 'Group Exam']
+    var kids_options = ['121-Children', 'Group Children']
+    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ]
+
+
+    // Function for displaying options as required for original form
+    function show_options() {
+        var selected = $('#typeofclass').children("option:selected").val();
+        type_of = selected;
+        if (step_options.includes(selected)) {
+            $('.exams').hide()
+            $('.kids').hide()
+            $('.step').show('slow')
+            $('.agerange').hide()
+        } else if (exam_options.includes(selected)){
+            $('.exams').show('slow')
+            $('.kids').hide()
+            $('.step').hide()
+            $('.agerange').hide()
+        } else if (kids_options.includes(selected)){
+            $('.exams').hide()
+            $('.kids').show('slow')
+            $('.agerange').show('slow')
+            $('.step').hide()
+        }
+    }
+    // Run ajax function for original form
+    function run_ajax() {
+        $('.lesson').show('slow')
+        $('#lesson_name').show('slow')
+        if (step_options.includes(type_of) && $('#step').val() != 'None') {
+            console.log($("#lesson_name").val())
+            window.ajax_loading = true;
+            $.ajax(
+                {
+                type: 'POST',
+                url: "/get_classes",
+                data: {
+                    academy: $('#academy').val(),
+                    length_of_class: $('#lengthofclass').val(),
+                    type_of_class: $('#typeofclass').val(),
+                    step: $('#step').val()},
+                dataType: "text",
+                success: function(selectOptions){
+                    
+                    $("#lesson_name").empty();
+                    selects = JSON.parse(selectOptions)
+                    console.log(selects)
+                    if (selects.length == 0) {
+                        $("#lesson_name").append(
+                            $("<option></option>")
+                            .attr("value", 'None')
+                            .text('No classes of this type are available please create a class.'))
+                    }
+                    for (var i = 0; i < selects.length; i++){
+                        $("#lesson_name").append(
+                            $("<option></option>")
+                            .attr("value", selects[i]['lesson_id'])
+                            .text(selects[i]['lesson_name'] + ' Students: ' + selects[i]['amount_of_students'] + '/8' + ' ' + selects[i]['lesson_time']))
+                                                   
+                }
+                    }
+                    
+            });
+        
+        } else if (exam_options.includes(type_of) && $('#exam').val() != 'None'){
+
+            alert('Please select the level')
+            
+        } else if (kids_options.includes(type_of) && $('#kid').val() != 'None' || $('#age').val() != 'None'){
+
+            alert('Please select the level')
+            
+        }
+
+    }
+    // Additional Class1
+    function show_options2() {
+        var selected = $('#typeofclass2').children("option:selected").val();
+        type_of2 = selected;
+        if (step_options.includes(selected)) {
+            $('.exams_').hide()
+            $('.kids_').hide()
+            $('.step_').show('slow')
+            $('.agerange_').hide()
+        } else if (exam_options.includes(selected)){
+            $('.exams_').show('slow')
+            $('.kids_').hide()
+            $('.step_').hide()
+            $('.agerange_').hide()
+        } else if (kids_options.includes(selected)){
+            $('.exams_').hide()
+            $('.kids_').show('slow')
+            $('.agerange_').show('slow')
+            $('.step_').hide()
+        }
+    }
+    function run_ajax2() {
+        $('.lesson_').show('slow')
+        $('#lesson_name2').show('slow')
+        if (step_options.includes(type_of) && $('#step2').val() != 'None') {
+            console.log($("#lesson_name2").val())
+            window.ajax_loading = true;
+            $.ajax(
+                {
+                type: 'POST',
+                url: "/get_classes",
+                data: {
+                    academy: $('#academy2').val(),
+                    length_of_class: $('#lengthofclass2').val(),
+                    type_of_class: $('#typeofclass2').val(),
+                    step: $('#step2').val()},
+                dataType: "text",
+                success: function(selectOptions){
+                    
+                    $("#lesson_name2").empty();
+                    selects = JSON.parse(selectOptions)
+                    if (selects.length == 0) {
+                        $("#lesson_name2").append(
+                            $("<option></option>")
+                            .attr("value", 'None')
+                            .text('No classes of this type are available please create a class.'))
+                    }
+                    for (var i = 0; i < selects.length; i++){
+                        $("#lesson_name2").append(
+                            $("<option></option>")
+                            .attr("value", selects[i]['lesson_id'])
+                            .text(selects[i]['lesson_name'] + ' Students: ' + selects[i]['amount_of_students'] + '/8' + ' ' + selects[i]['lesson_time']))
+                                                   
+                }
+                    }
+                    
+            });
+        
+        } else if (exam_options.includes(type_of) && $('#exam2').val() != 'None'){
+
+            alert('Please select the level')
+            
+        } else if (kids_options.includes(type_of) && $('#kid2').val() != 'None' || $('#age2').val() != 'None'){
+
+            alert('Please select the level')
+            
+        }
+
+    }
+    // Additional Class 2
+    function show_options3() {
+        console.log('show run')
+        var selected = $('#typeofclass3').children("option:selected").val();
+        type_of3 = selected;
+        if (step_options.includes(selected)) {
+            $('.exams3').hide()
+            $('.kids3').hide()
+            $('.step3').show('slow')
+            $('.agerange3').hide()
+        } else if (exam_options.includes(selected)){
+            $('.exams3').show('slow')
+            $('.kids3').hide()
+            $('.step3').hide()
+            $('.agerange3').hide()
+        } else if (kids_options.includes(selected)){
+            $('.exams3').hide()
+            $('.kids3').show('slow')
+            $('.agerange3').show('slow')
+            $('.step3').hide()
+        }
+    }
+    function run_ajax3() {
+        $('.lesson3').show('slow')
+        $('#lesson_name3').show('slow')
+        if (step_options.includes(type_of) && $('#step3').val() != 'None') {
+            console.log($("#lesson_name3").val())
+            window.ajax_loading = true;
+            $.ajax(
+                {
+                type: 'POST',
+                url: "/get_classes",
+                data: {
+                    academy: $('#academy3').val(),
+                    length_of_class: $('#lengthofclass3').val(),
+                    type_of_class: $('#typeofclass3').val(),
+                    step: $('#step3').val()},
+                dataType: "text",
+                success: function(selectOptions){
+                    $("#lesson_name3").empty();
+                    selects = JSON.parse(selectOptions)
+                    if (selects.length == 0) {
+                        $("#lesson_name3").append(
+                            $("<option></option>")
+                            .attr("value", 'None')
+                            .text('No classes of this type are available please create a class.'))
+                    }
+                    for (var i = 0; i < selects.length; i++){
+                        $("#lesson_name3").append(
+                            $("<option></option>")
+                            .attr("value", selects[i]['lesson_id'])
+                            .text(selects[i]['lesson_name'] + ' Students: ' + selects[i]['amount_of_students'] + '/8' + ' ' + selects[i]['lesson_time']))
+                                                   
+                }
+                    }
+                    
+            });
+        
+        } else if (exam_options.includes(type_of) && $('#exam3').val() != 'None'){
+
+            alert('Please select the level')
+            
+        } else if (kids_options.includes(type_of) && $('#kid3').val() != 'None' || $('#age3').val() != 'None'){
+
+            alert('Please select the level')
+            
+        }
+
+    }
+    
+$(document).ready(function() {
+        if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $('#lengthofclass2').val() != 'None' && $("#step2").val() != 'None') {
+            $("#additional1").show('slow')
+            show_options2()
+            if ($("#lesson_name2").val() != null) {
+                $('.lesson_').show('slow')
+                $('#lesson_name2').show('slow')
+                count = 1
+            }
+            if ($("#lesson_name2").val() == null) {
+                run_ajax2()
+            }
+        }
+        if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $('#lengthofclass3').val() != 'None' && $("#step3").val() != 'None') {
+            $("#additional2").show('slow')
+            show_options3()
+            if ($("#lesson_name3").val() != null) {
+                $('.lesson3').show('slow')
+                $('#lesson_name3').show('slow')
+                count = 2
+                $("#add_additional").hide('slow')
+            }
+            if ($("#lesson_name3").val() == null) {
+                run_ajax3()
+            }
+        }
+        if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $("#step").val() != 'None') {
+            show_options()
+        }
+        if ($('#academy').val() != 'None') {
+            $('#lengthofclass').show('slow')
+            $('.lengthofclass').show('slow')
+            $('#typeofclass').show('slow')
+            $('.typeofclass').show('slow')
+        }
+        if ($('#typeofclass').val() != 'None') {
+            show_options()
+        }
+        $('#step').change(function() {
+            $('.companyname').hide('slow')
+            var selected = $('#typeofclass').children("option:selected").val();
+            if (options_121.includes(selected)) {
+                $('.lesson').hide('slow')
+                $('#lesson_name').hide('slow')
+                if (selected=='In-Company-121') {
+                    $('.companyname').show('slow')
+                }
+            }
+            else if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
+                run_ajax()
+            }
+        });
+        $('#lengthofclass').change(function() {
+            if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#step").val() != 'None') {
+                run_ajax()
+            }
+        });
+        $('#academy').change(function(){
+            $('#lengthofclass').show('slow')
+            $('.lengthofclass').show('slow')
+            $('#typeofclass').show('slow')
+            $('.typeofclass').show('slow')
+            
+            if ($('#typeofclass').val() != 'None' && $('#step').val() != 'None' && $("#lengthofclass").val() != 'None') {
+                run_ajax()
+            }
+        });
+        $('#typeofclass').change(function(){
+            show_options()
+            $('.companyname').hide('slow')
+            var selected = $(this).children("option:selected").val();
+            if (options_121.includes(selected)) {
+                $('.lesson').hide('slow')
+                $('#lesson_name').hide('slow')
+                if (selected=='In-Company-121') {
+                    $('.companyname').show('slow')
+                }
+            }
+            else if ($('#step').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
+                run_ajax()
+            }
+        });       
+    
+    // Prevent Submitting without all options selected
+    $('#submit1').click(function(event) {
+        if ($('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $('#typeofclass').val() != 'None') {
+                if (type_of == null) {
+                    alert('Please select the level')
+                    event.preventDefault()
+                } else if (step_options.includes(type_of) && $('#step').val() == 'None'){
+
+                    alert('Please select the level')
+                    event.preventDefault()
+                } else if (exam_options.includes(type_of) && $('#exam').val() == 'None'){
+
+                    alert('Please select the level')
+                    event.preventDefault()
+                } else if (kids_options.includes(type_of) && $('#kid').val() == 'None' || $('#age').val() != 'None'){
+
+                    alert('Please select the level')
+                    event.preventDefault()
+                } 
+        } else {
+            alert('Please fill out all fields')
+            event.preventDefault()
+        }
+    });
+
+
+    // Additional Forms Programming
+    $("#add_additional").click(function() {
+        count = count + 1
+        if(count == 1) {
+            $("#additional1").show('slow')
+            
+        } else if (count == 2) {
+            $("#additional2").show('slow')
+            $(this).hide('slow')
+        }
+    });
+
+    if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $('#lengthofclass2').val() != 'None' && $("#step2").val() != 'None') {
+        $("#additional1").show('slow')
+        show_options2()
+    }
+    if ($('#typeofclass2').val() != 'None') {
+        $("#additional1").show('slow')
+        show_options2()
+    }
+    $('#step2').change(function() {
+        $('.companyname_').hide('slow')
+            var selected = $('#typeofclass2').children("option:selected").val();
+            if (options_121.includes(selected)) {
+                $('.lesson_').hide('slow')
+                $('#lesson_name2').hide('slow')
+                if (selected=='In-Company-121') {
+                    $('.companyname_').show('slow')
+                }
+            }
+            else if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
+            run_ajax2()
+        }
+    });
+    $('#lengthofclass2').change(function() {
+        if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $("#step2").val() != 'None') {
+            run_ajax2()
+        }
+    });
+    $('#typeofclass2').change(function(){
+        show_options2()
+        $('#typeofclass2_message').hide()
+        $('#typeofclass2_message').html("")
+        if ($(this).children("option:selected").val() == $('#typeofclass').children("option:selected").val()) {
+            if ($('#academy').children("option:selected").val() != 'Online') {
+                if ($('#academy2').children("option:selected").val() != 'Online') {
+                    $('#typeofclass2_message').html( "<p>Don't put a student in the same type of group, unless online!</p>" );
+                    $('#typeofclass2_message').show('slow')
+                }
+            }
+        }
+
+        
+        $('.companyname_').hide('slow')
+        var selected = $(this).children("option:selected").val();
+        if (options_121.includes(selected)) {
+            $('.lesson_').hide('slow')
+            $('#lesson_name2').hide('slow')
+            if (selected=='In-Company-121') {
+                $('.companyname_').show('slow')
+            }
+        }
+        else if ($('#step2').val() != 'None' && $('#academy2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
+            run_ajax2()
+        }
+    });  
+    $('#academy2').change(function(){
+        $('#academy2_message').hide()
+        $('#academy2_message').html("")
+        if ($(this).children("option:selected").val() != $('#academy').children("option:selected").val()) {
+            if ($('#academy').children("option:selected").val() != 'Online') {
+                if ($(this).children("option:selected").val() != 'Online') {
+                    $('#academy2_message').html( "<p>A student cannot be in two academies at once, unless one is online!</p>" );
+                    $('#academy2_message').show('slow')
+                }
+            }
+        }
+    });
+        
+    if ($('#typeofclass2').val() != 'None' && $('#step2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
+        $("#additional1").show('slow')    
+        show_options2()
+            if ($("#lesson_name2").val() == null) {
+                run_ajax2()
+            }           
+        }
+        
+        
+    if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $('#lengthofclass3').val() != 'None' && $("#step3").val() != 'None') {
+        $("#additional2").show('slow')
+        show_options3()
+    }
+    if ($('#typeofclass3').val() != 'None') {
+        $("#additional2").show('slow')
+
+        show_options3()
+    }
+
+    $('#step3').change(function() {
+    
+        $('.companyname3').hide('slow')
+        var selected = $('#typeofclass3').children("option:selected").val();
+        if (options_121.includes(selected)) {
+            $('.lesson3').hide('slow')
+            $('#lesson_name3').hide('slow')
+            if (selected=='In-Company-121') {
+                $('.companyname3').show('slow')
+            }
+        }
+        else if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
+            run_ajax3()
+        }
+    });
+    $('#lengthofclass3').change(function() {
+        console.log('length pressed')
+        show_options3()
+        if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $("#step3").val() != 'None') {
+            run_ajax3()
+        }
+    });
+    
+    $('#typeofclass3').change(function(){
+        console.log('typeof pressed')
+        show_options3()
+        $('#typeofclass3_message').hide();
+        $('#typeofclass3_message').html("");
+        if ($(this).children("option:selected").val() == $('#typeofclass').children("option:selected").val()) {
+            if ($('#academy').children("option:selected").val() != 'Online') {
+                if ($('#academy3').children("option:selected").val() != 'Online') {
+                    $('#typeofclass3_message').html( "<p>Don't put a student in the same type of group, unless online!</p>" );
+                    $('#typeofclass3_message').show('slow');
+                }
+            }
+            if ($('#academy2').children("option:selected").val() != $('#academy').children("option:selected").val() && $('#academy3').children("option:selected").val() != $('#academy2').children("option:selected").val()) {
+                $('#academy3_message').html( "<p>A student cannot be in three academies at once!</p>" );
+                $('#academy3_message').show('slow');
+            }
+        }
+        $('.companyname3').hide('slow')
+        var selected = $(this).children("option:selected").val();
+        if (options_121.includes(selected)) {
+            $('.lesson3').hide('slow')
+            $('#lesson_name3').hide('slow')
+            if (selected=='In-Company-121') {
+                $('.companyname3').show('slow')
+            }
+        }
+        else if ($('#step3').val() != 'None' && $('#academy3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
+            run_ajax3()
+        }
+    });
+    
+      
+    $('#academy3').change(function(){
+        $('#academy3_message').hide()
+        $('#academy3_message').html("")
+        if ($(this).children("option:selected").val() != $('#academy').children("option:selected").val()) {
+            if ($('#academy').children("option:selected").val() != 'Online') {
+                if ($(this).children("option:selected").val() != 'Online') {
+                    $('#academy3_message').html( "<p>A student cannot be in two academies at once, unless one is online!</p>" );
+                    $('#academy3_message').show('slow')
+                }
+            }
+            if ($('#academy2').children("option:selected").val() != $('#academy').children("option:selected").val() && $('#academy3').children("option:selected").val() != $('#academy2').children("option:selected").val()) {
+                $('#academy3_message').html( "<p>A student cannot be in three academies at once!</p>" );
+                $('#academy3_message').show('slow')
+            }
+        }
+    });
+        
+    if ($('#typeofclass3').val() != 'None' && $('#step3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
+        $("#additional2").show('slow')
+        show_options3()
+        if ($("#lesson_name3").val() == null) {
+                run_ajax3()
+        }           
+    }
+    
+});
+</script>
+
+{% endblock %}
