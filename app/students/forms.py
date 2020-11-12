@@ -130,8 +130,6 @@ class CreateStudentForm(FlaskForm):
 
     def validate_company(self, companyname):
         ''' Check that the class name entered isn't in use at the academy. '''
-
-        
         options_IC = [
             'In-Company-121'
         ]
@@ -242,9 +240,9 @@ class EditStudentForm(FlaskForm):
         ('7-8', '7-8'),
         ('9-10', '9-10'),
         ('11-12', '11-12')], default=None)
-    lesson = SelectField('Class', validators=[DataRequired()], choices=[], validate_choice=False)
+    lesson = SelectField('Class', choices=[], validate_choice=False)
     companyname = StringField('Company Name')
-    submit1 = SubmitField('Edit Student')
+    submit = SubmitField('Edit Student')
 
     def __init__(self, obj, *args, **kwargs):
         self.student = int(obj)
@@ -288,7 +286,7 @@ class EditStudentForm(FlaskForm):
 
 class AdditionalClassForm(FlaskForm):
 
-    academy_ = SelectField('Academy', validators=[DataRequired()], choices=[
+    academy = SelectField('Academy', id="academy2", validators=[DataRequired()], choices=[
         (None , '--'),
         ('Alonso Martínez','Alonso Martínez'),
         ('Argüelles','Argüelles'),
@@ -299,7 +297,7 @@ class AdditionalClassForm(FlaskForm):
         ('Online', 'Online'),
         ('Rambla Catalunya','Rambla Catalunya'),
         ('San Miguel','San Miguel')], default=None)
-    lengthofclass_ = SelectField('Length of class', validators=[DataRequired()], choices=[
+    lengthofclass = SelectField('Length of class', id="lengthofclass2", validators=[DataRequired()], choices=[
         (None , '--'),
         ('30 Minutes', '30 Minutes'),
         ('1 Hour', '1 Hour'),
@@ -307,7 +305,7 @@ class AdditionalClassForm(FlaskForm):
         ('2 Hours', '2 Hours'),
         ('2,5 Hours', '2,5 Hours'),
         ('3 Hours', '3 Hours')], default=None)
-    typeofclass_ = SelectField('Type Of Class', validators=[DataRequired()], choices=[
+    typeofclass = SelectField('Type Of Class', id="typeofclass2", validators=[DataRequired()], choices=[
         (None , '--'),
         ('121-General English', '121-General English'),
         ('121-Exam Class', '121-Exam Class'),
@@ -321,7 +319,7 @@ class AdditionalClassForm(FlaskForm):
         ('In-Company-121', 'In-Company-121'),
         ('In-Company General English', 'In-Company General English'),
         ('In-Company Business English', 'In-Company Business English')], default=None)
-    step_ = SelectField('Step', choices=[
+    step = SelectField('Step', id="step2", choices=[
         (None , '--'),
         ('1', 'Step 1'),
         ('2', 'Step 2'),
@@ -339,7 +337,7 @@ class AdditionalClassForm(FlaskForm):
         ('14', 'Step 14'),
         ('15', 'Step 15'),
         ('16', 'Step 16')], default=None)
-    exams_ = SelectField('Exam Level', choices=[
+    exams = SelectField('Exam Level', id="exam2", choices=[
         (None , '--'),
         ('Cambridge E3', 'Cambridge E3'),
         ('Cambridge E4', 'Cambridge E4'),
@@ -357,7 +355,7 @@ class AdditionalClassForm(FlaskForm):
         ('IELTS B2', 'IELTS B2'),
         ('IELTS C1', 'IELTS C1'),
         ('IELTS C2', 'IELTS C2')], default=None)
-    kids_ = SelectField('Children Level', choices=[
+    kids = SelectField('Children Level',  id='kid2', choices=[
         (None , '--'),
         ('Red', 'Red'),
         ('Blue', 'Blue'),
@@ -367,7 +365,7 @@ class AdditionalClassForm(FlaskForm):
         ('Green', 'Green'),
         ('Violet', 'Violet'),
         ('Turquoise', 'Turquoise')], default=None)
-    agerange_ = SelectField('Children Class Age Range', choices=[
+    agerange = SelectField('Children Class Age Range', id='agerange2', choices=[
         (None , '--'),
         ('3-4', '3-4'),
         ('5-6', '5-6'),
@@ -375,8 +373,9 @@ class AdditionalClassForm(FlaskForm):
         ('7-8', '7-8'),
         ('9-10', '9-10'),
         ('11-12', '11-12')], default=None)
-    lesson_ = SelectField('Class', validators=[DataRequired()], choices=[], validate_choice=False)
+    lesson_ = SelectField('Class', choices=[], validate_choice=False)
     companyname_ = StringField('Company Name')
+    submit = SubmitField('Submit Additional Class')
     
     def validate_company(self, companyname_):
         ''' Check that the class name entered isn't in use at the academy. '''
@@ -391,7 +390,7 @@ class AdditionalClassForm(FlaskForm):
 
 class AdditionalClassForm2(FlaskForm):
 
-    academy3 = SelectField('Academy', validators=[DataRequired()], choices=[
+    academy = SelectField('Academy', id="academy3", validators=[DataRequired()], choices=[
         (None , '--'),
         ('Alonso Martínez','Alonso Martínez'),
         ('Argüelles','Argüelles'),
@@ -402,7 +401,7 @@ class AdditionalClassForm2(FlaskForm):
         ('Online', 'Online'),
         ('Rambla Catalunya','Rambla Catalunya'),
         ('San Miguel','San Miguel')], default=None)
-    lengthofclass3 = SelectField('Length of class', validators=[DataRequired()], choices=[
+    lengthofclass = SelectField('Length of class', id="lengthofclass3", validators=[DataRequired()], choices=[
         (None , '--'),
         ('30 Minutes', '30 Minutes'),
         ('1 Hour', '1 Hour'),
@@ -410,7 +409,7 @@ class AdditionalClassForm2(FlaskForm):
         ('2 Hours', '2 Hours'),
         ('2,5 Hours', '2,5 Hours'),
         ('3 Hours', '3 Hours')], default=None)
-    typeofclass3 = SelectField('Type Of Class', validators=[DataRequired()], choices=[
+    typeofclass = SelectField('Type Of Class', id="typeofclass3", validators=[DataRequired()], choices=[
         (None , '--'),
         ('121-General English', '121-General English'),
         ('121-Exam Class', '121-Exam Class'),
@@ -424,7 +423,7 @@ class AdditionalClassForm2(FlaskForm):
         ('In-Company-121', 'In-Company-121'),
         ('In-Company General English', 'In-Company General English'),
         ('In-Company Business English', 'In-Company Business English')], default=None)
-    step3 = SelectField('Step', choices=[
+    step = SelectField('Step', id="step3", choices=[
         (None , '--'),
         ('1', 'Step 1'),
         ('2', 'Step 2'),
@@ -442,7 +441,7 @@ class AdditionalClassForm2(FlaskForm):
         ('14', 'Step 14'),
         ('15', 'Step 15'),
         ('16', 'Step 16')], default=None)
-    exams3 = SelectField('Exam Level', choices=[
+    exams = SelectField('Exam Level', id="exam3", choices=[
         (None , '--'),
         ('Cambridge E3', 'Cambridge E3'),
         ('Cambridge E4', 'Cambridge E4'),
@@ -460,7 +459,7 @@ class AdditionalClassForm2(FlaskForm):
         ('IELTS B2', 'IELTS B2'),
         ('IELTS C1', 'IELTS C1'),
         ('IELTS C2', 'IELTS C2')], default=None)
-    kids3 = SelectField('Children Level', choices=[
+    kids = SelectField('Children Level', id="kid3",choices=[
         (None , '--'),
         ('Red', 'Red'),
         ('Blue', 'Blue'),
@@ -470,7 +469,7 @@ class AdditionalClassForm2(FlaskForm):
         ('Green', 'Green'),
         ('Violet', 'Violet'),
         ('Turquoise', 'Turquoise')], default=None)
-    agerange3 = SelectField('Children Class Age Range', choices=[
+    agerange = SelectField('Children Class Age Range', id="agerange3", choices=[
         (None , '--'),
         ('3-4', '3-4'),
         ('5-6', '5-6'),
@@ -478,8 +477,9 @@ class AdditionalClassForm2(FlaskForm):
         ('7-8', '7-8'),
         ('9-10', '9-10'),
         ('11-12', '11-12')], default=None)
-    lesson3 = SelectField('Class', validators=[DataRequired()], choices=[], validate_choice=False)
+    lesson3 = SelectField('Class', choices=[], validate_choice=False)
     companyname3 = StringField('Company Name')
+    submit = SubmitField('Submit Additional Class')
     
 
     def validate_company(self, companyname3):

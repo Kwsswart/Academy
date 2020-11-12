@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th scope="col">Class Number</th>
+            <th scope="col">Date</th>
             <th scope="col">Teacher</th>
             <th scope="col">Lesson Number</th>
             <th scope="col">Last Page</th>
@@ -14,6 +15,7 @@
         {% for actual in actual_progress %}
         <tr>
             <th scope="row">{{ actual.class_number }}</th>
+            <td>{{ moment(actual.datetime).format('LLL') }}</td>
             <td>
                 {% for user in users %}
                     {% if user.id == actual.user_id %}

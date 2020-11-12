@@ -27,22 +27,15 @@
          
         </td>
     </tr>
-    <tr>
-        
-        <td>
-            <p><a href="{{ url_for('staff.upload_file', name=user.name) }}" class="btn btn-default">Upload Avatar</a></p>
-        </td>
-        {% if user.name != current_user.name %}
-        <td><p><a href="{{ url_for('staff.email_user', name=user.name) }}" class="btn btn-default">Send E-mail</a></p></td>
-        {% endif %}
-        {% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
-        <td>
-            <p><a href="{{ url_for('staff.edit_user', name=user.name) }}" class="btn btn-default">Edit Profile</a>      <a href="{{ url_for('staff.remove_user', name=user.name) }}" class="btn btn-default">Remove user</a></p>
-            
-        </td>
-        {% endif %}
-    </tr>
 </table> 
+<p><a href="{{ url_for('staff.upload_file', name=user.name) }}" class="btn btn-default">Upload Avatar</a>
+{% if user.name != current_user.name %}
+<a href="{{ url_for('staff.email_user', name=user.name) }}" class="btn btn-default">Send E-mail</a>
+<a href="" class="btn btn-default">Send Private Message</a>
+{% endif %}
+{% if current_user.position == 'Management' or current_user.position == 'Upper Management' or current_user.is_master() %}
+<a href="{{ url_for('staff.edit_user', name=user.name) }}" class="btn btn-default">Edit Profile</a>      <a href="{{ url_for('staff.remove_user', name=user.name) }}" class="btn btn-default">Remove user</a></p>
+{% endif %}
 <hr>
 
 {% endblock %}

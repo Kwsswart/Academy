@@ -38,11 +38,22 @@ def edit_user(name):
     user = User.query.filter_by(name=name).first()
     academy = Academy.query.filter_by(id=user.academy_id).first()
     trained = TrainedIn.query.filter_by(teacher=user.id).all()
+
+    if user.position == "Upper Management" or user.is_master():
+        if not current_user.is_master() and current_user.position != "Upper Management":
+            flash("You don't have permissions to edit Upper Management.")
+            return redirect(url_for('staff.user', name=name))
     
     form = EditProfileForm(obj=user.id)
 
-    if form.validate_on_submit():
+    position = current_user.position
+    position_edit = user.position
 
+    if current_user.is_master():
+        position = 'Master'
+
+    if form.validate_on_submit():
+        #sort positions
         if dict(form.position.choices).get(form.position.data) == "Upper Management":
             if not current_user.is_master() and current_user.position != "Upper Management":
                 flash("You don't have permissions to set Upper Management.")
@@ -69,10 +80,10 @@ def edit_user(name):
             send_confirmation_email(form.email.data)
             flash('Please check given email to confirm the email address.', 'success')
             db.session.commit()
-
-        if user.position != form.position.data and not user.is_master:
+        
+        if user.position != form.position.data:
             permission_old = PermissionGroups.query.filter_by(group_name=user.position).first()
-            permission_new = PermissionGroups(group_name=dict(form.position.choices).get(form.position.data))
+            permission_new = PermissionGroups.query.filter_by(group_name=form.position.data).first()
             user.remove_access(permission_old)
             user.add_access(permission_new)
             user.position = form.position.data  
@@ -107,7 +118,7 @@ def edit_user(name):
         form.academy.data = academy.name
         form.trained.data = [t.name for t in trained] 
         
-    return render_template('staff/edit_user.html', title='Edit User',user=user, form=form)
+    return render_template('staff/edit_user.html', title='Edit User',user=user, form=form, position=position, position_edit=position_edit)
 
 
 @bp.route('/remove_user/<name>', methods=['GET', 'POST']) 
@@ -177,8 +188,9 @@ def upload_file(name):
         if uploaded_file.filename != '':
             file_ext = os.path.splitext(filename)[1]
             uploaded_file.save(os.path.join(current_app.config['UPLOAD_PATH'] + 'avatars' , str(user.id) + file_ext))
+            flash('Upload Successful')
 
-        return redirect(url_for('staff.upload_file', name=user.name))
+        return redirect(url_for('staff.user', name=user.name))
 
     return render_template('staff/upload.html', title='Upload Avatar', form=form, user=user, files=files)
 
@@ -216,7 +228,7 @@ def view_staff(academy):
     if academy == 'all':
         page = request.args.get('page', 1, type=int)
         academy = Academy.query.all()
-        users = User.query.group_by(User.position).order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        users = User.query.order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
         next_url = url_for('staff.view_staff', academy='all', page=users.next_num) \
         if users.has_next else None
         prev_url = url_for('staff.view_staff', academy='all', page=users.prev_num) \
@@ -225,7 +237,7 @@ def view_staff(academy):
     else: 
         page = request.args.get('page', 1, type=int)
         academy = Academy.query.filter_by(name=academy).first()
-        users = User.query.filter_by(academy_id=academy.id).group_by(User.position).order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        users = User.query.filter_by(academy_id=academy.id).order_by(User.academy_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
         next_url = url_for('staff.view_staff', academy=academy.name, page=users.next_num) \
         if users.has_next else None
         prev_url = url_for('staff.view_staff', academy=academy.name, page=users.prev_num) \

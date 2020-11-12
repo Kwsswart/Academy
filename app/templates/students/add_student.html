@@ -38,7 +38,7 @@
     <h1>Add Student</h1>
 
 
-    <form action="" method="post" class="form" role="form" novalidate>
+    <form id="form" action="" method="post" class="form" role="form" novalidate>
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
 
@@ -100,32 +100,31 @@
     function run_ajax() {
         $('.lesson').show('slow')
         $('#lesson_name').show('slow')
+        
         if (step_options.includes(type_of) && $('#step').val() != 'None') {
-            
-            window.ajax_loading = true;
             $.ajax(
                 {
                 type: 'POST',
                 url: "/get_classes",
-                data: {
-                    academy: $('#academy').val(),
-                    length_of_class: $('#lengthofclass').val(),
-                    type_of_class: $('#typeofclass').val(),
-                    step: $('#step').val()},
-                dataType: "text",
+                data: $('#form').serialize(),
+                context: form,
                 success: function(selectOptions){
                     
                     $("#lesson_name").empty();
-                    selects = JSON.parse(selectOptions)
-                    for (var i = 0; i < selects.length; i++){
+                    if (selectOptions.length == 0) {
                         $("#lesson_name").append(
                             $("<option></option>")
-                            .attr("value", selects[i]['lesson_id'])
-                            .text(selects[i]['lesson_name'] + ' Students: ' + selects[i]['amount_of_students'] + '/8' + ' ' + selects[i]['lesson_time']))
-                                                   
-                }
+                            .attr("value", 'None')
+                            .text('No classes of this type are available please create a class.'))
                     }
-                    
+                    for (var i = 0; i < selectOptions.length; i++){
+                        $("#lesson_name").append(
+                            $("<option></option>")
+                            .attr("value", selectOptions[i]['lesson_id'])
+                            .text(selectOptions[i]['lesson_name'] + ' Students: ' + selectOptions[i]['amount_of_students'] + '/8' + ' ' + selectOptions[i]['lesson_time']))
+                                                   
+                    }
+                }          
             });
         
         } else if (exam_options.includes(type_of) && $('#exam').val() != 'None'){
@@ -157,9 +156,6 @@
         if ($('#typeofclass').val() != 'None') {
             show_options()
         }
-
-
-        
         $('#step').change(function() {
             $('.companyname').hide('slow')
             var selected = $('#typeofclass').children("option:selected").val();

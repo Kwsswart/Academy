@@ -85,23 +85,29 @@
             $('.step').hide()
         }
     }
-    
+
+    function get_lessons(step) {
+        var lesson = step * 10 - 9
+        $("#startat").empty();
+        for (var i = 0;i < 10; i++) {
+           
+            $("#startat").append(
+                $("<option></option>")
+                .attr("value", lesson)
+                .text(lesson))
+            lesson = lesson + 1
+
+        }
+    }
 $(document).ready(function(){
     show_options()
-    var start = $('#step').val() * 10 - 9
-    $('#startat').val(start)
-    
+    get_lessons($('#step').val())
+      
     
     $('#step').change(function(){
         var selected = $(this).children("option:selected").val();
-        console.log(selected)
-        if (selected == 1) {
-            $('#startat').val(1)
-        } else {
-            var value = selected * 10 - 9
-            console.log(value)
-            $('#startat').val(value)
-        }        
+        get_lessons(selected)
+             
     });
     $('#typeofclass').change(function() {
         show_options()

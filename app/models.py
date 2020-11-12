@@ -19,13 +19,11 @@ def load_user(id):
 user_permissions = db.Table('user_permissions',
                             db.Column('user_id',
                                     db.Integer,
-                                    db.ForeignKey('user.id',
-                                                ondelete='CASCADE'),
+                                    db.ForeignKey('user.id'),
                                     index=True),
                             db.Column('permission_id',
                                     db.Integer,
-                                    db.ForeignKey('permission_groups.id',
-                                                ondelete='CASCADE'),
+                                    db.ForeignKey('permission_groups.id'),
                                     index=True)
                             )
 
@@ -74,6 +72,8 @@ class User(UserMixin, db.Model):
     student = db.relationship('Student', backref='teacher', lazy='dynamic')
     class121 = db.relationship('Class121', backref='teacher', lazy='dynamic')
     step_actual = db.relationship('StepActualProgress', backref='teacher', lazy='dynamic')
+    step_marks = db.relationship('StepMarks', backref='teacher', lazy='dynamic')
+    custom_insert = db.relationship('CustomInsert', backref='teacher', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}, {}, {}, {}, {} >'.format(self.username, self.name, self.phone, self.email, self.position)
@@ -98,6 +98,7 @@ class User(UserMixin, db.Model):
 
     def has_auth_access(self, access_group):
         """ Check if user is a member of one of the required access groups """
+        
         
         return self.access_groups.filter(
                                 user_permissions.c.permission_id == access_group.id
@@ -188,6 +189,8 @@ def check_user_group(required_groups):
                                     .first())
     if master_group in current_user.access_groups:
         return True
+        
+        
     access = [current_user.has_auth_access(PermissionGroups.query.filter_by(
                                                             group_name=group).first())
             for group in required_groups]
@@ -237,6 +240,8 @@ class Lessons(db.Model):
 
     days_done = db.relationship('DaysDone', backref='DaysDone', lazy='dynamic')
     student = db.relationship('Student', backref='lessons', lazy='dynamic')
+    step_marks = db.relationship('StepMarks', backref='lessons', lazy='dynamic')
+    custom_insert = db.relationship('CustomInsert', backref='lessons', lazy='dynamic')
 
     
 
@@ -262,6 +267,7 @@ class Student(db.Model):
     phone = db.Column(db.String(20), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     days_missed = db.Column(db.Integer)
+    mark_average = db.Column(db.Integer)
     comment = db.Column(db.String(500))
 
     # relationship
@@ -353,8 +359,11 @@ class StepMarks(db.Model):
     end_of_step_writing = db.Column(db.Integer)
     end_of_step_speaking = db.Column(db.Integer)
     comment = db.Column(db.String(500))
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lessons.id'))
     
     def __repr__(self):
         return '<Mark: {}, end_of_step_writing: {}, end_of_step_speaking: {} >'.format(self.mark, self.end_of_step_writing, self.end_of_step_speaking)
@@ -452,3 +461,17 @@ class StepActualProgress(db.Model):
 
     def __repr__(self):
         return '<Class: {}, {}, {}, {}, {}, {}, {}>'.format(self.class_number, self.lesson_number, self.last_page, self.last_word, self.exercises, self.datetime, self.comment)
+
+
+class CustomInsert(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    message = db.Column(db.String(1000))
+    exercises = db.Column(db.String(100))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lessons.id'))
+
+
+    def __repr__(self):
+        return '<Custom= message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+    <h1>Insert Custom: {{ lesson.name }}</h1>
+
+    <table class='table' style="max-width: 100%;">
+        <thead>
+            <tr>
+              <th scope="col" style="max-width: 60%;">Message</th>
+              <th scope="col" style="min-width: 40%;">Exercises</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action="" method="post" class="form" role="form" novalidate>
+                {{ form.hidden_tag() }}
+                {{ form.csrf_token() }}
+            <tr>
+                <th scope="row" style="max-width: 60%;">
+                   {{ wtf.form_field(form.message) }}    
+                </th>
+                <td style="min-width: 40%;"> 
+                  {{ wtf.form_field(form.exercises) }}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ wtf.form_field(form.submit) }}</td>
+            </tr>
+            </form>
+          </tbody>
+
+    </table>
+
+{% endblock %}

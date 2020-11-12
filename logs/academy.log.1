@@ -14,13 +14,10 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 124, in student_profile
-    if lessons2.typeofclass.name == 'Group General English':
-NameError: name 'lessons2' is not defined
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 183, in view_class
+    if int(update_form.lesson_number.data) < int(expected_progress.lesson_number) - 1:
+ValueError: invalid literal for int() with base 10: ''
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -37,10 +34,10 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 120, in student_profile
-    print(additional_lesson_1.TypeOfClass.name)
-AttributeError: 'NoneType' object has no attribute 'TypeOfClass'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 184, in view_class
+    if int(update_form.lesson_number.data) < expected_progress.lesson_number - 1:
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -57,10 +54,10 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 120, in student_profile
-    print(additional_lesson_1.typeofclass.name)
-AttributeError: 'NoneType' object has no attribute 'typeofclass'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 209, in view_class
+    lp_upper = expected_progress.last_page + 15
+TypeError: can only concatenate str (not "int") to str
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -77,22 +74,10 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 120, in student_profile
-    print(lesson.typeofclass.name)
-AttributeError: 'Lessons' object has no attribute 'typeofclass'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 209, in view_class
+    lp_upper = expected_progress.last_page + 15
+TypeError: can only concatenate str (not "int") to str
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -109,35 +94,28 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 209, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 250, in edit_student
-    student.class_id = new_lesson.id
-AttributeError: 'NoneType' object has no attribute 'id'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:89]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 223, in view_class
+    if int(update_form.last_page.data) >= previous_expected.last_page - 10:
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 224, in view_class
+    if int(update_form.last_page.data) >= previous_expected.last_page - 10:
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]

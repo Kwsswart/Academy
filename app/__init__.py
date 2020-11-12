@@ -9,6 +9,8 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
+from flask_moment import Moment
 
 
 
@@ -20,6 +22,8 @@ login.login_message = 'Please log in to access this page.'
 bootstrap = Bootstrap()
 dropzone = Dropzone()
 mail = Mail()
+csrf = CSRFProtect()
+moment = Moment()
  
 
 def create_app(config_class=Config):
@@ -34,6 +38,8 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     dropzone.init_app(app)
     mail.init_app(app)
+    csrf.init_app(app)
+    moment.init_app(app)
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)

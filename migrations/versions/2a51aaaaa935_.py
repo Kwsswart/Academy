@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b880b44f8363
+Revision ID: 2a51aaaaa935
 Revises: 
-Create Date: 2020-10-26 14:11:32.768002
+Create Date: 2020-11-04 17:28:53.424326
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b880b44f8363'
+revision = '2a51aaaaa935'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -183,8 +183,8 @@ def upgrade():
     op.create_table('user_permissions',
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('permission_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['permission_id'], ['permission_groups.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE')
+    sa.ForeignKeyConstraint(['permission_id'], ['permission_groups.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], )
     )
     op.create_index(op.f('ix_user_permissions_permission_id'), 'user_permissions', ['permission_id'], unique=False)
     op.create_index(op.f('ix_user_permissions_user_id'), 'user_permissions', ['user_id'], unique=False)
@@ -201,6 +201,7 @@ def upgrade():
     sa.Column('phone', sa.String(length=20), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('days_missed', sa.Integer(), nullable=True),
+    sa.Column('mark_average', sa.Integer(), nullable=True),
     sa.Column('comment', sa.String(length=500), nullable=True),
     sa.Column('student_on_class', sa.Integer(), nullable=True),
     sa.Column('student_on_class2', sa.Integer(), nullable=True),
@@ -225,8 +226,13 @@ def upgrade():
     sa.Column('end_of_step_writing', sa.Integer(), nullable=True),
     sa.Column('end_of_step_speaking', sa.Integer(), nullable=True),
     sa.Column('comment', sa.String(length=500), nullable=True),
+    sa.Column('datetime', sa.DateTime(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('student_id', sa.Integer(), nullable=True),
+    sa.Column('lesson_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['lesson_id'], ['lessons.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

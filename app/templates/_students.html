@@ -1,7 +1,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
-{% from "_formhelpers.html" import render_field %}
+{% from "_attendancehelper.html" import render_field %}
 
-<table class='table'>
+<table class='table table-hover'>
     <thead>
         <tr>
             <th scope="col">Name</th>
@@ -13,35 +13,29 @@
         </tr>
       </thead>
       <tbody>
-        {% for student in students %}
-        {% if student.class_id == lesson.id %}
+        {% for i in range(studentcount) %}
+        
         <tr>
-            <th scope="row">{{ student.name }}</th>
+            <th scope="row">
+                <a href="{{ url_for('students.student_profile', name=students[i].name, academy=academy.name) }}" class="btn btn-default">{{ students[i].name }}</a>
+            </th>
             <td>
                 mark calculation 
             </td>
-            <td>{{ student.days_missed }}</td>
-            <td>{{ render_field(attendance.attended, id="attended-" + student.id , class='form-control', style="width:5%;") }}</td>
+            <td>{{ students[i].days_missed }}</td>
+            <td>{{ render_field(forms[i].attended, id="attended" + i|string, class='form-control') }}</td>
             <td>
-                {{ render_field(attendance.score, id="score-" +  student.id , class='form-control', style="width:5%;") }}
-                {% if expected_progress.last_word == 'END OF STEP EXAM' %}
-                {{ render_field(attendance.writing, id="writing-" +  student.id , class='form-control', style="width:5%;") }}
-                {{ render_field(attendance.speaking, id="speaking-" +  student.id , class='form-control', style="width:5%;") }}
+                {{ render_field(forms[i].score, id="score" + i|string , class='form-control', style="width:70%;") }}
+                {% if expected.last_word == 'END OF STEP EXAM' %}
+                {{ render_field(forms[i].writing, id="writing" + i|string, class='form-control') }}
+                {{ render_field(forms[i].speaking, id="speaking" + i|string, class='form-control') }}
                 {% endif %}
                 
             </td>
-            <td><a href="">Report Problem.</a></td> <!--Implement email sending student details with email-->
+            <td><a href="" class="btn btn-default">Report Problem.</a></td> <!--Implement email sending student details with email-->
         </tr>
-        {% endif %}
+        
         {% endfor %}
-        <tr>
-            <td>{{ wtf.form_field(attendance.submit) }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
       </tbody>
 
 </table>

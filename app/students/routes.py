@@ -9,7 +9,7 @@ from app import  db
 from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker, Studentonclass, Studentonclass2
 from app.students import bp
 from app.students.forms import CreateStudentForm, RemoveStudentForm, EditStudentForm, AdditionalClassForm, AdditionalClassForm2
-
+from app.students.helpers import get_name
 
 
 @bp.route('/add_student', methods=['GET', 'POST'])
@@ -18,7 +18,6 @@ from app.students.forms import CreateStudentForm, RemoveStudentForm, EditStudent
 def add_student():
 
     form = CreateStudentForm()
-
 
     if form.validate_on_submit():
         
@@ -39,15 +38,14 @@ def add_student():
             '121-Business English',
             '121-Children', 
             'In-Company-121']
-
         
         type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
 
         if type_of_class.name == 'Group General English':
-
+            
             lesson = Lessons.query.filter_by(id=form.lesson.data).first()
             step = Step.query.filter_by(name=form.step.data).first()
-
+        
             student = Student(
                 name = form.name.data,
                 phone = form.phone.data,
@@ -66,40 +64,77 @@ def add_student():
             
             flash('Student Added')
             return redirect(url_for('students.student_profile', academy=academy.name, name=student.name))
-               
+
+        elif form.typeofclass.data in options_121:
+            # Create 121 class here
+            lesson_name = get_name(name= form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname.data)
+        
     return render_template('students/add_student.html', title="Add Students", form=form)
 
 # AJAX
 @bp.route('/get_classes', methods=['POST'])
-@login_required
 def get_classes():
- 
-    academy = Academy.query.filter_by(name=request.form.get('academy')).first()
-    length_of = LengthOfClass.query.filter_by(name=request.form.get('length_of_class')).first()
-    type_of_class = TypeOfClass.query.filter_by(name=request.form.get('type_of_class')).first()
-    step = Step.query.filter_by(name=request.form.get('step')).first()
-
-    choices = []
-
-    if request.form.get('type_of_class') == 'Group General English':
-
-        lessons = Lessons.query.filter_by(academy_id=academy.id)\
-            .filter_by(length_of_class=length_of.id)\
-            .filter_by(type_of_class=type_of_class.id)\
-            .filter_by(step_id=step.id).all()
-        
-        for i in lessons:
-            if i.amount_of_students < 8:
-                    
-                choice_final = {
-                    'lesson_id': i.id,
-                    'lesson_name': i.name,
-                    'amount_of_students': i.amount_of_students,
-                    'lesson_time': i.time
-                }
-                choices.append(choice_final)
-
+    form = CreateStudentForm()
     
+    if form.submit():
+        academy = Academy.query.filter_by(name=form.academy.data).first()
+        length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+        type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+        step = Step.query.filter_by(name=form.step.data).first()
+
+        choices = []
+        if form.typeofclass.data == 'Group General English':
+
+            lessons = Lessons.query.filter_by(academy_id=academy.id)\
+                .filter_by(length_of_class=length_of.id)\
+                .filter_by(type_of_class=type_of_class.id)\
+                .filter_by(step_id=step.id).all()
+        
+            for i in lessons:
+                if i.amount_of_students < 8:
+                   
+                    choice_final = {
+                        'lesson_id': i.id,
+                        'lesson_name': i.name,
+                        'amount_of_students': i.amount_of_students,
+                        'lesson_time': i.time
+                    }
+                    choices.append(choice_final)
+        
+            # return none so that can display message   
+    return jsonify(choices) 
+
+@bp.route('/get_classes_edit/<student>', methods=['POST'])
+def get_classes_edit(student):
+    
+    student = Student.query.filter_by(id=student).first()
+    form = EditStudentForm(obj=student.id)
+    
+    if form.submit():
+        academy = Academy.query.filter_by(name=form.academy.data).first()
+        length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+        type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+        step = Step.query.filter_by(name=form.step.data).first()
+
+        choices = []
+        if form.typeofclass.data == 'Group General English':
+
+            lessons = Lessons.query.filter_by(academy_id=academy.id)\
+                .filter_by(length_of_class=length_of.id)\
+                .filter_by(type_of_class=type_of_class.id)\
+                .filter_by(step_id=step.id).all()
+        
+            for i in lessons:
+                if i.amount_of_students < 8:
+                    choice_final = {
+                        'lesson_id': i.id,
+                        'lesson_name': i.name,
+                        'amount_of_students': i.amount_of_students,
+                        'lesson_time': i.time
+                    }
+                    choices.append(choice_final)
+        
+            # return none so that can display message   
     return jsonify(choices) 
 
 
@@ -211,7 +246,7 @@ def remove_student(name, academy):
 
 @bp.route('/edit_student/<academy>/<name>', methods=['GET','POST'])
 @login_required
-@group_required(['Master', 'Upper Management', 'Management'])
+@group_required(['Master', 'Upper Management', 'Management', 'Admin'])
 def edit_student(name, academy):
 
     academy = Academy.query.filter_by(name=academy).first()
@@ -219,206 +254,372 @@ def edit_student(name, academy):
     current_lesson = Lessons.query.filter_by(id=student.class_id).first()
     length_of_class = LengthOfClass.query.filter_by(id=current_lesson.length_of_class).first()
     type_of_class = TypeOfClass.query.filter_by(id=current_lesson.type_of_class).first()
-
-    options_121 =[
-            '121-General English',
-            '121-Exam Class',
-            '121-Business English',
-            '121-Children', 
-            'In-Company-121']
-
+    options_121 =['121-General English', '121-Exam Class', '121-Business English', '121-Children', 'In-Company-121']
     step = None
-    if type_of_class.name == 'Group General English':
-        step = Step.query.filter_by(id=student.step_id).first()
-
-
-    form = EditStudentForm(obj=student.id)
-
-    form2 = AdditionalClassForm(obj=student.id)
-    form3 = AdditionalClassForm2(obj=student.id)
 
     if not current_user.is_master() and current_user.position != "Upper Management":
         if current_user.academy_id != academy.id:
             flash('You can only remove people from your own academy.')
             return redirect(url_for('students.student_profile', name=student.name, academy=academy.name))
-
-    if form.submit1.data and form.validate():
-        
-        if form.lesson.data == 'None':
-            flash('You must have a lesson value')
-            return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-        if form.lesson.data == None:
-            flash('You must have a lesson value')
-            return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-        if student.name != form.name.data:
-            student.name = form.name.data
-        if student.phone != form.phone.data:
-            student.phone = form.phone.data
-        if student.email != form.email.data:
-            student.email = form.email.data
-        if student.comment != form.comment.data:
-            student.comment = form.comment.data
-        student.user_id = current_user.id
-        if academy.name != form.academy.data:
-            new_academy = Academy.query.filter_by(name=form.academy.name).first()
-            student.academy_id = new_academy.id
-        if current_lesson.id != form.lesson.data:
-            new_lesson = Lessons.query.filter_by(id=form.lesson.data).first()
-            student.class_id = new_lesson.id
-        if type_of_class.name != form.typeofclass.data:
-            if form.typeofclass.data == 'Group General English':
-                student.step_id = new_lesson.step_id
-        if step:
-            if step.name != form.step.data:
-                step = Step.query.filter_by(name=form.step.data).first()
-                student.step_id = step.id
     
-        if form2.academy_.data and form2.typeofclass_.data and form2.lengthofclass_.data and form2.lesson_.data:
+    if type_of_class.name == 'Group General English':
+        step = Step.query.filter_by(id=student.step_id).first()
 
-            if form2.lesson_.data == 'None':
-                flash('You must have a lesson in order to add an additional lesson')
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-            if form2.lesson_.data == None:
-                flash('You must have a lesson in order to add an additional lesson')
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-            # handling additional classes
-            acad = Academy.query.filter_by(name=form2.academy_.data).first()
-            length_of = LengthOfClass.query.filter_by(name=form2.lengthofclass_.data).first()
-            type_of = TypeOfClass.query.filter_by(name=form2.typeofclass_.data).first()
-            additional_lesson = Lessons.query.filter_by(id=form2.lesson_.data).first()
+    form = EditStudentForm(obj=student.id)
+    form2 = AdditionalClassForm(obj=student.id)
+    form3 = AdditionalClassForm2(obj=student.id)
 
-            if acad.name != 'Online' and acad.name != academy.name:
-                flash('Student can only be part of two different academy classes if one academy is online!') 
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+    # Fill current form details
+    form.name.data = student.name
+    form.phone.data = student.phone
+    form.email.data = student.email
+    form.comment.data = student.comment
+    form.lengthofclass.data = length_of_class.name
+    form.academy.data = academy.name
+    form.typeofclass.data = type_of_class.name
+    if step:
+        form.step.data = step.name
+    form.lesson.choices = [(current_lesson.id, '{} Students: {}/8 {}'.format(current_lesson.name, current_lesson.amount_of_students, current_lesson.time))]
+    
+    if student.student_on_class:
 
-            if type_of.name == type_of_class.name and additional_lesson.id == current_lesson.id:
-                flash('You cannot add them to a second class to the same class')
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+        link = Studentonclass.query.filter_by(id=student.student_on_class).first()
+        lesson = Lessons.query.filter_by(student_on_class=link.id).first()
+        acad = Academy.query.filter_by(id=lesson.academy_id).first()
+        length_of = LengthOfClass.query.filter_by(id=lesson.length_of_class).first()
+        type_of = TypeOfClass.query.filter_by(id=lesson.type_of_class).first()
 
-            if form2.step_.data != None and form2.step_.data != form.step.data:
-                
-                upper_limit = int(form2.step_.data) + 2 
-                lower_limit = int(form2.step_.data) - 2
-                if  int(form2.step_.data) < lower_limit or int(form2.step_.data) > upper_limit:
-                    flash('Please Keep the step levels in all classes as close to eachother as possible.')
-                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+        if type_of.name == 'Group General English':
+            step_additional = Step.query.filter_by(id=lesson.step_id).first()
+            form2.step.data = step_additional.name
 
-            if additional_lesson.student_on_class:
-                link = Studentonclass.query.filter_by(id=additional_lesson.student_on_class).first()
-                student.student_on_class = link.id
-                additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
-                db.session.commit()
-            else:
-                link = Studentonclass()
-                db.session.add(link)
-                db.session.commit()
-                additional_lesson.student_on_class = link.id
-                student.student_on_class = link.id
-                additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
-                db.session.commit()
-
-        if form3.academy3.data and form3.typeofclass3.data and form3.lengthofclass3.data and form3.lesson3.data:
-
-            if form3.lesson3.data == 'None':
-                flash('You must have a lesson in order to add second additional lesson.')
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-            if form3.lesson3.data == None:
-                flash('You must have a lesson in order to add second additional lesson.')
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-
-            acad = Academy.query.filter_by(name=form3.academy3.data).first()
-            length_of = LengthOfClass.query.filter_by(name=form3.lengthofclass3.data).first()
-            type_of = TypeOfClass.query.filter_by(name=form3.typeofclass3.data).first()
-            additional_lesson = Lessons.query.filter_by(id=form3.lesson3.data).first()
-
-            if acad.name != 'Online' and acad.name != academy.name:
-                flash('Student can only be part of two different academy classes if one academy is online!') 
-                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+        form2.lengthofclass.data = length_of.name
+        form2.academy.data = acad.name
+        form2.typeofclass.data = type_of.name
+        form2.lesson_.choices = [(lesson.id, '{} Students: {}/8 {}'.format(lesson.name, lesson.amount_of_students, lesson.time))]
             
-            if type_of.name == type_of_class.name and additional_lesson.id == current_lesson.id:
-                flash('You cannot add them to a second class to the same class')
+    if student.student_on_class2:
+
+        link = Studentonclass.query.filter_by(id=student.student_on_class2).first()
+        lesson = Lessons.query.filter_by(student_on_class2=link.id).first()
+        acad = Academy.query.filter_by(id=lesson.academy_id).first()
+        length_of = LengthOfClass.query.filter_by(id=lesson.length_of_class).first()
+        type_of = TypeOfClass.query.filter_by(id=lesson.type_of_class).first()
+
+        if type_of.name == 'Group General English':
+            step_additional = Step.query.filter_by(id=lesson.step_id).first()
+            form3.step.data = step_additional.name
+
+        form3.lengthofclass.data = length_of.name
+        form3.academy.data = acad.name
+        form3.typeofclass.data = type_of.name
+        form3.lesson3.data = [(lesson.id, '{} Students: {}/8 {}'.format(lesson.name, lesson.amount_of_students, lesson.time))]
+    
+  
+    if form.validate_on_submit():
+        if form.typeofclass.data == 'Group General English':
+            
+            if form.lesson.data == 'None':
+                flash('You must have a lesson value')
                 return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-                 
-            if type_of.name == form2.typeofclass_.name and additional_lesson.id == form2.lesson_.data:
-                flash('You cannot add them to a second class to the same class')
+            if form.lesson.data == None:
+                flash('You must have a lesson value')
                 return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
 
-            if form3.step3.data != None and form3.step3.data != form.step.data:
-                
-                upper_limit = int(form3.step3.data)+ 2 
-                lower_limit = int(form3.step3.data) - 2
-                if  int(form2.step_.data) < lower_limit or int(form2.step_.data) > upper_limit:
-                    flash('Please Keep the step levels in all classes as close to eachother as possible.')
-                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+            if student.name != form.name.data:
+                student.name = form.name.data
+            if student.phone != form.phone.data:
+                student.phone = form.phone.data
+            if student.email != form.email.data:
+                student.email = form.email.data
+            if student.comment != form.comment.data:
+                student.comment = form.comment.data
+            if academy.name != form.academy.data:
+                new_academy = Academy.query.filter_by(name=form.academy.name).first()
+                student.academy_id = new_academy.id
+            if current_lesson.id != form.lesson.data:
+                new_lesson = Lessons.query.filter_by(id=form.lesson.data).first()
+                student.class_id = new_lesson.id
+            if type_of_class.name != form.typeofclass.data:
+                if form.typeofclass.data == 'Group General English':
+                    student.step_id = new_lesson.step_id
+            if step:
+                if step.name != form.step.data:
+                    step = Step.query.filter_by(name=form.step.data).first()
+                    student.step_id = step.id
+            student.user_id = current_user.id
+            
 
-
-            if additional_lesson.student_on_class2:
-                link = Studentonclass2.query.filter_by(id=additional_lesson.student_on_class2).first()
-                student.student_on_class2 = link.id
-                additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
-                db.session.commit()
-            else:
-                link = Studentonclass2()
-                db.session.add(link)
-                db.session.commit()
-                additional_lesson.student_on_class2 = link.id
-                student.student_on_class2 = link.id
-                additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
-                db.session.commit()
-
+        elif form.typeofclass.data in options_121:
+            # Create 121 class here
+            lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname.data)
 
         db.session.commit()
-
         flash('Student Editted')
+        return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))        
+
+    return render_template(
+        'students/edit_student.html', 
+        title="Edit Student", 
+        form=form, 
+        form2=form2, 
+        form3=form3, 
+        student=student, student_id=student.id, academy=academy)
+
+
+@bp.route('/additional_form/<student>', methods=['POST'])
+@login_required
+@group_required(['Master', 'Upper Management', 'Management', 'Admin'])
+def additional_form(student):
+
+    form = AdditionalClassForm()
+    options_121 =['121-General English', '121-Exam Class', '121-Business English', '121-Children', 'In-Company-121']
+    
+    if form.validate_on_submit():
         
-        return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+        student = Student.query.filter_by(id=student).join(Step).first()
+        academy = Academy.query.filter_by(id=student.academy_id).first()
+        step = None
+        original_lesson = Lessons.query.filter_by(id=student.class_id).join(TypeOfClass).first()
+    
+        if form.typeofclass.data == 'Group General English':
+            step = student.step.name
+            if form.lesson_.data == 'None':
+                flash('You must have a lesson in order to add an additional lesson')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+            if step:
+                if form.step.data != step:
+                    if int(form.step.data) <= int(step) - 3 or int(form.step.data) >= int(step) + 3:
 
-    elif not form.is_submitted():
+                        flash('You cannot place a student in such a different step to their level')
+                        return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
 
-        form.name.data = student.name
-        form.phone.data = student.phone
-        form.email.data = student.email
-        form.comment.data = student.comment
-        form.lengthofclass.data = length_of_class.name
-        form.academy.data = academy.name
-        form.typeofclass.data = type_of_class.name
-        if step:
-            form.step.data = step.name
-        form.lesson.choices = [(current_lesson.id, '{} Students: {}/8 {}'.format(current_lesson.name, current_lesson.amount_of_students, current_lesson.time))]
+            acad = Academy.query.filter_by(name=form.academy.data).first()
+            length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+            type_of = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+            additional_lesson = Lessons.query.filter_by(id=form.lesson_.data).first()
+
+            if acad.name != 'Online' and acad.name != academy.name:
+                flash('Student can only be part of two different academy classes if one academy is online!') 
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+
+            if type_of.name == original_lesson.TypeOfClass.name and additional_lesson.id == original_lesson.id:
+                flash('You cannot add them to a second class to the same class')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+
+            # changing additional classes
+            if student.student_on_class:
+                original_link = Studentonclass.query.filter_by(id=student.student_on_class).first()
+                original_additional = Lessons.query.filter_by(student_on_class=original_link.id).first()
+                original_additional.amount_of_students = original_additional.amount_of_students - 1
+                if additional_lesson.student_on_class:
+                    link = Studentonclass.query.filter_by(id=additional_lesson.student_on_class).first()
+                    student.student_on_class = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Editted Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name)) 
+                else:
+                    link = Studentonclass()
+                    db.session.add(link)
+                    db.session.commit()
+
+                    additional_lesson.student_on_class = link.id
+                    student.student_on_class = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Editted Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+            else: 
+                if additional_lesson.student_on_class:
+                    link = Studentonclass.query.filter_by(id=additional_lesson.student_on_class).first()
+                    student.student_on_class = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Added Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name)) 
+                else:
+                    link = Studentonclass()
+                    db.session.add(link)
+                    db.session.commit()
+
+                    additional_lesson.student_on_class = link.id
+                    student.student_on_class = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Added Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+
+        elif form.typeofclass.data in options_121:
+            # Create 121 class here
+            lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname_.data)
+        
+
+
+@bp.route('/get_classes_add1', methods=['POST'])
+def get_classes_add1():
+    form = AdditionalClassForm()
+    
+    academy = Academy.query.filter_by(name=form.academy.data).first()
+    length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+    type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+    step = Step.query.filter_by(name=form.step.data).first()
+
+    choices = []
+    if form.typeofclass.data == 'Group General English':
+
+        lessons = Lessons.query.filter_by(academy_id=academy.id)\
+            .filter_by(length_of_class=length_of.id)\
+            .filter_by(type_of_class=type_of_class.id)\
+            .filter_by(step_id=step.id).all()
+        
+        for i in lessons:
+            if i.amount_of_students < 8:
+                   
+                choice_final = {
+                    'lesson_id': i.id,
+                    'lesson_name': i.name,
+                    'amount_of_students': i.amount_of_students,
+                    'lesson_time': i.time
+                }
+                choices.append(choice_final)
+        
+            # return none so that can display message   
+    return jsonify(choices) 
+
+
+@bp.route('/additional_form2/<student>', methods=['POST'])
+@login_required
+@group_required(['Master', 'Upper Management', 'Management', 'Admin'])
+def additional_form2(student):
+
+    form = AdditionalClassForm2()
+    options_121 =['121-General English', '121-Exam Class', '121-Business English', '121-Children', 'In-Company-121']
+       
+    if form.validate_on_submit():
+
+        student = Student.query.filter_by(id=student).join(Step).first()
+        academy = Academy.query.filter_by(id=student.academy_id).first()
+        step = None
+        original_lesson = Lessons.query.filter_by(id=student.class_id).join(TypeOfClass).join(Step).first()
+        original_additional = None
 
         if student.student_on_class:
-
             link = Studentonclass.query.filter_by(id=student.student_on_class).first()
-            lesson = Lessons.query.filter_by(student_on_class=link.id).first()
-            acad = Academy.query.filter_by(id=lesson.academy_id).first()
-            length_of = LengthOfClass.query.filter_by(id=lesson.length_of_class).first()
-            type_of = TypeOfClass.query.filter_by(id=lesson.type_of_class).first()
+            original_additional = Lessons.query.filter_by(student_on_class=link.id).join(TypeOfClass).join(Step).first()
 
-            if type_of.name == 'Group General English':
-                step_additional = Step.query.filter_by(id=lesson.step_id).first()
-                form2.step_.data = step_additional.name
 
-            form2.lengthofclass_.data = length_of.name
-            form2.academy_.data = acad.name
-            form2.typeofclass_.data = type_of.name
-            form2.lesson_.choices = [(lesson.id, '{} Students: {}/8 {}'.format(lesson.name, lesson.amount_of_students, lesson.time))]
-            
-        if student.student_on_class2:
+        if form.typeofclass.data == 'Group General English':
+            step = student.step.name
+            if form.lesson3.data == 'None':
+                flash('You must have a lesson in order to add second additional lesson.')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+            if form.lesson3.data == None:
+                flash('You must have a lesson in order to add second additional lesson.')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
 
-            link = Studentonclass.query.filter_by(id=student.student_on_class2).first()
-            lesson = Lessons.query.filter_by(student_on_class=link.id).first()
-            acad = Academy.query.filter_by(id=lesson.academy_id).first()
-            length_of = LengthOfClass.query.filter_by(id=lesson.length_of_class).first()
-            type_of = TypeOfClass.query.filter_by(id=lesson.type_of_class).first()
+            acad = Academy.query.filter_by(name=form.academy.data).first()
+            length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+            type_of = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+            additional_lesson = Lessons.query.filter_by(id=form.lesson3.data).first()
 
-            if type_of.name == 'Group General English':
-                step_additional = Step.query.filter_by(id=lesson.step_id).first()
-                form3.step3.data = step_additional.name
+            if acad.name != 'Online' and acad.name != academy.name:
+                flash('Student can only be part of two different academy classes if one academy is online!') 
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+        
+            if type_of.name == original_lesson.TypeOfClass.name and additional_lesson.id == original_lesson.id:
+                flash('You cannot add them to a second class to the same class')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
 
-            form3.lengthofclass3.data = length_of.name
-            form3.academy3.data = acad.name
-            form3.typeofclass3.data = type_of.name
-            form3.lesson3.choices = [(lesson.id, '{} Students: {}/8 {}'.format(lesson.name, lesson.amount_of_students, lesson.time))]
-            
+            if type_of.name == original_additional.TypeOfClass.name and additional_lesson.id == original_additional.id:
+                flash('You cannot add them to a second class to the same class')
+                return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
 
-    return render_template('students/edit_student.html', title="Edit Student", form=form, form2=form2, form3=form3, student=student, academy=academy)
+            if step:
+                if form.step.data != None and form.step.data != int(step) or original_additional.step.name != None and form.step.data != original_additional.step.name:
+                    if int(original_lesson.step.name) <= int(step) - 3 or int(original_lesson.step.name) >= int(step) + 3:
+                        flash('Please Keep the step levels in all classes as close to eachother as possible.')
+                        return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+
+
+                # changing additional classes
+            if student.student_on_class2:
+                original_link = Studentonclass2.query.filter_by(id=student.student_on_class2).first()
+                original_additional = Lessons.query.filter_by(student_on_class2=original_link.id).first()
+                original_additional.amount_of_students = original_additional.amount_of_students - 1
+                if additional_lesson.student_on_class2:
+                    link = Studentonclass2.query.filter_by(id=additional_lesson.student_on_class2).first()
+                    student.student_on_class2 = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Editted Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name)) 
+                else:
+                    link = Studentonclass2()
+                    db.session.add(link)
+                    db.session.commit()
+
+                    additional_lesson.student_on_class2 = link.id
+                    student.student_on_class2 = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Editted Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+            else: 
+                if additional_lesson.student_on_class2:
+                    link = Studentonclass2.query.filter_by(id=additional_lesson.student_on_class2).first()
+                    student.student_on_class2 = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Added Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name)) 
+                else:
+                    link = Studentonclass2()
+                    db.session.add(link)
+                    db.session.commit()
+
+                    additional_lesson.student_on_class2 = link.id
+                    student.student_on_class2 = link.id
+                    additional_lesson.amount_of_students = additional_lesson.amount_of_students + 1
+                    db.session.commit()
+                    flash('Additional Class Added Successfully')
+                    return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
+
+        elif form.typeofclass.data in options_121:
+            # Create 121 class here
+            lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname3.data)
+        
+
+
+@bp.route('/get_classes_add2', methods=['POST'])
+def get_classes_add2():
+
+    form = AdditionalClassForm2()
+    
+    
+    academy = Academy.query.filter_by(name=form.academy.data).first()
+    length_of = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+    type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
+    step = Step.query.filter_by(name=form.step.data).first()
+
+    choices = []
+    if form.typeofclass.data == 'Group General English':
+
+        lessons = Lessons.query.filter_by(academy_id=academy.id)\
+            .filter_by(length_of_class=length_of.id)\
+            .filter_by(type_of_class=type_of_class.id)\
+            .filter_by(step_id=step.id).all()
+        
+        for i in lessons:
+            if i.amount_of_students < 8:
+               
+                choice_final = {
+                    'lesson_id': i.id,
+                    'lesson_name': i.name,
+                    'amount_of_students': i.amount_of_students,
+                    'lesson_time': i.time
+                }
+                choices.append(choice_final)
+        
+            # return none so that can display message   
+    return jsonify(choices) 

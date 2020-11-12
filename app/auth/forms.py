@@ -22,11 +22,7 @@ class UserRegistrationForm(FlaskForm):
     name = StringField('Full Name', validators=[DataRequired()])
     phone = StringField('Phone Number', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    position = SelectField('Position', validators=[DataRequired()], choices=[
-        ('Upper Management', 'Upper Management'),
-        ('Management', 'Management'), 
-        ('Admin','Admin'), 
-        ('Teacher','Teacher')])
+    position = SelectField('Position', validators=[DataRequired()], choices=[], validate_choice=False)
     academy = SelectField('Academy', validators=[DataRequired()], choices=[
         ('Alonso Martínez','Alonso Martínez'),
         ('Argüelles','Argüelles'),

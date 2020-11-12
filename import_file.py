@@ -42,9 +42,10 @@ def importer(filename, time, step):
 def looper(path, time):
 
     filenames = os.listdir(path)
+    paths = path
 
     for f in filenames:
         s = os.path.splitext(f)[0]
-        importer('app/csv_files/1_hour/' + f, time, s)
+        importer(paths + '/' + f, time, s)
 
         print('imported {} for step {} time {}'.format(f, s, time))

@@ -41,6 +41,10 @@ def logout():
 def register():
     
     form = UserRegistrationForm()
+    position = current_user.position
+
+    if current_user.is_master():
+        position = 'Master'
 
     if form.validate_on_submit():
         
@@ -58,7 +62,7 @@ def register():
 
         send_confirmation_email(form.email.data)
         flash('Please check given email to confirm the email address.', 'success')    
-
+        print(form.position.data)
         user = User(
                 username=form.username.data, 
                 name=form.name.data, 
@@ -78,18 +82,15 @@ def register():
 
         user.academy_id = academy.id
 
-        new_permission = PermissionGroups(group_name=dict(form.position.choices).get(form.position.data))
-        db.session.add(new_permission)
-        db.session.commit()
-
-        permission = PermissionGroups.query.filter_by(group_name=new_permission.group_name).first()
+        permission = PermissionGroups.query.filter_by(group_name=form.position.data).first()
         user.add_access(permission)
         db.session.commit()
+
 
         flash('Registration successful.')
         return redirect(url_for('staff.user', name= user.name))
 
-    return render_template('auth/user_register.html', title="Register Staff", form=form)
+    return render_template('auth/user_register.html', title="Register Staff", form=form, position=position)
 
 
 @bp.route('/confirm/<token>')

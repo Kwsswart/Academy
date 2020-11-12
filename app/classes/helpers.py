@@ -1,4 +1,5 @@
 from app.models import Academy, Lessons
+from wtforms.validators import Optional
 
 def get_name(name, days, time, types, academy):
     ''' Helper function to create class names '''
@@ -23,9 +24,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -41,9 +45,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -59,9 +66,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -77,11 +87,17 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
+            
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+            print(lesson) # problem is here 
             if lesson:
                 name2 = name
+                print(name2)
             return name2
         else:
             return None
@@ -99,9 +115,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -117,9 +136,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -135,9 +157,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -153,9 +178,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -175,9 +203,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -193,9 +224,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -211,9 +245,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -229,9 +266,12 @@ def get_name(name, days, time, types, academy):
                 name = name + "E - "
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-            name2 = name + str(lessons + 1)
+            if lessons != 0:
+                name2 = name + str(1)
+            else:
+                name2 = name + '1'
             
-            lesson = Lessons.query.filter_by(name=name2).first()
+            lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
             if lesson:
                 name2 = name
             return name2
@@ -249,9 +289,12 @@ def get_name(name, days, time, types, academy):
             name = name + "E - "
         academy = Academy.query.filter_by(name=academy).first()
         lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-        name2 = name + str(lessons + 1)
+        if lessons != 0:
+            name2 = name + str(1)
+        else:
+            name2 = name + '1'
             
-        lesson = Lessons.query.filter_by(name=name2).first()
+        lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
         if lesson:
             name2 = name
         return name2
@@ -267,9 +310,28 @@ def get_name(name, days, time, types, academy):
             new_name = new_name + "E - "
         academy = Academy.query.filter_by(name=academy).first()
         lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
-        name2 = name + str(lessons + 1)
-            
-        lesson = Lessons.query.filter_by(name=name2).first()
+        if lessons != 0:
+            name2 = name + str(1)
+        else:
+            name2 = name + '1'
+         
+        lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
         if lesson:
             name2 = name
         return name2
+
+
+class OptionalIf(Optional):
+    # a validator which makes a field optional if
+    # another field has a desired value
+
+    def __init__(self, other_field_name, *args, **kwargs):
+        self.other_field_name = other_field_name
+        super(OptionalIf, self).__init__(*args, **kwargs)
+
+    def __call__(self, form, field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if other_field.data == 'No':
+            super(OptionalIf, self).__call__(form, field)

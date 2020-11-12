@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
+{% from "_attendancehelper.html" import render_field %}
 
 {% block styles %}
 {{ super()}}
@@ -8,17 +9,25 @@
 {% block app_content %}
 <h3>Class View</h3>
         {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
-        <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="" class="btn btn-default">Insert Custom Progress</a> <a href="" class="btn btn-default">Move Forward</a></p>
+        <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="" class="btn btn-default">Move Forward</a> <a href="" class="btn btn-default">Move Backwards</a></p>
         {% endif %}
-<table class='table table-hover'>
+<table class='table'>
     <thead>
         <tr>
         <th scope="col">
             Class Details
         </th>
         <th scope="col">
+            {% if expected %}
             Expected Progress
+            {% endif %}
         </th>
+        {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
+        <th scope="col">
+            Expected Progress          
+            
+        </th>
+        {% endif %}
         </tr>
     </thead>
     <tr>
@@ -26,48 +35,100 @@
             <b>Step:</b> {{ lesson.step.name }}
         </td>
         <td>
+            {% if expected %}
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
                 <b>Last Lesson:</b> {{ i.lesson_number }}
             {% endif %}
             {% endfor %}
+            {% endif %}
         </td>
+        {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
+        <td>
+            {% if expected %}
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number + 1%}
+                <b>Last Lesson:</b> {{ i.lesson_number }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
+        {% endif %}
     </tr>
     <tr>
         <td>
             <b>Name:</b> {{ lesson.name }}
         </td>
         <td>
+            {% if expected %}
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
-                <b>Last Page:</b> {{ i.last_page }}
+                <b>Last Page:</b> <p id="expected_page">{{ i.last_page }}</p>
             {% endif %}
             {% endfor %}
+            {% endif %}
         </td>
+        {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
+        <td>
+            {% if expected %}
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number + 1 %}
+                <b>Last Page:</b> <p id="expected_page">{{ i.last_page }}</p>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
+        {% endif %}
     </tr>
     <tr>
         <td>
            <b>Special Instructions:</b> {{ lesson.comment }}
         </td>
         <td>
+            {% if expected %}
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
                 <b>Last Word:</b> {{ i.last_word }}
             {% endif %}
             {% endfor %}
+            {% endif %}
         </td>
+        {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
+        <td>
+            {% if expected %}
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number + 1%}
+                <b>Last Word:</b> {{ i.last_word }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
+        {% endif %}
     </tr>
     <tr>
         <td>
             <b>Amount of Students:</b> {{ lesson.amount_of_students }}
         </td>
         <td>
+            {% if expected %}
             {% for i in expected %}
             {% if i.class_number == lesson.class_number %}
                 <b>Exercises to do:</b> {{ i.exercises }}
             {% endif %}
             {% endfor %}
+            {% endif %}
         </td>
+        {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
+        <td>
+            {% if expected %}
+            {% for i in expected %}
+            {% if i.class_number == lesson.class_number + 1 %}
+                <b>Exercises to do:</b> {{ i.exercises }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
+        {% endif %}
     </tr>
     <tr>
         <th scope="col">
@@ -80,30 +141,122 @@
         </td>
     </tr>
     <tr>
-        <th scope="col">
+        <th scope="col" >
             New Progress:
         </th>
-        <th scope="col">
+        <th scope="col" colspan="2">
             Attendance
         </th>
-    </tr>
-    <tr>
-        <td>
-            render_field(update_form.lesson_number, id="lesson_number", class='form-control lesson_number', style="width:33%;")
+    </tr>    
+    <tr style="width: 35%;">
+        <form id="update_form" action="" method="post" class="form" role="form" novalidate>
+            {{ update_form.hidden_tag() }}
+            {{ update_form.csrf_token() }}
+    
+        <td >
+            <table class='table table-hover'>
+                <dl>
+                {% if lesson.step_id %}
+                  <tbody>
+                    <tr>
+                        <td>
+                            <b>Lesson Number:</b>
+                        </td>
+                        <td>
+                            {{ render_field(update_form.lesson_number, id="lesson_number", class='form-control', style="width:33%;") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Last Page:</b>
+                        </td>
+                        <td>
+                            {{ render_field(update_form.last_page, id="last_page", class='form-control', style="width:33%;") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Lesson Word:</b>
+                        </td>
+                        <td>
+                            {{ render_field(update_form.last_word, id="last_word", class='form-control', style="width:33%;") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Exercises:</b>
+                        </td>
+                        <td>
+                            {{ render_field(update_form.exercises, id="exercises", class='form-control', style="width:33%;") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Comment:</b>
+                        </td>
+                        <td>
+                            {{ render_field(update_form.comment, id="comment", class='form-control', style="width:33%;") }}
+                        </td>
+                    </tr>
+                </tbody>
+                {% endif %}
+                </dl>
+                <tr>
+                    <td>{{ wtf.form_field(update_form.sub) }}</td>
+                </tr>
+            </table>
+        </form>
         </td>
-        <td>
+        <td style="width:65%;" colspan="2">
+            <table class='table table-hover'>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Average Grade</th>
+                        <th scope="col">Classes Not Attended</th>
+                        <th scope="col">Attended?</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Issue</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in range(studentcount) %}
+                    <form id="attendance-{{ i }}" + i action="" method="post" class="form" role="form" novalidate>
+                        {{ forms[i].hidden_tag() }}
+                        {{ forms[i].csrf_token() }}
+                    <dl>
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ url_for('students.student_profile', name=students[i].name, academy=academy.name) }}" class="btn btn-default">{{ students[i].name }}</a>
+                        </th>
+                        <td>
+                            {{ students[i].mark_average}}
+                        </td>
+                        <td>{{ students[i].days_missed }}</td>
+                        <td>{{ render_field(forms[i].attended, id="attended" + i|string, class='form-control') }}</td>
+                        <td>
+                            {{ render_field(forms[i].score, id="score" + i|string , class='form-control', style="width:70%;") }}
+                            {% if expected.last_word == 'END OF STEP EXAM' %}
+                            {{ render_field(forms[i].writing, id="writing" + i|string, class='form-control') }}
+                            {{ render_field(forms[i].speaking, id="speaking" + i|string, class='form-control') }}
+                            {% endif %}                            
+                        </td>
+                        <td><a href="" class="btn btn-default">Report Problem.</a></td> <!--Implement email sending student details with email-->
+                    </tr>
+                </dl>
+                    <tr id="{{ 'error-' + i|string }}" style="display:none;">
+                        
+                    </tr>
+
+                    
+                    </form>
+                    {% endfor %}
+                  </tbody>
             
+            </table>
         </td>
     </tr>
     
-    <tr>
-        <td>
-            {% include '_updateprogress.html' %}
-        </td>
-        <td>
-            <!--{% include '_students.html' %} -->
-        </td>
-    </tr>
     <tr>
         {% if actual_progress != None %}
         {% include '_progress.html' %}
@@ -114,4 +267,122 @@
 {% endblock %}
 
 {% block scripts %}
+{{ super() }}
+
+<script>
+    
+    function get_lessons(step) {
+        var lesson = step * 10 - 9
+        $("#lesson_number").empty();
+        for (var i = 0; i < 10; i++) {
+           
+            $("#lesson_number").append(
+                $("<option></option>")
+                .attr("value", lesson)
+                .text(lesson))
+            lesson = lesson + 1
+
+        }
+    }
+    function get_pages(step, current_page) {
+        var upperlimits = {1: 187, 2: 207, 3: 202, 4: 243, 5: 249, 6: 284, 7: 271, 8: 265, 9: 316, 10: 294, 11: 202, 12: 278, 13: 290, 14: 318, 15: 308, 16: 336};
+        console.log(current_page)
+        if (current_page === 'None') {
+            for (var i=1; i <= upperlimits[step]; i++) {
+                $("#last_page").append(
+                    $("<option></option>")
+                    .attr("value", i)
+                    .text(i))
+            }
+        } else {
+            for (var i=current_page; i <= upperlimits[step]; i++) {
+                $("#last_page").append(
+                    $("<option></option>")
+                    .attr("value", i)
+                    .text(i))
+            }
+        }
+        
+
+        
+    }
+    
+    function send_attendance(name, lesson, form_id, i) {
+        
+        var url = '/attendance/' + name + '/' + lesson
+        $('#error-' + i).hide('slow')
+        $('#error-' + i).html('')
+        var form = $('#' + form_id)
+        
+
+        return $.ajax({
+            type: "POST",
+            url: url,
+            data: $('#'+ form_id).serialize(),
+            context: form,
+        }).then(function(data) {
+            return $.Deferred(function (deferred) {
+                if (data.data.message == undefined) {
+                    
+                    if (data.data.score[1] == undefined) {
+                        var error_data = data.data.score[0]
+                    } else {
+                        var error_data = data.data.score[1]
+                    }
+                    $('#error-' + i).show('slow')
+                    $('#error-' + i).html('<p  style="color:red;">' + error_data + '</p>')
+                    deferred.reject('Not allowed'); // Throw here to propagate to the catch handler
+                } else { 
+                    console.log(data.data.message)  // display the returned data in the console.
+                    deferred.resolve(data)
+                }
+            })
+        }); 
+                 
+    }
+   
+    $(document).ready(function() {
+
+        get_lessons({{step | safe}});
+        get_pages({{step | safe}}, '{{current_last_page | safe}}');
+
+        var csrf_token = "{{ csrf_token() }}";
+        var lesson = {{lesson.id | safe}};     
+        var st = {{st | tojson}};
+        var studentcount = {{studentcount | safe}};
+
+    
+    
+        $('#update_form').submit(function (e) {
+            // Submit all ajax calls wait for response and once submitted submit the final form note submit button id cannot be #submit 
+            e.preventDefault();
+
+            var deferred = [];
+            const thisform = this;
+
+            for (var i = 0; i < studentcount ; i++) {
+                deferred.push(
+                    send_attendance(st[i], lesson, 'attendance-' + i, i));
+            }
+            
+            $.when(...deferred).then(function() {
+                    thisform.submit();
+            
+                }).fail(function() {
+                    
+                })
+
+            
+        });
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                }
+                
+            }
+        })
+    });
+</script>
 {% endblock %}

@@ -3,8 +3,9 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import StringField, IntegerField, BooleanField, SubmitField, SelectField, SelectMultipleField, TextAreaField
 from wtforms_components import TimeField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Optional
 from app.models import Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker
+from app.classes.helpers import OptionalIf
 
 
 
@@ -93,7 +94,7 @@ class CreateClassForm(FlaskForm):
         ('Thursday', 'Thursday'),
         ('Friday', 'Friday'),
         ('Saturday', 'Saturday')])
-    startat = IntegerField('Start at Lesson Number')
+    startat = SelectField('Start at Lesson', validators=[DataRequired()], choices=[], validate_choice=False)
     comment = TextAreaField('Special Comments', validators=[Length(min=0, max=500)])
     submit = SubmitField('Create Class')
 
@@ -191,7 +192,7 @@ class CreateClassForm(FlaskForm):
 
         lowest = int(self.step.data) * 10 - 9
         highest = int(self.step.data) * 10
-        if self.startat.data < lowest or self.startat.data > highest:
+        if int(self.startat.data) < lowest or int(self.startat.data) > highest:
             raise ValidationError('· Class can only start between lessons {} and {} at step {}'.format(lowest, highest, self.step.data))
   
                 
@@ -244,23 +245,32 @@ class CreateClassForm(FlaskForm):
 class StepProgressForm(FlaskForm):
     ''' Step Progress Form. '''
 
-    lesson_number = SelectField('Lesson Number', validators=[DataRequired()], id='lesson_number')
-    last_page = SelectField('Last Page', validators=[DataRequired()], id='last_page')
+    lesson_number = SelectField('Lesson Number', validators=[DataRequired()], choices=[], validate_choice=False)
+    last_page = SelectField('Last Page', validators=[DataRequired()], choices=[], validate_choice=False)
     last_word = StringField('Last Word', validators=[DataRequired()])
-    exercises = StringField('Exercises Done', validators=[DataRequired()])
+    exercises = StringField('Exercises Done')
     comment = TextAreaField('Comment On Class')
-    submit = SubmitField('Add Progress')
+    sub = SubmitField('Add Progress')
 
 
 class AttendanceForm(FlaskForm):
-    attended = BooleanField('Attended?')
-    score = IntegerField('Score')
-    writing = IntegerField('Writing')
-    speaking = IntegerField('Speaking')
-    submit = SubmitField('Attendance')
+    attended = SelectField('Attended',  choices=[
+        ('Yes','Yes'),
+        ('No','No')])
+    score = IntegerField('Score', validators=[OptionalIf('attended')], render_kw={"placeholder": "3/4/5"})
+    writing = IntegerField('Writing', validators=[OptionalIf('attended')], render_kw={"placeholder": "Percentage (Only numbers)"})
+    speaking = IntegerField('Speaking', validators=[OptionalIf('attended')], render_kw={"placeholder": "Percentage (Only numbers)"})
 
-    def validate_score(self):
-        if self.attended is True and self.score == None:
+    def validate_score(self, attended):
+        if self.attended.data == 'Yes' and self.score.data == None:
             raise ValidationError('You need to provide score if student attended!')
+        elif self.attended.data == 'Yes':
+            if  self.score.data < 3 or self.score.data > 5:
+                raise ValidationError('Score needs to be either 3, 4, or 5.')
+
         
 
+class InsertCustom(FlaskForm):
+    message = TextAreaField('Message', validators=[DataRequired()])
+    exercises = StringField('Exercises')
+    submit = SubmitField('Insert Custom Programming')
