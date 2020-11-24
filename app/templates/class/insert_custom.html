@@ -6,23 +6,19 @@
     <h1>Insert Custom: {{ lesson.name }}</h1>
 
     <table class='table' style="max-width: 100%;">
-        <thead>
-            <tr>
-              <th scope="col" style="max-width: 60%;">Message</th>
-              <th scope="col" style="min-width: 40%;">Exercises</th>
-            </tr>
-          </thead>
+        
           <tbody>
             <form action="" method="post" class="form" role="form" novalidate>
                 {{ form.hidden_tag() }}
                 {{ form.csrf_token() }}
             <tr>
                 <th scope="row" style="max-width: 60%;">
-                   {{ wtf.form_field(form.message) }}    
-                </th>
-                <td style="min-width: 40%;"> 
+                   {{ wtf.form_field(form.message) }}  
+                   <div id="char_remaining_message" style="color:red;"></div>  
+                
                   {{ wtf.form_field(form.exercises) }}
-                </td>
+                  <div id="char_remaining_exercises" style="color:red;"></div>
+                </th>
             </tr>
             <tr>
                 <td>{{ wtf.form_field(form.submit) }}</td>
@@ -31,5 +27,52 @@
           </tbody>
 
     </table>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+  function countchar(max_length, warn_length, messageid, fieldid) {
+    var len = $(fieldid).val().length;
+    console.log(len);
+    if (len >= max_length) {
+      $('#' + messageid).text('Characters Remaining: 0');
+    } else if (len >= max_length - warn_length) {
+      $('#' + messageid).text('Characters Remaining:' + (max_length - len).toString());
+    } else {
+      $('#' + messageid).text('');
+    }
+  }
+
+  $(document).ready(function() {
+
+    $('#message').keydown(function(e) {
+      var len = $("#message").val().length;
+      const key = e.key; 
+      if (key === "Backspace" || key === "Delete") { 
+      } else if (len >= 900) {
+        e.preventDefault()
+        $('#message').text('Characters Remaining: 0');
+      }
+    }).keyup(function() {
+      countchar(900, 250, "char_remaining_message", "#message");
+    });
+
+    $('#exercises').keydown(function(e) {
+      var len = $("#exercises").val().length;
+      const key = e.key; 
+      if (key === "Backspace" || key === "Delete") { 
+      } else if (len >= 250) {
+        e.preventDefault()
+        $('#exercises').text('Characters Remaining: 0');
+      }
+    }).keyup(function() {
+      countchar(250, 50, "char_remaining_exercises", "#exercises");
+    });
+
+  });
+</script>
 
 {% endblock %}

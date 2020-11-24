@@ -32,7 +32,7 @@ Email: Look into making the application more secure to allow to send emails with
 On set-up ensure the database has the following set-up for basic usage:
 
 
-u = User(username="Master", name="master", phone="3737", email="master@example.com", position="teacher")
+u = User(username="Master", name="Master", phone="3737", email="master@example.com", position="teacher")
 u2 = User(username="User2", name="User2", phone="3", email="user2@example.com", position="Upper Management")
 u.set_password('Master')
 u2.set_password('4321')

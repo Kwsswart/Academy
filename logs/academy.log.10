@@ -12,112 +12,11 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 88, in register
-    user.add_access(permission)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 89, in add_access
-    if not self.has_auth_access(access_group):
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 103, in has_auth_access
-    user_permissions.c.permission_id == access_group.id
-AttributeError: 'NoneType' object has no attribute 'id'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\auth\routes.py", line 88, in register
-    user.add_access(permission)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 89, in add_access
-    if not self.has_auth_access(access_group):
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 103, in has_auth_access
-    user_permissions.c.permission_id == access_group.id
-AttributeError: 'NoneType' object has no attribute 'id'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
   File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
     return func (*args, **kwargs)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 24, in create_class
-    if form.validate_on_submit():
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_wtf\form.py", line 100, in validate_on_submit
-    return self.is_submitted() and self.validate()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 318, in validate
-    return super(Form, self).validate(extra)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 150, in validate
-    if not field.validate(self, extra):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\fields\core.py", line 226, in validate
-    stop_validation = self._run_validation_chain(form, chain)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\fields\core.py", line 246, in _run_validation_chain
-    validator(form, self)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\forms.py", line 195, in validate_startat
-    if self.startat.data < lowest or self.startat.data > highest:
-TypeError: '<' not supported between instances of 'str' and 'int'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 63, in create_class
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 64, in create_class
     class_number=class_number.class_number,
 AttributeError: 'NoneType' object has no attribute 'class_number'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
@@ -138,7 +37,108 @@ Traceback (most recent call last):
     return func (*args, **kwargs)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 63, in create_class
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 64, in create_class
     class_number=class_number.class_number,
 AttributeError: 'NoneType' object has no attribute 'class_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
+    class_number=class_number.class_number,
+AttributeError: 'NoneType' object has no attribute 'class_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
+    class_number=class_number.class_number,
+AttributeError: 'NoneType' object has no attribute 'class_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
+    class_number=class_number.class_number,
+AttributeError: 'NoneType' object has no attribute 'class_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
+    class_number=class_number.class_number,
+AttributeError: 'NoneType' object has no attribute 'class_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
