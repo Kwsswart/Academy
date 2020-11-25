@@ -12,38 +12,9 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 441, in edit_student
-    return render_template('students/edit_student.html', title="Edit Student", form=form, form2=form2, form3=form3, student=student, academy=academy)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 127, in load
-    code = environment.compile(source, name, filename)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 638, in compile
-    self.handle_exception(source=source_hint)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\edit_student.html", line 141, in template
-    {{ render_field(form3.exams,,class='form-control exam3', style="width:33%;") }}
-jinja2.exceptions.TemplateSyntaxError: unexpected ','
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 116, in get_classes_edit
+    if form.submit():
+AttributeError: 'EditStudentForm' object has no attribute 'submit'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -59,14 +30,9 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
-    class_number=class_number.class_number,
-AttributeError: 'NoneType' object has no attribute 'class_number'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 148, in get_classes_add1
+    if form.submit():
+AttributeError: 'AdditionalClassForm' object has no attribute 'submit'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
@@ -81,15 +47,9 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
-    return func (*args, **kwargs)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 66, in create_class
-    class_number=class_number.class_number,
-AttributeError: 'NoneType' object has no attribute 'class_number'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 148, in get_classes_add1
+    if form.submit():
+AttributeError: 'AdditionalClassForm' object has no attribute 'submit'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
@@ -116,7 +76,71 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 216, in view_class
-    if update_form.last_page.data >= previous_expected.last_page - 10:
-TypeError: unsupported operand type(s) for -: 'str' and 'int'
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 386, in edit_student
+    print(form.lesson.choices)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\datastructures.py", line 475, in getlist
+    rv = dict.__getitem__(self, key)
+TypeError: unhashable type: 'list'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 386, in edit_student
+    print(request.form.getlist(form.lesson.choices))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\datastructures.py", line 475, in getlist
+    rv = dict.__getitem__(self, key)
+TypeError: unhashable type: 'list'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 386, in edit_student
+    print(request.form.getlist(dict(form.lesson.choices)))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\werkzeug\datastructures.py", line 475, in getlist
+    rv = dict.__getitem__(self, key)
+TypeError: unhashable type: 'dict'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]

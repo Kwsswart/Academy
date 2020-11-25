@@ -1,14 +1,14 @@
 import os
 import json
 import math
-from datetime import datetime
+from datetime import datetime, date
 from flask import render_template, flash, redirect, request, url_for, current_app, abort, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from wtforms.validators import ValidationError
 from app import  db
-from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker, Studentonclass, Studentonclass2
+from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker, Studentonclass, Studentonclass2, CustomInsert
 from app.classes import bp
 from app.classes.forms import CreateClassForm, AttendanceForm, StepProgressForm, InsertCustom
 from app.classes.helpers import get_name
@@ -153,6 +153,7 @@ def view_class(name, academy):
     actual_progress = None
     student_ids = [f'{s.id}'for s in students]
     current_last_page = None
+    custom_progress = CustomInsert.query.filter_by(lesson_id=lesson.id).join(User).order_by(CustomInsert.datetime.asc()).first()
     
 
     if lesson.TypeOfClass.name == 'Group General English':
@@ -164,6 +165,9 @@ def view_class(name, academy):
         actual_progress_page = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id).order_by(StepActualProgress.class_number.desc()).first()
         if actual_progress_page != None:
             current_last_page = actual_progress_page.last_page
+            if custom_progress != None:
+                if custom_progress.datetime < actual_progress_page.datetime:
+                    custom_progress = None
         
     forms = []
     for i in range(studentcount):
@@ -174,7 +178,12 @@ def view_class(name, academy):
 
         if lesson.TypeOfClass.name == 'Group General English':
             
-            
+            # check no progress has already been added for this date
+            if actual_progress_page.datetime.date() == date.today():
+                if lesson.LengthOfClass.name != '2 Hours' or lesson.LengthOfClass.name != '2,5 Hours':
+                    flash('Progress Has already been updated today if you need to edit the progress look into editing it.')
+                    return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
+
             for i in expected_progress:
                 if i.class_number == lesson.class_number:
                     expected_progress = i
@@ -246,7 +255,7 @@ def view_class(name, academy):
         db.session.commit()
         flash('Progress updated')
         return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
-
+    
     return render_template(
         'class/view_class.html', 
         title="View Class",
@@ -260,6 +269,7 @@ def view_class(name, academy):
         students=students,
         forms=forms,
         current_last_page=current_last_page,
+        custom_progress=custom_progress,
         # Adding for js functionality
         step= json.dumps(lesson.step.name),
         st=student_ids)
@@ -301,7 +311,6 @@ def attendance(name, lesson):
                 print('Already been submitted')
                                 
             else:
-               
                 mark = StepMarks(
                     mark = form.score.data,
                     end_of_step_writing = form.writing.data,
@@ -321,8 +330,7 @@ def attendance(name, lesson):
 
                 student.mark_average = round(total/count,1)
                 db.session.commit()
-                
-            
+                 
         else:
             student.days_missed = student.days_missed + 1
             db.session.commit()
@@ -330,11 +338,34 @@ def attendance(name, lesson):
             if student.days_missed >= 3:
                 # message the dos here
                 print('Over the limit.')
-            
-
         return jsonify(data={'message': 'recieved {}'.format(student.name)})
-    
     return jsonify(data=form.errors)
+
+
+@bp.route('/edit_submitted_progress/<progress_id>/<lesson_id>', methods=['GET', 'POST'])
+@login_required
+def edit_submitted_progress(progress_id, lesson_id):
+
+    progress = StepActualProgress.query.filter_by(id=progress_id).first()
+    lesson = Lessons.query.filter_by(id=lesson_id).join(Academy).first()
+
+    if not current_user.is_master() and current_user.position != "Upper Management" or current_user.position != "Management":
+        if progress.user_id != current_user.id:
+            flash("You cannot edit somebody else's submitted progress")
+            return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
+
+    form = StepProgressForm()
+
+    if form.validate_on_submit():
+        hi = 'ho'
+    else:
+        form.lesson_number.data = progress.lesson_number
+        form.last_page.data = progress.last_page
+        form.last_word.data = progress.last_word
+        form.exercises.data = progress.exercises
+        form.comment.data = progress.comment
+
+    return render_template('class/edit_submitted_progress.html', form=form, lesson=lesson, progress=progress)
 
 
 @bp.route('/insert_custom/<class_id>', methods=['GET', 'POST'])
@@ -342,11 +373,59 @@ def attendance(name, lesson):
 @login_required
 def insert_custom(class_id):
 
-    lesson = Lessons.query.filter_by(id=class_id).first()
+    lesson = Lessons.query.filter_by(id=class_id).join(Academy).first()
 
     form = InsertCustom()
     
     if form.validate_on_submit():
-        hi = "hi"
+        custom = CustomInsert(
+            message=form.message.data,
+            exercises=form.exercises.data,
+            user_id=current_user.id,
+            lesson_id=lesson.id
+        )
+        db.session.add(custom)
+        db.session.commit()
+        flash('Custom Progress Inserted.')
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
 
     return render_template('class/insert_custom.html', lesson=lesson, form=form)
+
+
+@bp.route('/edit_custom/<custom_id>', methods=['POST'])
+@group_required(['Master', 'Upper Management', 'Management'])
+@login_required
+def edit_custom(custom_id):
+
+    custom = CustomInsert.query.filter_by(id=custom_id).first()
+    lesson = Lessons.query.filter_by(id=custom.lesson_id).join(Academy).first()
+    form = InsertCustom()
+    
+    if form.validate_on_submit():
+
+        custom.message = form.message.data
+        custom.exercises = form.exercises.data 
+        custom.user_id = current_user.id 
+        db.session.commit()
+        flash('Custom Progress Editted.')
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+    else:
+        form.message.data = custom.message
+        form.exercises.data = custom.exercises
+
+    return render_template('class/insert_custom.html', lesson=lesson, form=form)
+
+
+@bp.route('/remove_custom/<custom_id>', methods=['GET', 'POST'])
+@group_required(['Master', 'Upper Management', 'Management'])
+@login_required
+def remove_custom(custom_id):
+
+    custom = CustomInsert.query.filter_by(id=custom_id).first()
+    lesson = Lessons.query.filter_by(id=custom.lesson_id).join(Academy).first()
+    
+    db.session.delete(custom)
+    db.session.commit()
+    flash('Custom Progress Removed.')
+    return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+    

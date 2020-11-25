@@ -1,42 +1,8 @@
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 216, in view_class
-    if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 216, in view_class
-    if update_form.last_page.data >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -54,9 +20,47 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 217, in view_class
-    if update_form.last_page.data >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 531, in edit_student
+    return render_template('students/edit_student.html', title="Edit Student", form=form, form2=form2, form3=form3, student=student, student_id=student.id, academy=academy)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 137, in render_template
+    return _render(
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\edit_student.html", line 3, in top-level template code
+    {% from "_formhelpers.html" import render_field %}
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block "doc"
+    {%- block html %}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block "html"
+    {% block body -%}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
+    {% block content -%}
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\base.html", line 65, in block "content"
+    {% block app_content %}{% endblock %}
+  File "C:\Users\Diana\pythonWorkspace\academy\app\templates\students\edit_student.html", line 129, in block "app_content"
+    {{ wtf.form_field(form2.submit1) }}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\runtime.py", line 679, in _invoke
+    rv = self._func(*arguments)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 36, in template
+    {% if field.flags.required and not required in kwargs %}
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\jinja2\environment.py", line 471, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'app.students.forms.AdditionalClassForm object' has no attribute 'submit1'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -74,9 +78,32 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 214, in view_class
-    print(previous_expected.last_page)
-AttributeError: 'NoneType' object has no attribute 'last_page'
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 471, in additional_form
+    student_id = int(request.json['student_id'])
+TypeError: 'NoneType' object is not subscriptable
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 471, in additional_form
+    student_id = int(request.json['student_id'])
+TypeError: 'NoneType' object is not subscriptable
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -94,36 +121,9 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 219, in view_class
-    if update_form.last_page.data >= previous_expected.last_page - 10:
-TypeError: '>=' not supported between instances of 'str' and 'int'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 218, in view_class
-    if update_form.last_page.data >= previous_expected.last_page - 10:
-TypeError: '>=' not supported between instances of 'str' and 'int'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 471, in additional_form
+    student_id = request.json['student_id']
+TypeError: 'NoneType' object is not subscriptable
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]

@@ -474,4 +474,4 @@ class CustomInsert(db.Model):
 
 
     def __repr__(self):
-        return '<Custom= message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)
+        return '< Custom Insert = message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)

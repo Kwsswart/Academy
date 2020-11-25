@@ -35,19 +35,23 @@
             <b>Step:</b> {{ lesson.step.name }}
         </td>
         <td>
-            {% if expected %}
-            {% for i in expected %}
-            {% if i.class_number == lesson.class_number %}
-                <b>Last Lesson:</b> {{ i.lesson_number }}
-            {% endif %}
-            {% endfor %}
+            {% if custom_progress != None %}
+                <b>Inserted By:</b> {% for i in users %}{% if i.id == custom_progress.user_id %} {{ i.name }} {% endif %} {% endfor %}
+            {% else %}
+                {% if expected %}
+                {% for i in expected %}
+                {% if i.class_number == lesson.class_number %}
+                    <b>Last Lesson:</b> {{ i.lesson_number }}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             {% endif %}
         </td>
         {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
         <td>
             {% if expected %}
             {% for i in expected %}
-            {% if i.class_number == lesson.class_number + 1%}
+            {% if i.class_number == lesson.class_number + 1 %}
                 <b>Last Lesson:</b> {{ i.lesson_number }}
             {% endif %}
             {% endfor %}
@@ -60,12 +64,16 @@
             <b>Name:</b> {{ lesson.name }}
         </td>
         <td>
-            {% if expected %}
-            {% for i in expected %}
-            {% if i.class_number == lesson.class_number %}
-                <b>Last Page:</b> <p id="expected_page">{{ i.last_page }}</p>
-            {% endif %}
-            {% endfor %}
+            {% if custom_progress != None %}
+                <b>Message:</b> {{ custom_progress.message }}
+            {% else %}
+                {% if expected %}
+                {% for i in expected %}
+                {% if i.class_number == lesson.class_number %}
+                    <b>Last Page:</b> <p id="expected_page">{{ i.last_page }}</p>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             {% endif %}
         </td>
         {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
@@ -85,12 +93,16 @@
            <b>Special Instructions:</b> {{ lesson.comment }}
         </td>
         <td>
-            {% if expected %}
-            {% for i in expected %}
-            {% if i.class_number == lesson.class_number %}
-                <b>Last Word:</b> {{ i.last_word }}
-            {% endif %}
-            {% endfor %}
+            {% if custom_progress != None %}
+                <b>Exercises:</b> {{ custom_progress.exercises }}
+            {% else %}
+                {% if expected %}
+                {% for i in expected %}
+                {% if i.class_number == lesson.class_number %}
+                    <b>Last Word:</b> {{ i.last_word }}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             {% endif %}
         </td>
         {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
@@ -110,12 +122,16 @@
             <b>Amount of Students:</b> {{ lesson.amount_of_students }}
         </td>
         <td>
-            {% if expected %}
-            {% for i in expected %}
-            {% if i.class_number == lesson.class_number %}
-                <b>Exercises to do:</b> {{ i.exercises }}
-            {% endif %}
-            {% endfor %}
+            {% if custom_progress != None %}
+            <a href="{{ url_for('classes.edit_custom', custom_id=custom_progress.id) }}" class="btn btn-default">Edit Custom</a> <a href="{{ url_for('classes.remove_custom', custom_id=custom_progress.id) }}" class="btn btn-default">Remove Custom</a>
+            {% else %}
+                {% if expected %}
+                {% for i in expected %}
+                {% if i.class_number == lesson.class_number %}
+                    <b>Exercises to do:</b> {{ i.exercises }}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             {% endif %}
         </td>
         {% if expected and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours'%}
@@ -136,7 +152,7 @@
         </th>
         <td>
             {% for i in actual_progress %}
-            {{ i.exercises}}
+            {{ i.exercises}} ,
             {% endfor %}
         </td>
     </tr>

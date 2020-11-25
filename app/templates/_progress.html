@@ -9,6 +9,7 @@
             <th scope="col">Last Word</th>
             <th scope="col">Exercises</th>
             <th scope="col">Comments</th>
+            <th scole="col">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +29,7 @@
           <td>{{ actual.last_word }}</td>
           <td>{{ actual.exercises }}</td>
           <td>{{ actual.comment }}</td>
+          <td><a href="{{ url_for('classes.edit_submitted_progress', progress_id=actual.id, lesson_id=lesson.id) }}" class="btn btn-default">Edit Progress</a></td>
         </tr>
         {% endfor %}
       </tbody>
