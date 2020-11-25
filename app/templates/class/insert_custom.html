@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block styles %}
+  {{ super () }}
+  <style>
+    #message {
+      resize:vertical;
+    }
+  </style>
+{% endblock %}
 
 {% block app_content %}
     <h1>Insert Custom: {{ lesson.name }}</h1>
@@ -36,7 +44,6 @@
 <script>
   function countchar(max_length, warn_length, messageid, fieldid) {
     var len = $(fieldid).val().length;
-    console.log(len);
     if (len >= max_length) {
       $('#' + messageid).text('Characters Remaining: 0');
     } else if (len >= max_length - warn_length) {

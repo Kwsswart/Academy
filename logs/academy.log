@@ -26,3 +26,25 @@
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\staff\routes.py", line 25, in user
+    files = os.listdir(current_app.config['UPLOAD_PATH'] + 'avatars')
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kwssw\\OneDrive\\Documentos\\Workspace\\academy\\app/static/uploads/avatars'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
