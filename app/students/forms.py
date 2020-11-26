@@ -7,9 +7,9 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Le
 from app.models import Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker
 
 
-
 class CreateStudentForm(FlaskForm):
-    
+    """ Form for getting initial student data """
+
     name = StringField('Name', validators=[DataRequired()])
     phone = StringField('Phone Number', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -105,22 +105,27 @@ class CreateStudentForm(FlaskForm):
     companyname = StringField('Company Name')
     submit = SubmitField('Add Student')
 
-
     def validate_name(self, name):
+        """ Validate name has yet to be used within the academy """
 
         lesson = Lessons.query.filter_by(id=self.lesson.data).first()
         academy = Academy.query.filter_by(name=self.academy.data).first()
-
         student = Student.query.filter_by(academy_id=academy.id).filter_by(name=name.data).first()
+
         if student is not None:
             raise ValidationError('Student name is already in the system with this Academy.')
 
     def validate_phone2(self, phone):
+        """ Validate phone is unique """
+
         student = Student.query.filter_by(phone=phone.data).first()
+
         if student is not None:
             raise ValidationError('Use different phone number.')
     
     def validate_phone(self, phone):
+        """ Validate phone number following the traditional pattern and is valid """
+
         try:
             p = phonenumbers.parse(phone.data)
             if not phonenumbers.is_valid_number(p):
@@ -130,6 +135,7 @@ class CreateStudentForm(FlaskForm):
 
     def validate_company(self, companyname):
         ''' Check that the class name entered isn't in use at the academy. '''
+        
         options_IC = [
             'In-Company-121'
         ]

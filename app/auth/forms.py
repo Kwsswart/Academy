@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
 
-
 class LoginForm(FlaskForm):
+    """ Form to handle staff login """
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -15,6 +15,7 @@ class LoginForm(FlaskForm):
 
 
 class UserRegistrationForm(FlaskForm):
+    """ Form to handle staff registration """
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -43,31 +44,39 @@ class UserRegistrationForm(FlaskForm):
     submit = SubmitField('Register')
     
     def validate_username(self, username):
+        """ Ensure username isn't in use """
+
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
     
     def validate_name(self, name):
+        """ Ensure name isn't in use """
+
         user = User.query.filter_by(name=name.data).first()
         if user is not None:
             raise ValidationError('Please use a different name.')
 
     def validate_email(self, email):
+        """ Ensure email isn't in use """
+
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
     
     def validate_phone2(self, phone):
+        """ Ensure phone number isn't in use """
+
         user = User.query.filter_by(phone=phone.data).first()
         if user is not None:
             raise ValidationError('Use different phone number.')
     
     def validate_phone(self, phone):
+        """ Ensure phone number is in normal pattern and is valid """
+
         try:
             p = phonenumbers.parse(phone.data)
             if not phonenumbers.is_valid_number(p):
                 raise ValueError()
         except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
             raise ValidationError('Invalid phone number')
-
-

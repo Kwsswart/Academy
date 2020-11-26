@@ -12,6 +12,8 @@ from app.models import User , PermissionGroups, group_required, Academy, Trained
 
 @bp.route('/login', methods=['GET','POST'])
 def login():
+    """ End-point to handle User/Staff login """
+
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -21,7 +23,6 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
-        # redirect back to first viewed page if not logged in.
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.index')
@@ -31,6 +32,8 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    """ End-point to handle User/Staff logout """
+
     logout_user()
     return redirect(url_for('main.index'))
 
@@ -39,6 +42,7 @@ def logout():
 @login_required
 @group_required(['Master', 'Upper Management', 'Management'])
 def register():
+    """ End-point to handle User/Staff Registration """
     
     form = UserRegistrationForm()
     position = current_user.position
@@ -47,7 +51,6 @@ def register():
         position = 'Master'
 
     if form.validate_on_submit():
-        
         if dict(form.position.choices).get(form.position.data) == "Upper Management":
             if not current_user.is_master() and current_user.position != "Upper Management":
                 flash("You don't have permissions to set Upper Management.")
@@ -56,13 +59,12 @@ def register():
         academy = Academy.query.filter_by(name=dict(form.academy.choices).get(form.academy.data)).first()
 
         if not current_user.is_master() and current_user.position != "Upper Management":
-            if current_user.academy_id != academy.id:
+            if current_user.academy_id != academy.id: # todo: adjust to utilize method has_academy_access
                 flash('You can only add people to your own academy.')
                 return redirect(url_for('auth.register'))
-
+        # todo: relook into email system
         send_confirmation_email(form.email.data)
         flash('Please check given email to confirm the email address.', 'success')    
-        print(form.position.data)
         user = User(
                 username=form.username.data, 
                 name=form.name.data, 
@@ -74,31 +76,28 @@ def register():
         db.session.commit()
 
         trained = form.trained.data
-
         for t in trained:
             i = TrainedIn(name=t, teacher=user.id)
             db.session.add(i)
             db.session.commit()
-
         user.academy_id = academy.id
-
         permission = PermissionGroups.query.filter_by(group_name=form.position.data).first()
         user.add_access(permission)
         db.session.commit()
-
-
         flash('Registration successful.')
         return redirect(url_for('staff.user', name= user.name))
-
     return render_template('auth/user_register.html', title="Register Staff", form=form, position=position)
 
 
 @bp.route('/confirm/<token>')
 def confirm_email(token):
+    """ End-point to email confirmation and send off account details on confirmation. """
+
     try:
         confirm_serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         email = confirm_serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
     except:
+        # todo: resend confirmation if expired
         flash('The confirmation link is invalid or has expired.', 'error')
         return redirect(url_for('auth.login'))
  
@@ -112,7 +111,6 @@ def confirm_email(token):
         user.email_confirmed_on = datetime.now()
         db.session.add(user)
         db.session.commit()
-        
         send_email('[Number 16] Your Access information',
                 sender=current_app.config['ADMINS'][0], 
                 recipients=[user.email],
@@ -133,5 +131,3 @@ def confirm_email(token):
         flash('Thank you for confirming the email address!')
  
     return redirect(url_for('main.index'))
-
-

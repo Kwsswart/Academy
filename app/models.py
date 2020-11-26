@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.utils import natural_keys
 from app import db, login
 
+
 class UnauthorisedAccessError(Exception):
     """ User does not have access priviledges """
 
@@ -29,12 +30,13 @@ user_permissions = db.Table('user_permissions',
 
 
 class PermissionGroups(db.Model):
+    """ Store the permission levels for each user """
 
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(40))
 
     def __repr__(self):
-        return '<Permission Group : {} >'.format(self.group_name)
+        return '<Permission Group: {} >'.format(self.group_name)
 
     @staticmethod
     def get_all_groups():
@@ -43,8 +45,8 @@ class PermissionGroups(db.Model):
         return groups
 
 
-# Teachers
 class User(UserMixin, db.Model):
+    """ Store data for users/staff of the academies """
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -54,7 +56,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True)
     position = db.Column(db.String(20), index=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-
     email_confirmation_sent_on = db.Column(db.DateTime, nullable=True)
     email_confirmed = db.Column(db.Boolean, nullable=True, default=False)
     email_confirmed_on = db.Column(db.DateTime, nullable=True)
@@ -62,12 +63,10 @@ class User(UserMixin, db.Model):
     academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
 
     trained_in = db.relationship('TrainedIn', backref='TrainedIn', lazy='dynamic')
-
     access_groups = db.relationship(
                         'PermissionGroups', secondary=user_permissions,
                         backref=db.backref('user_permissions', lazy='dynamic'),
                         lazy='dynamic')
-
     lessons = db.relationship('Lessons', backref='teacher', lazy='dynamic')
     student = db.relationship('Student', backref='teacher', lazy='dynamic')
     class121 = db.relationship('Class121', backref='teacher', lazy='dynamic')
@@ -99,13 +98,12 @@ class User(UserMixin, db.Model):
     def has_auth_access(self, access_group):
         """ Check if user is a member of one of the required access groups """
         
-        
         return self.access_groups.filter(
                                 user_permissions.c.permission_id == access_group.id
                                 ).count() > 0
 
     def is_master(self):
-        """ Check for master """ 
+        """ Check for master access """ 
 
         master_access = (PermissionGroups.query
                                 .filter_by(group_name="Master")
@@ -131,6 +129,8 @@ class User(UserMixin, db.Model):
             return False
 
     def avatar(self, size):
+        """ Handle generating gravatar """
+
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
         
@@ -142,6 +142,7 @@ class User(UserMixin, db.Model):
 
 
 class Academy(db.Model):
+    """ Table for academies within the company """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
@@ -159,6 +160,7 @@ class Academy(db.Model):
 
 
 class TrainedIn(db.Model):
+    """ Table to track what staff are trained in """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40))
@@ -166,7 +168,7 @@ class TrainedIn(db.Model):
     teacher = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Trained In : {} >'.format(self.name)
+        return '<Trained In: {} >'.format(self.name)
 
     @staticmethod
     def get_all_groups():
@@ -176,21 +178,17 @@ class TrainedIn(db.Model):
 
 
 def check_user_group(required_groups):
+    """ Traverse list of required access groups to check for one or more matches """
 
-    """
-    Traverse list of required access groups to check for one or more matches
-    """
     if current_user.is_anonymous:
         raise UnauthorisedAccessError
 
-    # check for master
     master_group = (PermissionGroups.query 
                                     .filter_by(group_name='Master')
                                     .first())
     if master_group in current_user.access_groups:
         return True
-        
-        
+
     access = [current_user.has_auth_access(PermissionGroups.query.filter_by(
                                                             group_name=group).first())
             for group in required_groups]
@@ -199,24 +197,19 @@ def check_user_group(required_groups):
 
 
 def group_required(*groups):
+    """ Decorate a function to require the user to have atleast one of the groups """
 
-    """
-    Decorate a function to require the user to have atleast one of the groups
-    """
-    
     def decorator(func):
         @wraps(func)
         def check_auth(*args, **kwargs):
             check_user_group(*groups)
-
             return func (*args, **kwargs)
-        
         return check_auth
-
     return decorator
 
 
 class Lessons(db.Model):
+    """ Table for tracking all lessons """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
@@ -225,7 +218,6 @@ class Lessons(db.Model):
     amount_of_students = db.Column(db.Integer)
     class_number = db.Column(db.Integer)
 
-    # relationship
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     length_of_class = db.Column(db.Integer, db.ForeignKey('length_of_class.id'))
     academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
@@ -234,7 +226,6 @@ class Lessons(db.Model):
     classes121_id = db.Column(db.Integer, db.ForeignKey('classes121.id'))
     student_on_class = db.Column(db.Integer, db.ForeignKey('studentonclass.id'))
     student_on_class2 = db.Column(db.Integer, db.ForeignKey('studentonclass2.id'))
-
     step_expected_id = db.Column(db.Integer, db.ForeignKey('step_expected_tracker.id'))
     step_actual_id = db.Column(db.Integer, db.ForeignKey('step_actual_tracker.id'))
 
@@ -243,24 +234,32 @@ class Lessons(db.Model):
     step_marks = db.relationship('StepMarks', backref='lessons', lazy='dynamic')
     custom_insert = db.relationship('CustomInsert', backref='lessons', lazy='dynamic')
 
-    
-
     def __repr__(self):
-        return '<Lesson {}, {}, {}, {}>'.format(self.name, self.time, self.comment, self.amount_of_students)
+        return '<Lesson: {}, {}, {}, {}>'.format(self.name, self.time, self.comment, self.amount_of_students)
 
-# many to many relationships student to academy and class
 
 class Studentonclass(db.Model):
+    """ Many-to-Many relationship to allow extra class added to students """
+
     id = db.Column(db.Integer, primary_key=True)
     student = db.relationship('Student', backref='Studentonclass', lazy='dynamic')
     lesson = db.relationship('Lessons', backref='Studentofclass', lazy='dynamic')
 
+    # todo: represent table
+
+
 class Studentonclass2(db.Model):
+    """ Second many-to-Many relationship to allow extra class added to students """
+
     id = db.Column(db.Integer, primary_key=True)
     student = db.relationship('Student', backref='Studentonclass2', lazy='dynamic')
     lesson = db.relationship('Lessons', backref='Studentofclass2', lazy='dynamic')
 
+    # todo: represent table
+
+
 class Student(db.Model):
+    """ Student data """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), index=True, unique=True)
@@ -270,7 +269,6 @@ class Student(db.Model):
     mark_average = db.Column(db.Integer)
     comment = db.Column(db.String(500))
 
-    # relationship
     student_on_class = db.Column(db.Integer, db.ForeignKey('studentonclass.id'))
     student_on_class2 = db.Column(db.Integer, db.ForeignKey('studentonclass2.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -280,12 +278,14 @@ class Student(db.Model):
 
     step_marks = db.relationship('StepMarks', backref='student', lazy='dynamic')
 
+    # todo: look into refractoring functionality into methods
 
     def __repr__(self):
         return '<Student {}, {}, {}, {}, {}>'.format(self.name, self.phone, self.email, self.days_missed, self.comment)
 
 
 class LengthOfClass(db.Model):
+    """ Stores data based on the length of the classes """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
@@ -304,6 +304,7 @@ class LengthOfClass(db.Model):
 
 
 class TypeOfClass(db.Model):
+    """ Store class types """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
@@ -317,7 +318,9 @@ class TypeOfClass(db.Model):
         types = TypeOfClass.query.all()
         return types
 
+
 class DaysDone(db.Model):
+    """ Store the days on which classes are done """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40))
@@ -335,6 +338,7 @@ class DaysDone(db.Model):
 
 
 class Step(db.Model):
+    """ Store step levels """
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
@@ -353,6 +357,7 @@ class Step(db.Model):
 
 
 class StepMarks(db.Model):
+    """ Store marks for students in the step classes """
 
     id = db.Column(db.Integer, primary_key=True)
     mark = db.Column(db.Integer)
@@ -369,9 +374,8 @@ class StepMarks(db.Model):
         return '<Mark: {}, end_of_step_writing: {}, end_of_step_speaking: {} >'.format(self.mark, self.end_of_step_writing, self.end_of_step_speaking)
 
 
-# connections to classes
-
 class Classes121(db.Model):
+    """ Connect 121 classes """
 
     id = db.Column(db.Integer, primary_key=True)
     TypeOfClass = db.Column(db.String(20))
@@ -386,6 +390,7 @@ class Classes121(db.Model):
 
 
 class StepExpectedTracker(db.Model):
+    """ Store data to track the step expected progress """
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -400,6 +405,7 @@ class StepExpectedTracker(db.Model):
 
 
 class StepActualTracker(db.Model):
+    """ Store data to track the step actual progress """
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -413,8 +419,9 @@ class StepActualTracker(db.Model):
     def __repr__(self):
         return '<Type: {}, {}>'.format(self.length_of_class, self.step_id)
 
-# class types
+
 class Class121(db.Model):
+    """ Store actual 121 class data """
 
     id = db.Column(db.Integer, primary_key=True)
     what_was_done = db.Column(db.String(500))
@@ -425,16 +432,16 @@ class Class121(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     classes121_id = db.Column(db.Integer, db.ForeignKey('classes121.id'))
 
-
     def __repr__(self):
         return '<Class: {}, {}, {}>'.format(self.what_was_done, self.exercises_done, self.comment)
 
 
 class StepExpectedProgress(db.Model):
+    """ Store pre-programmed step class data """
 
     id = db.Column(db.Integer, primary_key=True)
-    class_number = db.Column(db.Integer, index=True) # is it first second third etc
-    lesson_number = db.Column(db.Integer, index=True) # book lesson number
+    class_number = db.Column(db.Integer, index=True) 
+    lesson_number = db.Column(db.Integer, index=True) # book
     last_page = db.Column(db.Integer)
     last_word = db.Column(db.String(40))
     exercises = db.Column(db.String(100))
@@ -446,10 +453,11 @@ class StepExpectedProgress(db.Model):
 
 
 class StepActualProgress(db.Model):
+    """ Store actual progress for step classes """
 
     id = db.Column(db.Integer, primary_key=True)
-    class_number = db.Column(db.Integer, index=True) # is it first second third etc
-    lesson_number = db.Column(db.Integer, index=True) # book lesson number
+    class_number = db.Column(db.Integer, index=True) 
+    lesson_number = db.Column(db.Integer, index=True) 
     last_page = db.Column(db.Integer)
     last_word = db.Column(db.String(40))
     exercises = db.Column(db.String(100))
@@ -464,6 +472,8 @@ class StepActualProgress(db.Model):
 
 
 class CustomInsert(db.Model):
+    """ Store custom inserted progress programming """
+
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.DateTime, default=datetime.utcnow)
     message = db.Column(db.String(1000))
@@ -471,7 +481,6 @@ class CustomInsert(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     lesson_id = db.Column(db.Integer, db.ForeignKey('lessons.id'))
-
 
     def __repr__(self):
         return '< Custom Insert = message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)

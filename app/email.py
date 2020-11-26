@@ -6,11 +6,15 @@ from app import mail
 
 
 def send_async_email(app, msg):
+    """ Sending email asynchronously """
+
     with app.app_context():
         mail.send(msg)
 
 
 def send_email(subject, sender, recipients, text_body, html_body):
+    """ Forming the Email """
+
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
@@ -21,17 +25,13 @@ def send_confirmation_email(user_email):
     """ Email confirmation section """
 
     confirm_serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
- 
     confirm_url = url_for(
         'auth.confirm_email',
         token=confirm_serializer.dumps(user_email, salt='email-confirmation-salt'),
         _external=True)
-    
-    
     html = render_template(
         'email/confirmation.html',
         confirm_url=confirm_url)
- 
     send_email('[Number 16] Confirm Your Email Address',
                 sender=current_app.config['ADMINS'][0], 
                 recipients=[user_email],

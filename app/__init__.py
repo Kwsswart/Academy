@@ -13,7 +13,6 @@ from flask_wtf.csrf import CSRFProtect
 from flask_moment import Moment
 
 
-
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager() 
@@ -27,10 +26,10 @@ moment = Moment()
  
 
 def create_app(config_class=Config):
+    """ Create application context """
 
     app = Flask(__name__)
     app.config.from_object(Config)
-
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -59,8 +58,6 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
     
-
-
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
             auth = None

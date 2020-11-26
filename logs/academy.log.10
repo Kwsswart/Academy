@@ -14,9 +14,12 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 216, in view_class
-    if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 291, in edit_student
+    print(form.lesson.value)
+AttributeError: 'SelectField' object has no attribute 'value'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -34,9 +37,15 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 216, in view_class
-    if update_form.last_page.data >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 292, in edit_student
+    print(dict(form.lesson.choices).get(form.choice.data))
+AttributeError: 'EditStudentForm' object has no attribute 'choice'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -54,9 +63,14 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 217, in view_class
-    if update_form.last_page.data >= int(previous_expected.last_page) - 10:
-ValueError: invalid literal for int() with base 10: ''
+  File "C:\Users\Diana\pythonWorkspace\academy\app\models.py", line 211, in check_auth
+    return func (*args, **kwargs)
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 426, in edit_student
+    if form2.academy.data and form2.typeofclass.data and form2.lengthofclass.data and form2.lesson.data:
+AttributeError: 'AdditionalClassForm' object has no attribute 'lesson'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -72,11 +86,12 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 214, in view_class
-    print(previous_expected.last_page)
-AttributeError: 'NoneType' object has no attribute 'last_page'
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 112, in get_classes_edit
+    form = EditStudentForm()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() missing 1 required positional argument: 'obj'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -92,11 +107,11 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 219, in view_class
-    if update_form.last_page.data >= previous_expected.last_page - 10:
-TypeError: '>=' not supported between instances of 'str' and 'int'
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 112, in get_classes_edit
+    form = EditStudentForm()
+  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\wtforms\form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() missing 1 required positional argument: 'obj'
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
@@ -112,18 +127,6 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\diana\pythonworkspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\Diana\pythonWorkspace\academy\app\classes\routes.py", line 218, in view_class
-    if update_form.last_page.data >= previous_expected.last_page - 10:
-TypeError: '>=' not supported between instances of 'str' and 'int'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\Diana\pythonWorkspace\academy\app\students\routes.py", line 116, in get_classes_edit
+    if form.submit():
+AttributeError: 'EditStudentForm' object has no attribute 'submit'

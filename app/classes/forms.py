@@ -8,8 +8,9 @@ from app.models import Academy, Lessons, Student, LengthOfClass, TypeOfClass, Da
 from app.classes.helpers import OptionalIf
 
 
-
 class CreateClassForm(FlaskForm):
+    """ Form to handle class creation """
+
     name = StringField('Name')
     time = TimeField('Time of Lesson', validators=[DataRequired()])
     typeofclass = SelectField('Type Of Class', validators=[DataRequired()], choices=[
@@ -98,14 +99,10 @@ class CreateClassForm(FlaskForm):
     comment = TextAreaField('Special Comments', validators=[Length(min=0, max=500)])
     submit = SubmitField('Create Class')
 
-
-
     def validate_daysdone(self, lengthofclass):
-        ''' Validate day and time combinations. '''
-        print(self.daysdone.data)
-        # Check General english times and days
+        """ Validate day and time combinations. """
+       
         if self.typeofclass.data == 'Group General English':
-            
             if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
                     raise ValidationError('· Group classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
@@ -127,8 +124,6 @@ class CreateClassForm(FlaskForm):
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
             
-            
-        # Check Exams times and days
         if self.typeofclass.data == 'Group Exam':
             if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
@@ -153,9 +148,7 @@ class CreateClassForm(FlaskForm):
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
             
-        # Check Children
         if self.typeofclass.data == 'Group Children':
-
             if 'Monday' in self.daysdone.data and 'Wednesday' in self.daysdone.data:
                 if 'Friday' not in self.daysdone.data and len(self.daysdone.data) > 2:
                     raise ValidationError('· Group Children classes on can only be on Monday and Wednesday or Tuesday and Thursday!')
@@ -181,23 +174,20 @@ class CreateClassForm(FlaskForm):
             else:
                 raise ValidationError('· Ensure Group class and times are correct.')
             
-
-        # Check Intensives
         if self.typeofclass.data == 'Group Intensive':
             if self.lengthofclass.data != '1,5 Hours' and self.lengthofclass.data != '2 Hours':
                 raise ValidationError('· Intensive Classes need to be 1,5 Hours or 2 Hours long!')
 
     def validate_startat(self, step):
-        ''' Check that the lesson entered is in the step '''
+        """ Check that the lesson entered is in the correct step """
 
         lowest = int(self.step.data) * 10 - 9
         highest = int(self.step.data) * 10
         if int(self.startat.data) < lowest or int(self.startat.data) > highest:
             raise ValidationError('· Class can only start between lessons {} and {} at step {}'.format(lowest, highest, self.step.data))
   
-                
     def validate_step(self, typeofclass):
-        ''' Check ensure that level is filled. '''
+        """ Ensure that level is filled. """
 
         if self.typeofclass.data=='121-General English' or self.typeofclass.data=='Group General English' or \
             self.typeofclass.data=='121-Business English' or self.typeofclass.data=='Group Business English':
@@ -211,7 +201,7 @@ class CreateClassForm(FlaskForm):
                 raise ValidationError('· Ensure kids level and age range fields are filled to match level.')
 
     def validate_time(self, time):
-        ''' Ensure time allows classes to take place between the assigned hours. '''
+        """ Ensure time allows classes to take place between the assigned hours. """
 
         if not 8 <= time.data.hour <= 21:
             raise ValidationError('· The academies are only open from 08:00 until 10:00.')
@@ -228,22 +218,16 @@ class CreateClassForm(FlaskForm):
                 raise ValidationError('· You cannot book a class for after 11:30 on a Saturday.')
 
     def validate_class(self, name, academy):
-        ''' heck that company name filled in '''
+        """ Ensure that company name filled in """
 
-        
-        options_IC = [
-            'In-Company General English',
-            'In-Company Business English',
-        ]
+        options_IC = ['In-Company General English', 'In-Company Business English']
+
         if self.typeofclass.data in options_IC and name.data == None:
             raise ValidationError('Please Fill in the company name')
             
 
-
-
-
 class StepProgressForm(FlaskForm):
-    ''' Step Progress Form. '''
+    """ Form to handle step progress  """
 
     lesson_number = SelectField('Lesson Number', validators=[DataRequired()], choices=[], validate_choice=False)
     last_page = SelectField('Last Page', validators=[DataRequired()], choices=[], validate_choice=False)
@@ -254,6 +238,8 @@ class StepProgressForm(FlaskForm):
 
 
 class AttendanceForm(FlaskForm):
+    """ Form to handle attendance """
+
     attended = SelectField('Attended',  choices=[
         ('Yes','Yes'),
         ('No','No')])
@@ -262,15 +248,18 @@ class AttendanceForm(FlaskForm):
     speaking = IntegerField('Speaking', validators=[OptionalIf('attended')], render_kw={"placeholder": "Percentage (Only numbers)"})
 
     def validate_score(self, attended):
+        """ Ensure score is filled if attended """
+
         if self.attended.data == 'Yes' and self.score.data == None:
             raise ValidationError('You need to provide score if student attended!')
         elif self.attended.data == 'Yes':
             if  self.score.data < 3 or self.score.data > 5:
                 raise ValidationError('Score needs to be either 3, 4, or 5.')
 
-        
 
 class InsertCustom(FlaskForm):
+    """ Form to handle custom progress insert """
+
     message = TextAreaField('Message', validators=[DataRequired()])
     exercises = StringField('Exercises')
     submit = SubmitField('Insert Custom Programming')

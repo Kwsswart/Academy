@@ -18,21 +18,19 @@ from app.classes.helpers import get_name
 @group_required(['Master', 'Upper Management', 'Management'])
 @login_required
 def create_class():
+    """ End-point to handle creating the classes """
 
     form = CreateClassForm()
 
     if form.validate_on_submit():
-
         academy = Academy.query.filter_by(name=dict(form.academy.choices).get(form.academy.data)).first()
+        class_type = dict(form.typeofclass.choices).get(form.typeofclass.data)
         if not current_user.is_master() and current_user.position != "Upper Management":
             if current_user.academy_id != academy.id:
                 flash('You can only add classes to your own academy.')
                 return redirect(url_for('classes.create_class'))
-        class_type = dict(form.typeofclass.choices).get(form.typeofclass.data)
-        
-        # Adding General English Class
-        if class_type == 'Group General English':
 
+        if class_type == 'Group General English':
             if form.lengthofclass.data == '30 Minutes':
                 flash('General English Group class cannot be 30 minutes long')
                 return redirect(url_for('classes.create_class'))
@@ -71,60 +69,53 @@ def create_class():
             )
             db.session.add(lesson)
             db.session.commit()
-
             days = form.daysdone.data
-
             for t in days:
                 i = DaysDone(name=t, lessons=lesson.id)
                 db.session.add(i)
                 db.session.commit()
-
             flash('Class Added.')
             return redirect(url_for('classes.classes', academy=academy.name))
-        
         elif class_type == 'Group Exam Class':
-            print('hi')
+            # todo: input class system
             name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
             print(name)
         return redirect(url_for('classes.classes', academy=academy.name))
-
     return render_template('class/create_class.html', title="Create Class", form=form)
 
 
 @bp.route('/classes/<academy>', methods=['GET'])
 @login_required
 def classes(academy):
+    """ End-point to handle displaying the classes """
     
     if academy == 'all':
         page = request.args.get('page', 1, type=int)
         academy1 = Academy.query.all()
         groups = Lessons.query.outerjoin(LengthOfClass).outerjoin(Academy).group_by(Lessons.academy_id, Lessons.id).order_by(Lessons.academy_id.asc()).order_by(Lessons.step_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        step = Step.query.all()
+        days = DaysDone.query.join(Lessons).all()
         next_url = url_for('classes.classes', academy='all', page=groups.next_num) \
         if groups.has_next else None
         prev_url = url_for('classes.classes', academy='all', page=groups.prev_num) \
-        if groups.has_prev else None
-
-        step = Step.query.all()
-        days = DaysDone.query.join(Lessons).all()
+        if groups.has_prev else None   
     else: 
         page = request.args.get('page', 1, type=int)
-
         academy1 = Academy.query.filter_by(name=academy).first()
         groups = Lessons.query.filter_by(academy_id=academy1.id).outerjoin(LengthOfClass).outerjoin(Academy).order_by(Lessons.step_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        days = DaysDone.query.join(Lessons).all()
+        step = Step.query.all() 
         next_url = url_for('classes.classes', academy=academy1.name, page=groups.next_num) \
         if groups.has_next else None
         prev_url = url_for('classes.classes', academy=academy1.name, page=groups.prev_num) \
         if groups.has_prev else None
-        
-        days = DaysDone.query.join(Lessons).all()
-        step = Step.query.all()        
-    
     return render_template('class/classes.html', title="View Classes", academy=academy1, groups=groups.items, days=days, step=step, next_url=next_url, prev_url=prev_url)
 
 
 @bp.route('/view_class/<name>/<academy>', methods=['GET', 'POST'])
 @login_required
 def view_class(name, academy):
+    """ End-point to handle displaying the individual class information & updating the class progress. """
 
     academy = Academy.query.filter_by(name=academy).first()
     lesson = Lessons.query.filter_by(name=name).filter_by(academy_id=academy.id).join(Step).join(LengthOfClass).join(TypeOfClass).first()
@@ -133,6 +124,12 @@ def view_class(name, academy):
     studentcount = Student.query.filter_by(class_id=lesson.id).count()
     students1 = None
     students2 = None
+    expected_progress = None
+    actual_progress = None
+    current_last_page = None
+    custom_progress = CustomInsert.query.filter_by(lesson_id=lesson.id).join(User).order_by(CustomInsert.datetime.asc()).first()
+    forms = []
+    update_form = StepProgressForm()
 
     if lesson.student_on_class:
         link_1 = Studentonclass.query.filter_by(id=lesson.student_on_class).first()
@@ -149,15 +146,11 @@ def view_class(name, academy):
     if students2 is not None:
         students = students + students2
    
-    expected_progress = None
-    actual_progress = None
     student_ids = [f'{s.id}'for s in students]
-    current_last_page = None
-    custom_progress = CustomInsert.query.filter_by(lesson_id=lesson.id).join(User).order_by(CustomInsert.datetime.asc()).first()
-    
+    for i in range(studentcount):
+        forms.append(AttendanceForm())
 
     if lesson.TypeOfClass.name == 'Group General English':
-     
         expected_tracker = StepExpectedTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id).filter_by(step_id=lesson.step.id).first()
         expected_progress = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).order_by(StepExpectedProgress.class_number.desc()).all()
         actual_tracker = StepActualTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id).filter_by(step_id=lesson.step.id).first()
@@ -169,29 +162,22 @@ def view_class(name, academy):
                 if custom_progress.datetime < actual_progress_page.datetime:
                     custom_progress = None
         
-    forms = []
-    for i in range(studentcount):
-        forms.append(AttendanceForm())
-    update_form = StepProgressForm()
-
     if update_form.validate_on_submit():
-
         if lesson.TypeOfClass.name == 'Group General English':
-            
-            # check no progress has already been added for this date
             if actual_progress_page.datetime.date() == date.today():
                 if lesson.LengthOfClass.name != '2 Hours' or lesson.LengthOfClass.name != '2,5 Hours':
-                    flash('Progress Has already been updated today if you need to edit the progress look into editing it.')
+                    flash('Progress has already been updated today if you need to edit the progress look into editing it.')
                     return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
 
             for i in expected_progress:
                 if i.class_number == lesson.class_number:
                     expected_progress = i
+
             if expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours':
                 if int(update_form.lesson_number.data) < expected_progress.lesson_number - 1:
                     flash('Lesson number cannot be that low?')
                     return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
-     
+
             if actual_tracker == None:
                 actual_tracker = StepActualTracker(length_of_class=lesson.length_of_class, step_id=lesson.step_id)
                 db.session.add(actual_tracker)
@@ -206,12 +192,12 @@ def view_class(name, academy):
                 comment=update_form.comment.data,
                 user_id=current_user.id,
                 step_actual_id=actual_tracker.id)
-
             db.session.add(new)
             db.session.commit()
 
-            # last page limits message dos or automatically push 1 lesson back or forward? ask cindy?
+            # ASK CINDY: last page limits message dos or automatically push 1 lesson back or forward?
             if expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2 Hours' or expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2,5 Hours':
+                # todo: Decide whether to only message managment and leave for them to do or to set back.
                 lp_upper = expected_progress.last_page + 15
                 lp_lower = expected_progress.last_page - 15
                 if new.last_page >= lp_upper:
@@ -221,8 +207,7 @@ def view_class(name, academy):
                     # message dos
                     message = " The last page for class is more than or equal to 15 pages less than expected"
 
-                #if push back or forward:
-
+                # todo: Decide whether to push back or foward automatically
                 previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 2).first()
                 next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 2).first()
                 if previous_expected is not None:
@@ -232,8 +217,9 @@ def view_class(name, academy):
                         example = 'example'
 
             if lesson.LengthOfClass.name == '1 Hour' or lesson.LengthOfClass.name == '1,5 Hours':
-                lp_upper = expected_progress.last_page + 15
-                lp_lower = expected_progress.last_page - 15
+                # todo: Decide whether to only message managment and leave for them to do or to set back.
+                lp_upper = int(expected_progress.last_page) + 15
+                lp_lower = int(expected_progress.last_page) - 15
                 if new.last_page >= lp_upper:
                     # message dos
                     message = "The last page for class is more than or equal to 15 pages more than expected"
@@ -241,16 +227,14 @@ def view_class(name, academy):
                     # message dos
                     message = " The last page for class is more than or equal to 15 pages less than expected"
 
-                #if push back or forward:f
+                # todo: Decide whether to push back or foward automatically
                 previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 1).first()
                 next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 1).first()
                 if previous_expected is not None:
                     if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
                         # set expected progress here
                         # lesson.class_number = previous_expected.class_number
-                        example = 'example'
-
-
+                        todo = 'todo'
         lesson.class_number = lesson.class_number + 1
         db.session.commit()
         flash('Progress updated')
@@ -270,29 +254,25 @@ def view_class(name, academy):
         forms=forms,
         current_last_page=current_last_page,
         custom_progress=custom_progress,
-        # Adding for js functionality
-        step= json.dumps(lesson.step.name),
+        step=json.dumps(lesson.step.name),
         st=student_ids)
 
 
 @bp.route('/attendance/<name>/<lesson>', methods=['POST'])
 @login_required
 def attendance(name, lesson):
-    ''' Check the attendance for each student and up-to-date. '''
+    """ End-point to handle up-date attendance for students on progress submission """
 
     student = Student.query.filter_by(id=name).first()
     lesson = Lessons.query.filter_by(id=lesson).join(TypeOfClass).first()
-
     form = AttendanceForm()
 
     if form.validate_on_submit():
-        # use if lesson.TypeOfClass.name == 'Group General English': to separate marking 121s exam classes, kids or step
+        # todo: Separate between exams, kids, companies, 121s using (if lesson.TypeOfClass.name == 'Group General English')
         stepmarks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).order_by(StepMarks.datetime.desc()).first()
-        current_datetime = datetime.utcnow()
 
         if form.attended.data == 'Yes':
             student.days_missed = 0
-            
             if stepmarks == None:
                 mark = StepMarks(
                     mark = form.score.data,
@@ -306,10 +286,9 @@ def attendance(name, lesson):
                 db.session.commit()
                 student.mark_average = mark.mark
                 db.session.commit()
-
-            elif stepmarks.datetime.day == current_datetime.day and stepmarks.datetime.month == current_datetime.month and stepmarks.datetime.year == current_datetime.year:
-                print('Already been submitted')
-                                
+            elif stepmarks.datetime.date() == date.today():
+                # todo: re-evaluate the way comparing above
+                print('Already been submitted')                   
             else:
                 mark = StepMarks(
                     mark = form.score.data,
@@ -327,17 +306,16 @@ def attendance(name, lesson):
                 for m in marks:
                     total = total + m.mark 
                     count = count + 1
-
                 student.mark_average = round(total/count,1)
-                db.session.commit()
-                 
+                # todo: check if student has recieved 3 for the consecutive three times to email dos
+                db.session.commit() 
         else:
             student.days_missed = student.days_missed + 1
             db.session.commit()
-
             if student.days_missed >= 3:
-                # message the dos here
+                # todo: message the dos here
                 print('Over the limit.')
+
         return jsonify(data={'message': 'recieved {}'.format(student.name)})
     return jsonify(data=form.errors)
 
@@ -345,19 +323,20 @@ def attendance(name, lesson):
 @bp.route('/edit_submitted_progress/<progress_id>/<lesson_id>', methods=['GET', 'POST'])
 @login_required
 def edit_submitted_progress(progress_id, lesson_id):
+    """ End-point to edit the previously submitted progress """
 
     progress = StepActualProgress.query.filter_by(id=progress_id).first()
-    lesson = Lessons.query.filter_by(id=lesson_id).join(Academy).first()
+    lesson = Lessons.query.filter_by(id=lesson_id).join(Academy).join(Step).first()
+    form = StepProgressForm()
 
     if not current_user.is_master() and current_user.position != "Upper Management" or current_user.position != "Management":
         if progress.user_id != current_user.id:
             flash("You cannot edit somebody else's submitted progress")
             return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
 
-    form = StepProgressForm()
-
     if form.validate_on_submit():
-        hi = 'ho'
+        todo = 'todo'
+        # run checks to see how far off the last page and number are just in case as in the original submissions
     else:
         form.lesson_number.data = progress.lesson_number
         form.last_page.data = progress.last_page
@@ -365,16 +344,16 @@ def edit_submitted_progress(progress_id, lesson_id):
         form.exercises.data = progress.exercises
         form.comment.data = progress.comment
 
-    return render_template('class/edit_submitted_progress.html', form=form, lesson=lesson, progress=progress)
+    return render_template('class/edit_submitted_progress.html', title="Edit Submitted Progress", form=form, lesson=lesson, progress=progress, step=lesson.step.name)
 
 
 @bp.route('/insert_custom/<class_id>', methods=['GET', 'POST'])
 @group_required(['Master', 'Upper Management', 'Management'])
 @login_required
 def insert_custom(class_id):
+    """ End-point to insert custom progress """
 
     lesson = Lessons.query.filter_by(id=class_id).join(Academy).first()
-
     form = InsertCustom()
     
     if form.validate_on_submit():
@@ -389,20 +368,20 @@ def insert_custom(class_id):
         flash('Custom Progress Inserted.')
         return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
 
-    return render_template('class/insert_custom.html', lesson=lesson, form=form)
+    return render_template('class/insert_custom.html', title="Insert Custom Progress", lesson=lesson, form=form)
 
 
 @bp.route('/edit_custom/<custom_id>', methods=['POST'])
 @group_required(['Master', 'Upper Management', 'Management'])
 @login_required
 def edit_custom(custom_id):
+    """ End-point to edit previously created custom progress """
 
     custom = CustomInsert.query.filter_by(id=custom_id).first()
     lesson = Lessons.query.filter_by(id=custom.lesson_id).join(Academy).first()
     form = InsertCustom()
     
     if form.validate_on_submit():
-
         custom.message = form.message.data
         custom.exercises = form.exercises.data 
         custom.user_id = current_user.id 
@@ -413,19 +392,20 @@ def edit_custom(custom_id):
         form.message.data = custom.message
         form.exercises.data = custom.exercises
 
-    return render_template('class/insert_custom.html', lesson=lesson, form=form)
+    return render_template('class/insert_custom.html', title="Edit Custom Progress", lesson=lesson, form=form)
 
 
 @bp.route('/remove_custom/<custom_id>', methods=['GET', 'POST'])
 @group_required(['Master', 'Upper Management', 'Management'])
 @login_required
 def remove_custom(custom_id):
+    """ End-point to remove custom progress """
 
     custom = CustomInsert.query.filter_by(id=custom_id).first()
     lesson = Lessons.query.filter_by(id=custom.lesson_id).join(Academy).first()
-    
     db.session.delete(custom)
     db.session.commit()
     flash('Custom Progress Removed.')
+
     return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
     
