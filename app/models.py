@@ -232,10 +232,26 @@ class Lessons(db.Model):
     days_done = db.relationship('DaysDone', backref='DaysDone', lazy='dynamic')
     student = db.relationship('Student', backref='lessons', lazy='dynamic')
     step_marks = db.relationship('StepMarks', backref='lessons', lazy='dynamic')
+    step_progress = db.relationship('StepActualProgress', backref='Lessons', lazy='dynamic')
     custom_insert = db.relationship('CustomInsert', backref='lessons', lazy='dynamic')
 
     def __repr__(self):
         return '<Lesson: {}, {}, {}, {}>'.format(self.name, self.time, self.comment, self.amount_of_students)
+
+    def has_students(self):
+        """ Check if students are in the class """
+
+        students = Student.query.filter_by(class_id=self.id).first()
+        link_1 = None
+        link_2 = None
+        if self.student_on_class != None:
+            link_1 = Student.query.filter_by(student_on_class=self.student_on_class).all()
+        if self.student_on_class2 != None:
+            link_1 = Student.query.filter_by(student_on_class2=self.student_on_class2).all()
+        if students != None or link_1 != None or link_2 != None:
+            return True
+        else:
+            return False
 
 
 class Studentonclass(db.Model):
@@ -281,7 +297,7 @@ class Student(db.Model):
     # todo: look into refractoring functionality into methods
 
     def __repr__(self):
-        return '<Student {}, {}, {}, {}, {}>'.format(self.name, self.phone, self.email, self.days_missed, self.comment)
+        return '<Student: Name={}, Phone={}, {}, {}, {}>'.format(self.name, self.phone, self.email, self.days_missed, self.comment)
 
 
 class LengthOfClass(db.Model):
@@ -466,6 +482,7 @@ class StepActualProgress(db.Model):
 
     step_actual_id = db.Column(db.Integer, db.ForeignKey('step_actual_tracker.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lessons.id'))
 
     def __repr__(self):
         return '<Class: {}, {}, {}, {}, {}, {}, {}>'.format(self.class_number, self.lesson_number, self.last_page, self.last_word, self.exercises, self.datetime, self.comment)
@@ -484,3 +501,4 @@ class CustomInsert(db.Model):
 
     def __repr__(self):
         return '< Custom Insert = message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)
+        

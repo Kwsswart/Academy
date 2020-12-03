@@ -75,12 +75,12 @@ def create_class():
                 db.session.add(i)
                 db.session.commit()
             flash('Class Added.')
-            return redirect(url_for('classes.classes', academy=academy.name))
+            return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
         elif class_type == 'Group Exam Class':
             # todo: input class system
             name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
             print(name)
-        return redirect(url_for('classes.classes', academy=academy.name))
+            return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
     return render_template('class/create_class.html', title="Create Class", form=form)
 
 
@@ -151,11 +151,16 @@ def view_class(name, academy):
         forms.append(AttendanceForm())
 
     if lesson.TypeOfClass.name == 'Group General English':
-        expected_tracker = StepExpectedTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id).filter_by(step_id=lesson.step.id).first()
-        expected_progress = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).order_by(StepExpectedProgress.class_number.desc()).all()
-        actual_tracker = StepActualTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id).filter_by(step_id=lesson.step.id).first()
-        actual_progress = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id).order_by(StepActualProgress.class_number.desc()).all()
-        actual_progress_page = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id).order_by(StepActualProgress.class_number.desc()).first()
+        expected_tracker = StepExpectedTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id) \
+            .filter_by(step_id=lesson.step.id).first()
+        expected_progress = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id) \
+            .order_by(StepExpectedProgress.class_number.desc()).all()
+        actual_tracker = StepActualTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id) \
+            .filter_by(step_id=lesson.step.id).first()
+        actual_progress = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id) \
+            .filter_by(lesson_id=lesson.id).order_by(StepActualProgress.class_number.desc()).all()
+        actual_progress_page = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id) \
+            .filter_by(lesson_id=lesson.id).order_by(StepActualProgress.class_number.desc()).first()
         if actual_progress_page != None:
             current_last_page = actual_progress_page.last_page
             if custom_progress != None:
@@ -164,7 +169,7 @@ def view_class(name, academy):
         
     if update_form.validate_on_submit():
         if lesson.TypeOfClass.name == 'Group General English':
-            if actual_progress_page.datetime.date() == date.today():
+            if actual_progress_page != None and actual_progress_page.datetime.date() == date.today():
                 if lesson.LengthOfClass.name != '2 Hours' or lesson.LengthOfClass.name != '2,5 Hours':
                     flash('Progress has already been updated today if you need to edit the progress look into editing it.')
                     return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
@@ -191,51 +196,60 @@ def view_class(name, academy):
                 exercises=update_form.exercises.data,
                 comment=update_form.comment.data,
                 user_id=current_user.id,
-                step_actual_id=actual_tracker.id)
+                step_actual_id=actual_tracker.id,
+                lesson_id=lesson.id)
             db.session.add(new)
             db.session.commit()
+
+            non_validate = ['REVISION', 'GRAMMAR REVIEW', 'FINISH BOOK', 'EXAM PREP', 'END OF STEP EXAM', 'GO THROUGH EXAM', "SPEAKER'S CORNER"]
 
             # ASK CINDY: last page limits message dos or automatically push 1 lesson back or forward?
             if expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2 Hours' or expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2,5 Hours':
                 # todo: Decide whether to only message managment and leave for them to do or to set back.
-                lp_upper = expected_progress.last_page + 15
-                lp_lower = expected_progress.last_page - 15
-                if new.last_page >= lp_upper:
-                    # message dos
-                    message = "The last page for class is more than or equal to 15 pages more than expected"
-                elif new.last_page <= lp_lower:
-                    # message dos
-                    message = " The last page for class is more than or equal to 15 pages less than expected"
+                if custom_progress != None and expected.last_page not in non_validate:
+                    lp_upper = expected_progress.last_page + 15
+                    lp_lower = expected_progress.last_page - 15
+                    if new.last_page >= lp_upper:
+                        # message dos
+                        message = "The last page for class is more than or equal to 15 pages more than expected"
+                    elif new.last_page <= lp_lower:
+                        # message dos
+                        message = " The last page for class is more than or equal to 15 pages less than expected"
 
-                # todo: Decide whether to push back or foward automatically
-                previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 2).first()
-                next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 2).first()
-                if previous_expected is not None:
-                    if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-                        # set expected progress here
-                        # lesson.class_number = previous_expected.class_number
-                        example = 'example'
+                    # todo: Decide whether to push back or foward automatically
+                    previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 2).first()
+                    next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 2).first()
+                    if previous_expected is not None:
+                        if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
+                            # set expected progress here
+                            # lesson.class_number = previous_expected.class_number
+                            example = 'example'
 
             if lesson.LengthOfClass.name == '1 Hour' or lesson.LengthOfClass.name == '1,5 Hours':
                 # todo: Decide whether to only message managment and leave for them to do or to set back.
-                lp_upper = int(expected_progress.last_page) + 15
-                lp_lower = int(expected_progress.last_page) - 15
-                if new.last_page >= lp_upper:
-                    # message dos
-                    message = "The last page for class is more than or equal to 15 pages more than expected"
-                elif new.last_page <= lp_lower:
-                    # message dos
-                    message = " The last page for class is more than or equal to 15 pages less than expected"
+                # todo: make for grammar review exam, revision, custom so not to check page for them
+                if custom_progress != None and expected.last_page not in non_validate:
+                    lp_upper = int(expected_progress.last_page) + 15
+                    lp_lower = int(expected_progress.last_page) - 15
+                    if new.last_page >= lp_upper:
+                        # message dos
+                        message = "The last page for class is more than or equal to 15 pages more than expected"
+                    elif new.last_page <= lp_lower:
+                        # message dos
+                        message = " The last page for class is more than or equal to 15 pages less than expected"
 
-                # todo: Decide whether to push back or foward automatically
-                previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 1).first()
-                next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 1).first()
-                if previous_expected is not None:
-                    if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-                        # set expected progress here
-                        # lesson.class_number = previous_expected.class_number
-                        todo = 'todo'
-        lesson.class_number = lesson.class_number + 1
+                    # todo: Decide whether to push back or foward automatically
+                    previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 1).first()
+                    next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 1).first()
+                    if previous_expected is not None:
+                        if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
+                            # set expected progress here
+                            # lesson.class_number = previous_expected.class_number
+                            todo = 'todo'
+                # todo: Notify if finished book or close to finishing book
+        # todo: check if class_number changes with the custom progress and if yes change so that doesn't
+        if custom_progress == None:
+            lesson.class_number = lesson.class_number + 1
         db.session.commit()
         flash('Progress updated')
         return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
@@ -332,10 +346,18 @@ def edit_submitted_progress(progress_id, lesson_id):
     if not current_user.is_master() and current_user.position != "Upper Management" or current_user.position != "Management":
         if progress.user_id != current_user.id:
             flash("You cannot edit somebody else's submitted progress")
-            return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
+            return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
 
     if form.validate_on_submit():
-        todo = 'todo'
+        progress.lesson_number = form.lesson_number.data
+        progress.last_page = form.last_page.data 
+        progress.last_word = form.last_word.data
+        progress.exercises = form.exercises.data 
+        progress.comment = form.comment.data
+        progress.user_id = current_user.id
+
+        db.session.commit()
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
         # run checks to see how far off the last page and number are just in case as in the original submissions
     else:
         form.lesson_number.data = progress.lesson_number
@@ -408,4 +430,112 @@ def remove_custom(custom_id):
     flash('Custom Progress Removed.')
 
     return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+
+
+@bp.route('/move_class/<move>/<lesson>', methods=['GET'])
+@group_required(['Master', 'Upper Management', 'Management'])
+@login_required
+def move_class(move, lesson):
+    """ End-point to handle moving the class progress back or forward """
+
+    lesson = Lessons.query.filter_by(id=lesson).join(Academy).first()
+    # todo: double check this once done
+    if move == "FORWARD":
+        lesson.class_number = lesson.class_number + 1
+        db.session.commit()
+    elif move == "BACKWARDS":
+        lesson.class_number = lesson.class_number - 1
+        db.session.commit()
+
+    return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
     
+
+@bp.route('/no_show/<class_id>', methods=['GET'])
+@login_required
+def no_show(class_id):
+    """ End-point to handle submission of no show lessons """
+    # todo: check this
+    lesson = Lessons.query.filter_by(id=class_id).join(Academy).join(LengthOfClass).join(Step).join(TypeOfClass).first()
+    students = Student.query.filter_by(class_id=class_id).all()
+    link_1 = None
+    link_2 = None
+    if lesson.student_on_class != None:
+        link_1 = Student.query.filter_by(student_on_class=lesson.student_on_class).all()
+    if lesson.student_on_class2 != None:
+        link_2 = Student.query.filter_by(student_on_class2=lesson.student_on_class2).all()
+    actual_tracker = StepActualTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id) \
+        .filter_by(step_id=lesson.step.id).first()
+    previous_progress = StepActualProgress.query.filter_by(lesson_id=lesson.id) \
+        .filter_by(step_actual_id=actual_tracker.id).filter_by(class_number=lesson.class_number - 1).first()
+    expected_tracker = StepExpectedTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id) \
+        .filter_by(step_id=lesson.step.id).first()
+    expected_progress = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id) \
+        .order_by(StepExpectedProgress.class_number.desc()).all()
+    actual_progress_page = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id) \
+            .filter_by(lesson_id=lesson.id).order_by(StepActualProgress.class_number.desc()).first()
+        
+    if actual_progress_page != None and actual_progress_page.datetime.date() == date.today():
+        flash('Progress has already been updated today if you need to edit the progress look into editing it.')
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+
+    for student in students:
+        student.days_missed = student.days_missed + 1
+        db.session.commit()
+    if link_1 != None:
+        for student in link_1:
+            student.days_missed = student.days_missed + 1
+            db.session.commit()
+    if link_2 != None:
+        for student in link_2:
+            student.days_missed = student.days_missed + 1
+            db.session.commit()
+    if previous_progress != None:
+        new = StepActualProgress(
+            class_number=lesson.class_number, 
+            lesson_number=previous_progress.lesson_number, 
+            last_page=previous_progress.last_page,
+            last_word="NO SHOW!",
+            exercises="NO SHOW!",
+            comment="NO SHOW!",
+            user_id=current_user.id,
+            step_actual_id=actual_tracker.id,
+            lesson_id=lesson.id)
+    else:
+        for expected in expected_progress:
+            if expected.class_number == lesson.class_number:
+                expected_progress = expected
+        new = StepActualProgress(
+            class_number=lesson.class_number, 
+            lesson_number=expected.lesson_number, 
+            last_page=expected.last_page,
+            last_word="NO SHOW!",
+            exercises="NO SHOW!",
+            comment="NO SHOW!",
+            user_id=current_user.id,
+            step_actual_id=actual_tracker.id,
+            lesson_id=lesson.id)
+    db.session.add(new)
+    db.session.commit()
+    flash('Submitted No Show')
+    return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+
+
+@bp.route('/remove_class/<class_id>')
+@group_required(['Master', 'Upper Management', 'Management'])
+@login_required
+def remove_class(class_id):
+    """ End-point to handle removal of classes """
+
+    lesson = Lessons.query.filter_by(id=class_id).first()
+    academy = Academy.query.filter_by(id=lesson.academy_id).first()
+    if lesson.has_students():
+        flash('Please ensure students are either moved to another class or removed from system first.')
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
+    
+    # todo: implement removal email here, with lesson details last page and word just in case needing to redo to dos
+
+    db.session.delete(lesson)
+    db.session.commit()
+    flash('Class Group has been removed from the system.')
+    
+    return redirect(url_for('classes.classes', academy=academy.name))

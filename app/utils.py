@@ -23,7 +23,3 @@ def validate_image(stream):
     if not format:
         return None
     return '.' + (format if format != 'jpeg' else 'jpg')
-
-
-
-

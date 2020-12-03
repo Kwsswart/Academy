@@ -20,7 +20,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -38,7 +38,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -56,7 +56,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -74,7 +74,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -96,7 +96,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -114,7 +114,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -132,7 +132,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -150,7 +150,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -172,7 +172,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -190,7 +190,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -208,7 +208,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -226,7 +226,7 @@ def get_name(name, days, time, types, academy):
             academy = Academy.query.filter_by(name=academy).first()
             lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
             if lessons != 0:
-                name2 = name + str(1)
+                name2 = name + str(lessons + 1)
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -247,7 +247,7 @@ def get_name(name, days, time, types, academy):
         academy = Academy.query.filter_by(name=academy).first()
         lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
         if lessons != 0:
-            name2 = name + str(1)
+            name2 = name + str(lessons + 1)
         else:
             name2 = name + '1'
         lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
@@ -266,7 +266,7 @@ def get_name(name, days, time, types, academy):
         academy = Academy.query.filter_by(name=academy).first()
         lessons = Lessons.query.filter_by(academy_id=academy.id).filter(Lessons.name.like(name + '%')).count()
         if lessons != 0:
-            name2 = name + str(1)
+            name2 = name + str(lessons + 1)
         else:
             name2 = name + '1'
         lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()

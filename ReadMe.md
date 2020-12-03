@@ -10,7 +10,7 @@ This is very aimed towards one type of academy and would require alot to adapt i
 
 
 
-** Set-up
+## Set-up
 
 1) Ensure there is the directory
 

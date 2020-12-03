@@ -1,6 +1,6 @@
-* Setting Up the Database:
+## Setting Up the Database:
 
-Run the following series of code inside the flask shell:
+# Run the following series of code inside the flask shell:
 
     ```bash
     u = User(username="Master", name="Master", phone="3737", email="master@example.com", position="Master")
@@ -9,7 +9,7 @@ Run the following series of code inside the flask shell:
     db.session.commit()
     ```
 
-    This will allow you to access the app with the master and add classes, students, and staff.
+# This will allow you to access the app with the master and add classes, students, and staff.
 
     ```bash
     a1=Academy(name="Nuevos Ministerios")
@@ -36,7 +36,7 @@ Run the following series of code inside the flask shell:
     db.session.commit()
     ```
 
-    This allows the academies that this program utilizes to be entered and ties one to the master once, more if requiring otherwise you would need to adapt.
+# This allows the academies that this program utilizes to be entered and ties one to the master once, more if requiring otherwise you would need to adapt.
 
     ```bash
     new_permission = PermissionGroups(group_name='Master')                                            
@@ -64,7 +64,7 @@ Run the following series of code inside the flask shell:
     db.session.commit()
     ```
 
-    This will add the different permission levels required within the application and ties the master to master branch.
+# This will add the different permission levels required within the application and ties the master to master branch.
 
     ```bash
     t1=TrainedIn(name="General English") 
@@ -154,5 +154,5 @@ Run the following series of code inside the flask shell:
     db.session.commit()
     ```
 
-    Once more only items required for the specific company that this is for.
+# Once more only items required for the specific company that this is for.
 

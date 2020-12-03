@@ -31,7 +31,6 @@ def importer(filename, time, step):
             db.session.commit()
             
 
-
 def looper(path, time):
     """ Call importer programmatically based on directory path and length of class """
 

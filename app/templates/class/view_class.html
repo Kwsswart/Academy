@@ -3,13 +3,20 @@
 {% from "_attendancehelper.html" import render_field %}
 
 {% block styles %}
-{{ super()}}
+{{ super() }}
+
+<style>
+    #comment {
+        resize:vertical;
+    }
+</style>
 {% endblock %}
 
 {% block app_content %}
 <h3>Class View</h3>
+        <p><a href="{{ url_for('classes.no_show', class_id=lesson.id) }}" class="btn btn-default">No Show</a></p>
         {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
-        <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="" class="btn btn-default">Move Forward</a> <a href="" class="btn btn-default">Move Backwards</a></p>
+        <p><a href="" class="btn btn-default">Edit Class</a> <a href="{{ url_for('classes.remove_class', class_id=lesson.id) }}" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="{{ url_for('classes.move_class', move='FORWARD', lesson=lesson.id) }}" class="btn btn-default">Move Forward</a> <a href="{{ url_for('classes.move_class', move='BACKWARDS', lesson=lesson.id) }}" class="btn btn-default">Move Backwards</a></p>
         {% endif %}
 <table class='table'>
     <thead>
@@ -152,7 +159,9 @@
         </th>
         <td>
             {% for i in actual_progress %}
-            {{ i.exercises}} ,
+            {% if i.exercises != '' %}
+            {{ i.exercises }} ,
+            {% endif %}
             {% endfor %}
         </td>
     </tr>
@@ -196,6 +205,7 @@
                         </td>
                         <td>
                             {{ render_field(update_form.last_word, id="last_word", class='form-control', style="width:33%;") }}
+                            <div id="char_remaining_last_word" style="color:red;"></div>
                         </td>
                     </tr>
                     <tr>
@@ -204,6 +214,7 @@
                         </td>
                         <td>
                             {{ render_field(update_form.exercises, id="exercises", class='form-control', style="width:33%;") }}
+                            <div id="char_remaining_exercises" style="color:red;"></div>
                         </td>
                     </tr>
                     <tr>
@@ -212,6 +223,7 @@
                         </td>
                         <td>
                             {{ render_field(update_form.comment, id="comment", class='form-control', style="width:33%;") }}
+                            <div id="char_remaining_comment" style="color:red;"></div>
                         </td>
                     </tr>
                 </tbody>
@@ -353,7 +365,19 @@
         }); 
                  
     }
-   
+    
+    function countchar(max_length, warn_length, messageid, fieldid) {
+        /* Character counter function */
+
+        var len = $(fieldid).val().length;
+        if (len >= max_length) {
+          $('#' + messageid).text('Characters Remaining: 0');
+        } else if (len >= max_length - warn_length) {
+          $('#' + messageid).text('Characters Remaining:' + (max_length - len).toString());
+        } else {
+          $('#' + messageid).text('');
+        }
+    }
     $(document).ready(function() {
 
         get_lessons({{step | safe}});
@@ -367,9 +391,12 @@
     
     
         $('#update_form').submit(function (e) {
-            // Submit all ajax calls wait for response and once submitted submit the final form note submit button id cannot be #submit 
+            /* 
+                Function to submit all ajax calls, while waiting for response. Once Submitted allow final form submittion. 
+                    · Note Submit buttom id cannot be 'submit'
+            */
+             
             e.preventDefault();
-
             var deferred = [];
             const thisform = this;
 
@@ -397,5 +424,52 @@
             }
         })
     });
+
+    // Character counters for text fields
+    $('#comment').keydown(function(e) {
+        var len = $("#comment").val().length;
+        const key = e.key; 
+        if (key === "Backspace" || key === "Delete") { 
+        } else if (len >= 450) {
+          e.preventDefault()
+          $('#comment').text('Characters Remaining: 0');
+        }
+      }).keyup(function() {
+        countchar(450, 50, "char_remaining_comment", "#comment");
+        let len = $("#comment").val().length;
+        if (len > 450){
+            $('#char_remaining_comment').text('Too many characters remove some or else there will be problems with submission.');
+        }
+    });
+    $('#exercises').keydown(function(e) {
+        var len = $("#exercises").val().length;
+        const key = e.key; 
+        if (key === "Backspace" || key === "Delete") { 
+        } else if (len >= 100) {
+          e.preventDefault()
+          $('#exercises').text('Characters Remaining: 0');
+        }
+      }).keyup(function() {
+        countchar(100, 20, "char_remaining_exercises", "#exercises");
+        let len = $("#exercises").val().length;
+        if (len > 100){
+            $('#char_remaining_exercises').text('Too many characters remove some or else there will be problems with submission.');
+        }
+      });
+    $('#last_word').keydown(function(e) {
+        var len = $("#last_word").val().length;
+        const key = e.key; 
+        if (key === "Backspace" || key === "Delete") { 
+        } else if (len >= 38) {
+          e.preventDefault()
+          $('#last_word').text('Characters Remaining: 0');
+        }
+      }).keyup(function() {
+        countchar(38, 20, "char_remaining_last_word", "#last_word");
+        let len = $("#last_word").val().length;
+        if (len > 38){
+            $('#char_remaining_last_word').text('Too many characters remove some or else there will be problems with submission.');
+        }
+      });
 </script>
 {% endblock %}

@@ -18,7 +18,7 @@
             <p>Email: {{ user.email }}</p>
             <p>Phone Number: {{ user.phone }}</p>
             <p>Last Online: {{ user.last_seen }}</p>
-            <p>Trained to Teach:  {% for t in trained %} {{ t.name }} {% endfor %}</p>
+            <p>Trained to Teach:  {% for t in trained %} {{ t.name }} ,{% endfor %}</p>
 
 
             <p>Recent Classes taught:

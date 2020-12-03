@@ -2,6 +2,10 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<h1> Hi. {{ current_user.name }} You are a {{ current_user.position }}</h1>
+<h2 style="text-align: center;"> Announcements </h1>
+<hr>
+{% if current_user.position == "Management" or current_user.position == "Upper Management" or current_user.is_master() %}
+<p><a href="" class="btn btn-default">Make Announcement</a></p>
+{% endif %}
 
 {% endblock %}
