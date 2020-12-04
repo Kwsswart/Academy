@@ -24,8 +24,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+                
             return name2
         elif 'Tuesday' in days and 'Thursday' in days:
             name = 'ST'
@@ -42,8 +45,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Friday' in days:
             name = 'SF'
@@ -60,8 +66,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Saturday' in days:
             name = 'SS'
@@ -78,8 +87,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         else:
             return None
@@ -100,8 +112,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Tuesday' in days and 'Thursday' in days:
             name = 'ET'
@@ -118,8 +133,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Friday' in days:
             name = 'EF'
@@ -136,8 +154,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Saturday' in days:
             name = 'ES'
@@ -154,8 +175,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         else:
             return None
@@ -176,8 +200,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Tuesday' in days and 'Thursday' in days:
             name = 'KT'
@@ -194,8 +221,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Friday' in days:
             name = 'KF'
@@ -212,8 +242,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         elif 'Saturday' in days:
             name = 'KS'
@@ -230,8 +263,11 @@ def get_name(name, days, time, types, academy):
             else:
                 name2 = name + '1'
             lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-            if lesson:
-                name2 = name
+            for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
             return name2
         else:
             return None
@@ -251,8 +287,11 @@ def get_name(name, days, time, types, academy):
         else:
             name2 = name + '1'
         lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-        if lesson:
-            name2 = name
+        for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
         return name2
     
     elif types is options_IC:
@@ -270,8 +309,11 @@ def get_name(name, days, time, types, academy):
         else:
             name2 = name + '1'
         lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
-        if lesson:
-            name2 = name
+        for i in range(lessons):
+                if lesson != None:
+                    name2 = name + str(i + 1)
+                    lesson = Lessons.query.filter_by(academy_id=academy.id).filter_by(name=name2).first()
+             
         return name2
 
 

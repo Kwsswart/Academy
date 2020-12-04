@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<h2 style="text-align: center;"> Make Announcements </h1>
+
+<table class='table' style="max-width: 100%;">
+    <tbody>
+        <form action="" method="post" class="form" role="form" novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token() }}
+        <tr>
+            <th scope="row" style="max-width: 60%;">
+                {{ wtf.form_field(form.subject) }}  
+                <div id="char_remaining_subject" style="color:red;"></div>  
+          
+                {{ wtf.form_field(form.message) }}
+                <div id="char_remaining_message" style="color:red;"></div>
+            </th>
+        </tr>
+        <tr>
+            <td>{{ wtf.form_field(form.academy) }}</td>
+        </tr>
+        <tr>
+            <td>{{ wtf.form_field(form.for_all) }}</td>
+        </tr>
+        <tr>
+            <td>{{ wtf.form_field(form.submit) }}</td>
+        </tr>
+        </form>
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+    function countchar(max_length, warn_length, messageid, fieldid) {
+        var len = $(fieldid).val().length;
+        if (len >= max_length) {
+            $('#' + messageid).text('Characters Remaining: 0');
+        } else if (len >= max_length - warn_length) {
+            $('#' + messageid).text('Characters Remaining:' + (max_length - len).toString());
+        } else {
+            $('#' + messageid).text('');
+        }
+    }
+
+    $(document).ready(function() {
+
+        $('#subject').keydown(function(e) {
+            var len = $("#subject").val().length;
+            const key = e.key; 
+            if (key === "Backspace" || key === "Delete") { 
+            } else if (len >= 950) {
+                e.preventDefault()
+                $('#subject').text('Characters Remaining: 0');
+            }
+        }).keyup(function() {
+            countchar(950, 250, "char_remaining_subject", "#subject");
+        });
+
+        $('#message').keydown(function(e) {
+            var len = $("#message").val().length;
+            const key = e.key; 
+            if (key === "Backspace" || key === "Delete") { 
+            } else if (len >= 9800) {
+                e.preventDefault()
+                $('#message').text('Characters Remaining: 0');
+            }
+        }).keyup(function() {
+            countchar(9800, 250, "char_remaining_message", "#message");
+        });
+    });
+</script>
+
+{% endblock %}

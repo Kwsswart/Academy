@@ -116,7 +116,7 @@ def classes(academy):
 @login_required
 def view_class(name, academy):
     """ End-point to handle displaying the individual class information & updating the class progress. """
-
+    # todo: ensure submission on two hour classes can handle the revision submission and the new
     academy = Academy.query.filter_by(name=academy).first()
     lesson = Lessons.query.filter_by(name=name).filter_by(academy_id=academy.id).join(Step).join(LengthOfClass).join(TypeOfClass).first()
     users = User.query.all()

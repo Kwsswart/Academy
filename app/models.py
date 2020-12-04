@@ -73,6 +73,7 @@ class User(UserMixin, db.Model):
     step_actual = db.relationship('StepActualProgress', backref='teacher', lazy='dynamic')
     step_marks = db.relationship('StepMarks', backref='teacher', lazy='dynamic')
     custom_insert = db.relationship('CustomInsert', backref='teacher', lazy='dynamic')
+    announcement = db.relationship('Announcement', backref='teacher', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}, {}, {}, {}, {} >'.format(self.username, self.name, self.phone, self.email, self.position)
@@ -150,6 +151,7 @@ class Academy(db.Model):
     teacher = db.relationship('User', backref='academy', lazy='dynamic')
     lessons = db.relationship('Lessons', backref='academy', lazy='dynamic')
     student = db.relationship('Student', backref='academy', lazy='dynamic')
+    announcement = db.relationship('Announcement', backref='academy', lazy='dynamic')
 
     def __repr__(self):
         return '<Academy {}>'.format(self.name)
@@ -502,3 +504,19 @@ class CustomInsert(db.Model):
     def __repr__(self):
         return '< Custom Insert = message: {}, exercises: {}, date: {}>'.format(self.message, self.exercises, self.datetime)
         
+
+class Announcement(db.Model):
+    """ Store Announcements for Academies """
+
+    id = db.Column(db.Integer, primary_key=True)
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    subject = db.Column(db.String(1000))
+    message = db.Column(db.String(10000))
+    for_all = db.Column(db.Boolean())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    academy_id = db.Column(db.Integer, db.ForeignKey('academy.id'))
+
+    def __repr__(self):
+        return '< Announcement: Subject: {} ; Message: {} ; date: {} ; for_all: {}'.format(self.subject, self.message, self.datetime, self.for_all)
+
