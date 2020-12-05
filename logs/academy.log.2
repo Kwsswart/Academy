@@ -1,10 +1,14 @@
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
 Traceback (most recent call last):
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.OperationalError: no such column: step_actual_progress.lesson_id
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2635, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\util\deprecations.py", line 139, in warned
+    return fn(*args, **kwargs)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\sql\selectable.py", line 976, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'academy' and 'announcement'.
 
 The above exception was the direct cause of the following exception:
 
@@ -21,38 +25,51 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 157, in view_class
-    actual_progress = StepActualProgress.query.filter_by(step_actual_id=actual_tracker.id).order_by(StepActualProgress.class_number.desc()).all()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3346, in all
-    return list(self)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3508, in __iter__
-    return self._execute_and_instances(context)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3533, in _execute_and_instances
-    result = conn.execute(querycontext.statement, self._params)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1011, in execute
-    return meth(self, multiparams, params)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
-    return connection._execute_clauseelement(self, multiparams, params)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1124, in _execute_clauseelement
-    ret = self._execute_context(
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1316, in _execute_context
-    self._handle_dbapi_exception(
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1510, in _handle_dbapi_exception
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 270, in decorated_view
+    elif not current_user.is_authenticated:
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\werkzeug\local.py", line 347, in __getattr__
+    return getattr(self._get_current_object(), name)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\werkzeug\local.py", line 306, in _get_current_object
+    return self.__local()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 346, in _get_user
+    current_app.login_manager._load_user()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
+    user = self._user_callback(user_id)
+  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\models.py", line 17, in load_user
+    return User.query.get(int(id))
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_sqlalchemy\__init__.py", line 512, in __get__
+    mapper = orm.class_mapper(type)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\base.py", line 451, in class_mapper
+    mapper = _inspect_mapped_class(class_, configure=configure)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\base.py", line 430, in _inspect_mapped_class
+    mapper._configure_all()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 1353, in _configure_all
+    configure_mappers()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 3301, in configure_mappers
+    mapper._post_configure_properties()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 1966, in _post_configure_properties
+    prop.init()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\interfaces.py", line 197, in init
+    self.do_init()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2077, in do_init
+    self._setup_join_conditions()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2141, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2524, in __init__
+    self._determine_joins()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2657, in _determine_joins
     util.raise_(
   File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\util\compat.py", line 182, in raise_
     raise exception
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: step_actual_progress.lesson_id
-[SQL: SELECT step_actual_progress.id AS step_actual_progress_id, step_actual_progress.class_number AS step_actual_progress_class_number, step_actual_progress.lesson_number AS step_actual_progress_lesson_number, step_actual_progress.last_page AS step_actual_progress_last_page, step_actual_progress.last_word AS step_actual_progress_last_word, step_actual_progress.exercises AS step_actual_progress_exercises, step_actual_progress.datetime AS step_actual_progress_datetime, step_actual_progress.comment AS step_actual_progress_comment, step_actual_progress.step_actual_id AS step_actual_progress_step_actual_id, step_actual_progress.user_id AS step_actual_progress_user_id, step_actual_progress.lesson_id AS step_actual_progress_lesson_id 
-FROM step_actual_progress 
-WHERE step_actual_progress.step_actual_id = ? ORDER BY step_actual_progress.class_number DESC]
-[parameters: (2,)]
-(Background on this error at: http://sqlalche.me/e/13/e3q8)
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Academy.announcement - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
@@ -79,26 +96,30 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\main\routes.py", line 17, in index
-    return render_template('index.html', title='home')
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 127, in load
-    code = environment.compile(source, name, filename)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 638, in compile
-    self.handle_exception(source=source_hint)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\templates\index.html", line 7, in template
-    {% if current_user.position == "Management" or current_user.position == "Upper Management" or if current_user.is_master() %}
-jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got 'current_user'
+  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 467, in no_show
+    previous_progress = StepActualProgress.filter_by(lesson_id=lesson.id) \
+AttributeError: type object 'StepActualProgress' has no attribute 'filter_by'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 502, in no_show
+    lesson_number=previous_progress.lesson_number,
+AttributeError: 'NoneType' object has no attribute 'lesson_number'
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:92]

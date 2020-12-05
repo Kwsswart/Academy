@@ -2,10 +2,51 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<h2 style="text-align: center;"> Announcements </h1>
+<h2 style="text-align: center;"> Announcements </h2>
 <hr>
 {% if current_user.position == "Management" or current_user.position == "Upper Management" or current_user.is_master() %}
 <p><a href="{{ url_for('main.make_announcement') }}" class="btn btn-default">Make Announcement</a></p>
 {% endif %}
-
+<table>
+{% for i in announcements %}
+    <tr>
+        <table>
+            <tr>
+                <td><b>Subject:</b></td>
+                <td><b>{{ i.subject }}</b></td>
+            </tr>
+            <tr>
+                <td><b>Message:</b></td>
+                <td>{{ i.message }}</td>
+            </tr>
+            <tr>
+                <td><b>Date:</b></td>
+                <td>{{ moment(i.datetime).format('LLL') }}</td>
+            </tr>
+            {% if current_user.is_master() or current_user.position == "Upper Management" or i.user_id == current_user.id %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('main.edit_announcement', announcement_id=i.id) }}" class="btn btn-default">Edit Announcement</a> 
+                </td>
+                <td>
+                    <a href="{{ url_for('main.remove_announcement', announcement_id=i.id) }}" class="btn btn-default">Remove Announcement</a>
+                </td>
+                </tr>
+            {% endif %}
+        </table>   
+    </tr>
+{% endfor %}
+    <tr>
+        <td>
+            {% if prev_url %}
+                <a href="{{ prev_url }}" class="btn btn-default">Previous Classes</a>
+            {% endif %}
+        </td>
+        <td>
+            {% if next_url %}
+                <a href="{{ next_url }}" class="btn btn-default">More Classes</a>
+            {% endif %}
+        </td>
+    </tr>
+</table>
 {% endblock %}

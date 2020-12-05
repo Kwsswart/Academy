@@ -92,7 +92,10 @@ def classes(academy):
     if academy == 'all':
         page = request.args.get('page', 1, type=int)
         academy1 = Academy.query.all()
-        groups = Lessons.query.outerjoin(LengthOfClass).outerjoin(Academy).group_by(Lessons.academy_id, Lessons.id).order_by(Lessons.academy_id.asc()).order_by(Lessons.step_id.asc()).paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
+        groups = Lessons.query.outerjoin(LengthOfClass) \
+                .outerjoin(Academy).group_by(Lessons.academy_id, Lessons.id) \
+                .order_by(Lessons.academy_id.asc()).order_by(Lessons.step_id.asc()) \
+                .paginate(page, current_app.config['ITEMS_PER_PAGE'], False)
         step = Step.query.all()
         days = DaysDone.query.join(Lessons).all()
         next_url = url_for('classes.classes', academy='all', page=groups.next_num) \

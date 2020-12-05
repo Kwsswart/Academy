@@ -1,9 +1,13 @@
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:95]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
 €(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
+Traceback (most recent call last):
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1276, in _execute_context
+    self.dialect.do_execute(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: step_actual_progress.lesson_id
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -19,106 +23,36 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 345, in edit_submitted_progress
-    return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
-NameError: name 'academy' is not defined
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 167, in view_class
-    if actual_progress_page.datetime.date() == date.today():
-AttributeError: 'NoneType' object has no attribute 'datetime'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 221, in view_class
-    lp_upper = int(expected_progress.last_page) + 15
-ValueError: invalid literal for int() with base 10: ''
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:1891]
-Traceback (most recent call last):
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\_compat.py", line 39, in reraise
-    raise value
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 251, in view_class
-    return render_template(
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\flask\templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\loaders.py", line 127, in load
-    code = environment.compile(source, name, filename)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 638, in compile
-    self.handle_exception(source=source_hint)
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\jinja2\_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\templates\class\view_class.html", line 12, in template
-    <p><a href="" class="btn btn-default">Edit Class</a> <a href="" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="{{ url_for('classes.move_class', move='FORWARD' lesson=lesson.id) }}" class="btn btn-default">Move Forward</a> <a href="{{ url_for('classes.move_class', move='BACKWARDS' lesson=lesson.id) }}" class="btn btn-default">Move Backwards</a></p>
-jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'lesson'
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
-€(asctime)s €(levelname)s: €(message)s [in €pathnames:92]
+  File "C:\Users\kwssw\OneDrive\Documentos\Workspace\academy\app\classes\routes.py", line 337, in edit_submitted_progress
+    progress = StepActualProgress.query.filter_by(id=progress_id).first()
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3402, in first
+    ret = list(self[0:1])
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3176, in __getitem__
+    return list(res)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3508, in __iter__
+    return self._execute_and_instances(context)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\orm\query.py", line 3533, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1011, in execute
+    return meth(self, multiparams, params)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1124, in _execute_clauseelement
+    ret = self._execute_context(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1316, in _execute_context
+    self._handle_dbapi_exception(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1510, in _handle_dbapi_exception
+    util.raise_(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\util\compat.py", line 182, in raise_
+    raise exception
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1276, in _execute_context
+    self.dialect.do_execute(
+  File "c:\users\kwssw\onedrive\documentos\workspace\academy\venv\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: step_actual_progress.lesson_id
+[SQL: SELECT step_actual_progress.id AS step_actual_progress_id, step_actual_progress.class_number AS step_actual_progress_class_number, step_actual_progress.lesson_number AS step_actual_progress_lesson_number, step_actual_progress.last_page AS step_actual_progress_last_page, step_actual_progress.last_word AS step_actual_progress_last_word, step_actual_progress.exercises AS step_actual_progress_exercises, step_actual_progress.datetime AS step_actual_progress_datetime, step_actual_progress.comment AS step_actual_progress_comment, step_actual_progress.step_actual_id AS step_actual_progress_step_actual_id, step_actual_progress.user_id AS step_actual_progress_user_id, step_actual_progress.lesson_id AS step_actual_progress_lesson_id 
+FROM step_actual_progress 
+WHERE step_actual_progress.id = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('11', 1, 0)]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
