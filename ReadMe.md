@@ -66,15 +66,12 @@ This is very aimed towards one type of academy and would require alot to adapt i
 ### 7) Before doing 7 ensure that the csv files follow the following pattern:
 
 
-HOUR,LESSON NUMBER,NEW WORK TO,LAST WORD,EXERCISE
-
+HOUR,LESSON NUMBER,NEW WORK TO,LAST WORD,EXERCISE<br>
 1,1,16,Numbers,Alphabet and vowel sounds p10
 
 
-**HOUR:** Must contain integers starting from 1 up.
-
-**LESSON** Must contain integers and follows the lesson numbers in whichever book you are using.
-
+**HOUR:** Must contain integers starting from 1 up.<br>
+**LESSON** Must contain integers and follows the lesson numbers in whichever book you are using.<br>
 **"NEW WORK TO"** Must contain integers and refers to the last page that you should get to.
 
 
