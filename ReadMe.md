@@ -71,7 +71,9 @@ HOUR,LESSON NUMBER,NEW WORK TO,LAST WORD,EXERCISE
 
 
 **HOUR:** Must contain integers starting from 1 up.
+
 **LESSON** Must contain integers and follows the lesson numbers in whichever book you are using.
+
 **"NEW WORK TO"** Must contain integers and refers to the last page that you should get to.
 
 
