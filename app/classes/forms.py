@@ -14,13 +14,7 @@ class CreateClassForm(FlaskForm):
     name = StringField('Name')
     time = TimeField('Time of Lesson', validators=[DataRequired()])
     typeofclass = SelectField('Type Of Class', validators=[DataRequired()], choices=[
-        ('Group Exam', 'Group Exam Class'),
-        ('Group Intensive', 'Group Intensive'),
-        ('Group Children', 'Group Children'),
-        ('Group General English', 'Group General English'),
-        ('Group Business English', 'Group Business English'),
-        ('In-Company General English', 'In-Company General English'),
-        ('In-Company Business English', 'In-Company Business English')])
+        ('Group General English', 'Group General English')])
     step = SelectField('Step', choices=[
         ('1', 'Step 1'),
         ('2', 'Step 2'),

@@ -110,7 +110,7 @@ class CreateStudentForm(FlaskForm):
 
         lesson = Lessons.query.filter_by(id=self.lesson.data).first()
         academy = Academy.query.filter_by(name=self.academy.data).first()
-        student = Student.query.filter_by(academy_id=academy.id).filter_by(name=name.data).first()
+        student = Student.query.filter_by(academy_id=academy.id).filter_by(name=self.name.data).first()
 
         if student is not None:
             raise ValidationError('Student name is already in the system with this Academy.')

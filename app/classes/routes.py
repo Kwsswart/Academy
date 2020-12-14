@@ -50,7 +50,6 @@ def create_class():
             actualtracker = StepActualTracker(length_of_class=length_of_class.id, step_id=step.id)
             db.session.add(actualtracker)
             db.session.commit()
-
             name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
             
             lesson = Lessons(
@@ -70,6 +69,7 @@ def create_class():
             db.session.add(lesson)
             db.session.commit()
             days = form.daysdone.data
+            
             for t in days:
                 i = DaysDone(name=t, lessons=lesson.id)
                 db.session.add(i)
@@ -81,7 +81,7 @@ def create_class():
             name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
             print(name)
             return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
-    return render_template('class/create_class.html', title="Create Class", form=form)
+    return render_template('class/create_class.html', title="Create Class", option='Create', form=form)
 
 
 @bp.route('/classes/<academy>', methods=['GET'])
@@ -542,3 +542,78 @@ def remove_class(class_id):
     flash('Class Group has been removed from the system.')
     
     return redirect(url_for('classes.classes', academy=academy.name))
+
+@bp.route('/edit_class/<class_id>', methods=['GET','POST'])
+@group_required(['Master', 'Upper Management', 'Management'])
+@login_required
+def edit_class(class_id):
+    """ End-point to handle editing of classes """
+
+    lesson = Lessons.query.filter_by(id=class_id).join(Step).join(LengthOfClass).join(Academy).first()
+    form = CreateClassForm()
+    days = DaysDone.query.filter_by(lessons=lesson.id).all()
+    days_arr = []
+    class_num = StepActualProgress.query.filter_by(lesson_id=lesson.id).order_by(StepActualProgress.class_number.asc()).first()
+    if class_num == None:
+        class_num = StepExpectedProgress.query.filter_by(class_number=lesson.class_number).first()
+    start_lesson = int(lesson.step.id) * 10 - 9
+    for i in range(10):
+        form.startat.choices.append(start_lesson)
+        start_lesson = start_lesson + 1
+    for day in days:
+        days_arr.append(day.name)
+    
+    if form.validate_on_submit():
+        if lesson.time != form.time.data:
+            lesson.time = str(form.time.data)
+        step = Step.query.filter_by(name=form.step.data).first()
+        print(step.id)
+        if lesson.step_id != step.id:
+            actualtracker = StepActualTracker.query.filter_by(id=lesson.step_actual_id).first()
+            current_prog = StepActualProgress.query.filter_by(step_actual_id=actualtracker.id).filter_by(lesson_id=lesson.id).all()
+            actualtracker_new = StepActualTracker(length_of_class=lesson.LengthOfClass.id, step_id=step.id)
+            db.session.add(actualtracker_new)
+            db.session.commit()
+
+            for current in current_prog:
+                current.step_actual_id = actualtracker_new.id
+                db.session.commit()
+            lesson.step_actual_id = actualtracker_new.id
+            db.session.commit()
+            db.session.delete(actualtracker)
+            
+            lesson.step_id = step.id 
+            expectedtracker = StepExpectedTracker.query.filter_by(length_of_class=lesson.LengthOfClass.id).filter_by(step_id=step.id).first()
+            type_of_class = TypeOfClass.query.filter_by(name=dict(form.typeofclass.choices).get(form.typeofclass.data)).first()
+            class_number = StepExpectedProgress.query.filter_by(lesson_number=form.startat.data).filter_by(step_expected_id=expectedtracker.id).order_by(StepExpectedProgress.class_number.asc()).first()
+            
+            if lesson.LengthOfClass.name == '2 Hours' or lesson.LengthOfClass.name == '2,5 Hours':
+                if class_number.class_number != 1:
+                    number = int(class_number.class_number) - 1
+                    actual_class_number = StepExpectedProgress.query.filter_by(step_expected_id=expectedtracker.id).filter_by(class_number=number).first()
+                    class_number = actual_class_number
+            lesson.class_number = class_number.class_number
+        length = LengthOfClass.query.filter_by(name=form.lengthofclass.data).first()
+        lesson.length_of_class = length.id
+        for day in days:
+            db.session.delete(day)
+            db.session.commit()
+        days = form.daysdone.data
+        for t in days:
+            i = DaysDone(name=t, lessons=lesson.id)
+            db.session.add(i)
+            db.session.commit()
+        lesson.comment = form.comment.data 
+        db.session.commit()
+        flash('Class Details have been editted.')
+        return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
+    else:
+        form.time.data = datetime.strptime(lesson.time, '%H:%M:%S').time()
+        form.step.data = lesson.step.name
+        form.lengthofclass.data = lesson.LengthOfClass.name
+        form.daysdone.data = days_arr
+        form.comment.data = lesson.comment
+        if class_num.lesson_number != '':
+            form.startat.data = int(class_num.lesson_number)
+    return render_template('class/create_class.html', title='Edit Class', option='Edit', form=form, lesson=lesson)
+

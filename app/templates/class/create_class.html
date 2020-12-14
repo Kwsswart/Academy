@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block app_content %}
-    <h1>Create Class</h1>
+    <h1>{{ option }} Class</h1>
 
     <p>If making a 121 class please do this in either with the add student page or edit student page</p>
     <form action="" method="post" class="form" role="form" novalidate>
@@ -101,7 +101,9 @@
     }
 $(document).ready(function(){
     show_options()
-    get_lessons($('#step').val())
+    if ($("startat").val() === null){
+        get_lessons($('#step').val())
+    }
       
     
     $('#step').change(function(){

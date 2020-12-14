@@ -16,7 +16,7 @@
 <h3>Class View</h3>
         <p><a href="{{ url_for('classes.no_show', class_id=lesson.id) }}" class="btn btn-default">No Show</a></p>
         {% if current_user.position == 'Management' and current_user.academy_id == academy.id or current_user.position == 'Upper Management' or current_user.is_master() %}
-        <p><a href="" class="btn btn-default">Edit Class</a> <a href="{{ url_for('classes.remove_class', class_id=lesson.id) }}" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="{{ url_for('classes.move_class', move='FORWARD', lesson=lesson.id) }}" class="btn btn-default">Move Forward</a> <a href="{{ url_for('classes.move_class', move='BACKWARDS', lesson=lesson.id) }}" class="btn btn-default">Move Backwards</a></p>
+        <p><a href="{{ url_for('classes.edit_class', class_id=lesson.id) }}" class="btn btn-default">Edit Class</a> <a href="{{ url_for('classes.remove_class', class_id=lesson.id) }}" class="btn btn-default">Remove Class</a> <a href="{{ url_for('classes.insert_custom', class_id=lesson.id) }}" class="btn btn-default">Insert Custom Progress</a> <a href="{{ url_for('classes.move_class', move='FORWARD', lesson=lesson.id) }}" class="btn btn-default">Move Forward</a> <a href="{{ url_for('classes.move_class', move='BACKWARDS', lesson=lesson.id) }}" class="btn btn-default">Move Backwards</a></p>
         {% endif %}
 <table class='table'>
     <thead>
