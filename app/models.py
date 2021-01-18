@@ -122,8 +122,8 @@ class User(UserMixin, db.Model):
                                         .first())
         if self.has_auth_access(master_access):
             return True
+        academy = Academy.query.filter_by(id=acad_id).first()
         
-        academy = Academy.query.filter_by(name=acad_id).first()
         if academy.id == self.academy_id:
             return True
         else:

@@ -20,7 +20,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                {% if not current_user.is_anonymous %}
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">The Academy <p style="font-size: 0.5em;">{{ current_user.name }}<p></p></a>
+                {% else %}
                 <a class="navbar-brand" href="{{ url_for('main.index') }}">The Academy</a>
+                {% endif %}
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">

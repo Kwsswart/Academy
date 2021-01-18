@@ -1,0 +1,5 @@
+<h3>This e-mail was sent from the Number 16 class management application.</h3>
+
+The class - <b>{{ class_group.name }}</b> in <b> Number 16 - {{ academy.name }}</b> is far {{ issue }}.
+
+If you would like to take a look at the progress yourself <a href="{{ url_for('classes.view_class', name=class_group.name, academy=academy.name) }}">Click Here</a>

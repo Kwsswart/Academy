@@ -32,7 +32,7 @@ def user(name):
     return render_template('staff/user.html', title="Profile", academy=academy, avatar=avatar, trained=trained, user=user)
 
 
-@bp.route('/edit_user/<name>', methods=['GET', 'POST']) #make it click and save the name of use user here
+@bp.route('/edit_user/<name>', methods=['GET', 'POST']) 
 @login_required
 @group_required(['Master', 'Upper Management', 'Management'])
 def edit_user(name):
@@ -200,10 +200,8 @@ def email_user(name):
     form = EmailForm()
     # todo: refine email system
     if form.validate_on_submit():
-        senders = [current_user.email]
         send_user_email(
             subject=form.subject.data, 
-            sender=senders[0],
             recipients=[user.email],
             body=form.body.data,
             user=user)

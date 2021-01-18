@@ -1,17 +1,10 @@
-<h3>This E-mail was send from the Number 16 class management web app </h3>
-
-<hr>
-
-Sent by: {{ current_user.name }}
-Sent to: {{ user.name }}
-
-<hr>
+<h3>This E-mail was sent from the Number 16 class management application by - {{ current_user.name }}</h3>
 
 <p>{{ body }}</p>
 
 <hr>
+
 <a href="{{ url_for('staff.email_user', name=current_user.name, _external=True) }}"> Reply </a>
 
-<hr>
 
-<p> Number 16 Team</p>
+<p>Number 16 Team</p>

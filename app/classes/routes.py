@@ -8,6 +8,7 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from wtforms.validators import ValidationError
 from app import  db
+from app.email import send_class_alert_email
 from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker, Studentonclass, Studentonclass2, CustomInsert
 from app.classes import bp
 from app.classes.forms import CreateClassForm, AttendanceForm, StepProgressForm, InsertCustom
@@ -77,9 +78,8 @@ def create_class():
             flash('Class Added.')
             return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
         elif class_type == 'Group Exam Class':
-            # todo: input class system
+            # todo: input class type system
             name = get_name(name=None, days=form.daysdone.data, time=form.time.data, types=class_type, academy=academy.name)
-            print(name)
             return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
     return render_template('class/create_class.html', title="Create Class", option='Create', form=form)
 
@@ -119,7 +119,7 @@ def classes(academy):
 @login_required
 def view_class(name, academy):
     """ End-point to handle displaying the individual class information & updating the class progress. """
-    # todo: ensure submission on two hour classes can handle the revision submission and the new
+    
     academy = Academy.query.filter_by(name=academy).first()
     lesson = Lessons.query.filter_by(name=name).filter_by(academy_id=academy.id).join(Step).join(LengthOfClass).join(TypeOfClass).first()
     users = User.query.all()
@@ -206,51 +206,60 @@ def view_class(name, academy):
 
             non_validate = ['REVISION', 'GRAMMAR REVIEW', 'FINISH BOOK', 'EXAM PREP', 'END OF STEP EXAM', 'GO THROUGH EXAM', "SPEAKER'S CORNER"]
 
-            # ASK CINDY: last page limits message dos or automatically push 1 lesson back or forward?
             if expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2 Hours' or expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2,5 Hours':
-                # todo: Decide whether to only message managment and leave for them to do or to set back.
-                if custom_progress != None and expected.last_page not in non_validate:
+                if custom_progress == None and expected_progress.last_word not in non_validate:
                     lp_upper = expected_progress.last_page + 15
                     lp_lower = expected_progress.last_page - 15
                     if new.last_page >= lp_upper:
-                        # message dos
-                        message = "The last page for class is more than or equal to 15 pages more than expected"
+                        rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                        recipients = list()
+                        for r in rec:
+                            recipients.append(r.email)
+                        send_class_alert_email(
+                            recipients=recipients, 
+                            subject='Class is too far ahead of the programmed progress', 
+                            class_group=lesson, 
+                            academy=academy,
+                            issue='Ahead')
                     elif new.last_page <= lp_lower:
-                        # message dos
-                        message = " The last page for class is more than or equal to 15 pages less than expected"
-
-                    # todo: Decide whether to push back or foward automatically
-                    previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 2).first()
-                    next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 2).first()
-                    if previous_expected is not None:
-                        if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-                            # set expected progress here
-                            # lesson.class_number = previous_expected.class_number
-                            example = 'example'
+                        rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                        recipients = list()
+                        for r in rec:
+                            recipients.append(r.email)
+                        send_class_alert_email(
+                            recipients=recipients, 
+                            subject='Class is too far behind of the programmed progress', 
+                            class_group=lesson, 
+                            academy=academy,
+                            issue='Behind')
 
             if lesson.LengthOfClass.name == '1 Hour' or lesson.LengthOfClass.name == '1,5 Hours':
-                # todo: Decide whether to only message managment and leave for them to do or to set back.
-                # todo: make for grammar review exam, revision, custom so not to check page for them
-                if custom_progress != None and expected.last_page not in non_validate:
+                if custom_progress == None and expected_progress.last_word not in non_validate:
                     lp_upper = int(expected_progress.last_page) + 15
                     lp_lower = int(expected_progress.last_page) - 15
                     if new.last_page >= lp_upper:
-                        # message dos
-                        message = "The last page for class is more than or equal to 15 pages more than expected"
+                        rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                        recipients = list()
+                        for r in rec:
+                            recipients.append(r.email)
+                        send_class_alert_email(
+                            recipients=recipients, 
+                            subject='Class is too far ahead of the programmed progress', 
+                            class_group=lesson, 
+                            academy=academy,
+                            issue='Ahead')
                     elif new.last_page <= lp_lower:
-                        # message dos
-                        message = " The last page for class is more than or equal to 15 pages less than expected"
-
-                    # todo: Decide whether to push back or foward automatically
-                    previous_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number - 1).first()
-                    next_expected = StepExpectedProgress.query.filter_by(step_expected_id=expected_tracker.id).filter_by(class_number=expected_progress.class_number + 1).first()
-                    if previous_expected is not None:
-                        if int(update_form.last_page.data) >= int(previous_expected.last_page) - 10:
-                            # set expected progress here
-                            # lesson.class_number = previous_expected.class_number
-                            todo = 'todo'
+                        rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                        recipients = list()
+                        for r in rec:
+                            recipients.append(r.email)
+                        send_class_alert_email(
+                            recipients=recipients, 
+                            subject='Class is too far behind of the programmed progress', 
+                            class_group=lesson, 
+                            academy=academy,
+                            issue='Behind')
                 # todo: Notify if finished book or close to finishing book
-        # todo: check if class_number changes with the custom progress and if yes change so that doesn't
         if custom_progress == None:
             lesson.class_number = lesson.class_number + 1
         db.session.commit()
@@ -287,7 +296,6 @@ def attendance(name, lesson):
     if form.validate_on_submit():
         # todo: Separate between exams, kids, companies, 121s using (if lesson.TypeOfClass.name == 'Group General English')
         stepmarks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).order_by(StepMarks.datetime.desc()).first()
-
         if form.attended.data == 'Yes':
             student.days_missed = 0
             if stepmarks == None:
@@ -304,8 +312,8 @@ def attendance(name, lesson):
                 student.mark_average = mark.mark
                 db.session.commit()
             elif stepmarks.datetime.date() == date.today():
-                # todo: re-evaluate the way comparing above
-                print('Already been submitted')                   
+                # Already submitted
+                pass                 
             else:
                 mark = StepMarks(
                     mark = form.score.data,
@@ -317,13 +325,14 @@ def attendance(name, lesson):
                 )
                 db.session.add(mark)
                 db.session.commit()
-                marks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).all()
+                marks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).order_by(StepMarks.id.desc()).all()
                 total = 0 
                 count = 0
                 for m in marks:
                     total = total + m.mark 
                     count = count + 1
                 student.mark_average = round(total/count,1)
+                
                 # todo: check if student has recieved 3 for the consecutive three times to email dos
                 db.session.commit() 
         else:
@@ -361,7 +370,6 @@ def edit_submitted_progress(progress_id, lesson_id):
 
         db.session.commit()
         return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
-        # run checks to see how far off the last page and number are just in case as in the original submissions
     else:
         form.lesson_number.data = progress.lesson_number
         form.last_page.data = progress.last_page
@@ -534,9 +542,6 @@ def remove_class(class_id):
     if lesson.has_students():
         flash('Please ensure students are either moved to another class or removed from system first.')
         return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
-    
-    # todo: implement removal email here, with lesson details last page and word just in case needing to redo to dos
-
     db.session.delete(lesson)
     db.session.commit()
     flash('Class Group has been removed from the system.')

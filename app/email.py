@@ -1,13 +1,14 @@
 from flask import current_app, url_for, render_template
+from flask_login import current_user
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 from threading import Thread
+import time
 from app import mail
 
 
 def send_async_email(app, msg):
     """ Sending email asynchronously """
-
     with app.app_context():
         mail.send(msg)
 
@@ -33,18 +34,28 @@ def send_confirmation_email(user_email):
         'email/confirmation.html',
         confirm_url=confirm_url)
     send_email('[Number 16] Confirm Your Email Address',
-                sender=current_app.config['ADMINS'][0], 
+                sender=current_user.email, 
                 recipients=[user_email],
                 text_body=None,
                 html_body=render_template('email/confirmation.html' , confirm_url=confirm_url))
 
 
-def send_user_email(sender, recipients, subject, body, user):
+def send_user_email(recipients, subject, body, user):
     """ User to User email section """
     
     send_email('[Number 16]' + subject,
-                sender=sender,
+                sender=current_user.email,
                 recipients=recipients,
                 text_body=None,
                 html_body=render_template('email/user_email.html', body=body, user=user)
+                )
+
+
+def send_class_alert_email(recipients, subject, class_group, academy, issue):
+
+    send_email('[Number 16]' + subject,
+                sender=current_user.email,
+                recipients=recipients,
+                text_body=None,
+                html_body=render_template('email/class_alert.html', academy=academy, class_group=class_group, issue=issue)
                 )

@@ -46,10 +46,9 @@ def register():
     
     form = UserRegistrationForm()
     position = current_user.position
-
     if current_user.is_master():
         position = 'Master'
-
+        
     if form.validate_on_submit():
         if dict(form.position.choices).get(form.position.data) == "Upper Management":
             if not current_user.is_master() and current_user.position != "Upper Management":
@@ -59,10 +58,9 @@ def register():
         academy = Academy.query.filter_by(name=dict(form.academy.choices).get(form.academy.data)).first()
 
         if not current_user.is_master() and current_user.position != "Upper Management":
-            if current_user.academy_id != academy.id: # todo: adjust to utilize method has_academy_access
+            if not current_user.has_academy_access(academy.id):
                 flash('You can only add people to your own academy.')
                 return redirect(url_for('auth.register'))
-        # todo: relook into email system
         send_confirmation_email(form.email.data)
         flash('Please check given email to confirm the email address.', 'success')    
         user = User(
@@ -97,13 +95,10 @@ def confirm_email(token):
         confirm_serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         email = confirm_serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
     except:
-        # todo: resend confirmation if expired
         flash('The confirmation link is invalid or has expired.', 'error')
         return redirect(url_for('auth.login'))
- 
     user = User.query.filter_by(email=email).first()
     academy = Academy.query.filter_by(id=user.academy_id).first()
- 
     if user.email_confirmed:
         flash('Account already confirmed. Please login.', 'info')
     else:
@@ -129,5 +124,4 @@ def confirm_email(token):
                                             email=user.email,
                                             academy=academy.name))
         flash('Thank you for confirming the email address!')
- 
     return redirect(url_for('main.index'))

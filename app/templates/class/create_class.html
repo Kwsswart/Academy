@@ -100,7 +100,8 @@
         }
     }
 $(document).ready(function(){
-    show_options()
+    show_options();
+    get_lessons($('#step').val());
     if ($("startat").val() === null){
         get_lessons($('#step').val())
     }
