@@ -54,13 +54,12 @@
   }
 
   $(document).ready(function() {
-
     $('#message').keydown(function(e) {
       var len = $("#message").val().length;
       const key = e.key; 
       if (key === "Backspace" || key === "Delete") { 
       } else if (len >= 900) {
-        e.preventDefault()
+        e.preventDefault();
         $('#message').text('Characters Remaining: 0');
       }
     }).keyup(function() {
@@ -72,14 +71,12 @@
       const key = e.key; 
       if (key === "Backspace" || key === "Delete") { 
       } else if (len >= 250) {
-        e.preventDefault()
+        e.preventDefault();
         $('#exercises').text('Characters Remaining: 0');
       }
     }).keyup(function() {
       countchar(250, 50, "char_remaining_exercises", "#exercises");
     });
-
   });
 </script>
-
 {% endblock %}

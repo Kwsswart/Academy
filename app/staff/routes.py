@@ -46,7 +46,10 @@ def edit_user(name):
         if not current_user.is_master() and current_user.position != "Upper Management":
             flash("You don't have permissions to edit Upper Management.")
             return redirect(url_for('staff.user', name=name))
-    
+    if not current_user.is_master() and current_user.position != "Upper Management":
+        if current_user.academy_id != academy.id:
+            flash('You can only edit profiles from your own academy.')
+            return redirect(url_for('staff.user', name=name))
     form = EditProfileForm(obj=user.id)
     position = current_user.position
     position_edit = user.position
@@ -90,14 +93,12 @@ def edit_user(name):
             db.session.commit()
 
         trained_new = form.trained.data
-        # Add
         for t in trained_new:
             u = TrainedIn.query.filter_by(teacher=user.id).filter_by(name=t).first()
             if u is None:
                 i = TrainedIn(name=t, teacher=user.id)
                 db.session.add(i)
                 db.session.commit()
-        # Remove
         for t in trained: 
             if t.name not in trained_new:
                 db.session.delete(t)
@@ -198,7 +199,6 @@ def email_user(name):
 
     user = User.query.filter_by(name=name).first()
     form = EmailForm()
-    # todo: refine email system
     if form.validate_on_submit():
         send_user_email(
             subject=form.subject.data, 

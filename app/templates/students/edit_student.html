@@ -165,11 +165,9 @@
     var type_of3 = null;
     var count = 0;
     var step_options = ['121-General English', '121-Business English', 'Group General English', 'Group Business English', 'In-Company-121', 'In-Company General English', 'In-Company Business English', 'Group Intensive'];
-    var exam_options = ['121-Exam Class', 'Group Exam']
-    var kids_options = ['121-Children', 'Group Children']
-    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ]
-
-
+    var exam_options = ['121-Exam Class', 'Group Exam'];
+    var kids_options = ['121-Children', 'Group Children'];
+    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ];
     // Function for displaying options as required for original form
     function show_options(type_of_class_id) {
         var selected = $(type_of_class_id).children("option:selected").val();
@@ -184,33 +182,33 @@
             var i = '3';
         }
         if (step_options.includes(selected)) {
-            $('.exam' + i).hide()
-            $('.kid' + i).hide()
-            $('.step' + i).show('slow')
-            $('.agerange' + i).hide()
+            $('.exam' + i).hide();
+            $('.kid' + i).hide();
+            $('.step' + i).show('slow');
+            $('.agerange' + i).hide();
         } else if (exam_options.includes(selected)){
-            $('.exam' + i).show('slow')
-            $('.kid' + i).hide()
-            $('.step' + i).hide()
-            $('.agerange' + i).hide()
+            $('.exam' + i).show('slow');
+            $('.kid' + i).hide();
+            $('.step' + i).hide();
+            $('.agerange' + i).hide();
         } else if (kids_options.includes(selected)){
-            $('.exam' + i).hide()
-            $('.kid' + i).show('slow')
-            $('.agerange' + i).show('slow')
-            $('.step' + i).hide()
+            $('.exam' + i).hide();
+            $('.kid' + i).show('slow');
+            $('.agerange' + i).show('slow');
+            $('.step' + i).hide();
         }
     }
     // Run ajax function for original form
     function run_ajax(form_id, lesson_name, lesson_class, stepfield_id, examfield_id, kidfield_id, agefield_id, type_of_class) {
-        lesson_class.show('slow')
-        lesson_name.show('slow')
+        lesson_class.show('slow');
+        lesson_name.show('slow');
         // if form_id = additional turn url to one route or the other create differetn route for each ajax call
         if (form_id === '#form1') {
-            var url_is = "/get_classes_edit/" + {{student_id | safe}}
+            var url_is = "/get_classes_edit/" + {{student_id | safe}};
         } else if (form_id === '#form2') {
-            var url_is = "/get_classes_add1"
+            var url_is = "/get_classes_add1";
         } else if (form_id === '#form3') {
-            var url_is = "/get_classes_add2"
+            var url_is = "/get_classes_add2";
         }
         var form = $(form_id).serialize();
         if (step_options.includes(type_of_class) && stepfield_id.val() != 'None') {
@@ -227,105 +225,99 @@
                         lesson_name.append(
                             $("<option></option>")
                             .attr("value", 'None')
-                            .text('No classes of this type are available please create a class.'))
+                            .text('No classes of this type are available please create a class.'));
                     }
                     for (var i = 0; i < selectOptions.length; i++){
                         lesson_name.append(
                             $("<option></option>")
                             .attr("value", selectOptions[i]['lesson_id'])
-                            .text(selectOptions[i]['lesson_name'] + ' Students: ' + selectOptions[i]['amount_of_students'] + '/8' + ' ' + selectOptions[i]['lesson_time']))
+                            .text(selectOptions[i]['lesson_name'] + ' Students: ' + selectOptions[i]['amount_of_students'] + '/8' + ' ' + selectOptions[i]['lesson_time']));
                     }
                 }        
             });
         } else if (exam_options.includes(type_of_class) && examfield_id.val() != 'None'){
-
-            alert('Please select the level')
-            
+            alert('Please select the level');
         } else if (kids_options.includes(type_of_class) && kidfield_id.val() != 'None' || agefield_id.val() != 'None'){
-
-            alert('Please select the level')
-            
+            alert('Please select the level');            
         }
-
     }
         
     
 $(document).ready(function() {
         if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $('#lengthofclass2').val() != 'None' && $("#step2").val() != 'None') {
-            $("#additional1").show('slow')
-
-            show_options('#typeofclass2')
+            $("#additional1").show('slow');
+            show_options('#typeofclass2');
             if ($("#lesson_name2").val() != null) {
-                $('.lesson_').show('slow')
-                $('#lesson_name2').show('slow')
-                count = 1
+                $('.lesson_').show('slow');
+                $('#lesson_name2').show('slow');
+                count = 1;
             }
             if ($("#lesson_name2").val() == null) {
-                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2)
+                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2);
             }
         }
         if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $('#lengthofclass3').val() != 'None' && $("#step3").val() != 'None') {
-            $("#additional2").show('slow')
-            show_options('#typeofclass3')
+            $("#additional2").show('slow');
+            show_options('#typeofclass3');
             if ($("#lesson_name3").val() != null) {
-                $('.lesson3').show('slow')
-                $('#lesson_name3').show('slow')
-                count = 2
-                $("#add_additional").hide('slow')
+                $('.lesson3').show('slow');
+                $('#lesson_name3').show('slow');
+                count = 2;
+                $("#add_additional").hide('slow');
             }
             if ($("#lesson_name3").val() == null) {
-                run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3) 
+                run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3);
             }
         }
         if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $("#step").val() != 'None') {
-            show_options('#typeofclass')
+            show_options('#typeofclass');
         }
         if ($('#academy').val() != 'None') {
-            $('#lengthofclass').show('slow')
-            $('.lengthofclass').show('slow')
-            $('#typeofclass').show('slow')
-            $('.typeofclass').show('slow')
+            $('#lengthofclass').show('slow');
+            $('.lengthofclass').show('slow');
+            $('#typeofclass').show('slow');
+            $('.typeofclass').show('slow');
         }
         if ($('#typeofclass').val() != 'None') {
-            show_options('#typeofclass')
+            show_options('#typeofclass');
         }
         $('#step').change(function() {
-            $('.companyname').hide('slow')
+            $('.companyname').hide('slow');
             var selected = $('#typeofclass').children("option:selected").val();
             if (options_121.includes(selected)) {
-                $('.lesson').hide('slow')
-                $('#lesson_name').hide('slow')
+                $('.lesson').hide('slow');
+                $('#lesson_name').hide('slow');
                 if (selected=='In-Company-121') {
-                    $('.companyname').show('slow')
+                    $('.companyname').show('slow');
                 }
             }
             else if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
-                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of)
+                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of);
             }
         });
         $('#lengthofclass').change(function() {
             if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $("#step").val() != 'None') {
-                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of)
+                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of);
             }
         });
         $('#academy').change(function(){           
             if ($('#typeofclass').val() != 'None' && $('#step').val() != 'None' && $("#lengthofclass").val() != 'None') {
-                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of)
+                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of);
             }
         });
         $('#typeofclass').change(function(){
-            show_options('#typeofclass')
-            $('.companyname').hide('slow')
+            show_options('#typeofclass');
+            $('.companyname').hide('slow');
             var selected = $(this).children("option:selected").val();
             if (options_121.includes(selected)) {
-                $('.lesson').hide('slow')
-                $('#lesson_name').hide('slow')
+                $('.lesson').hide('slow');
+                $('#lesson_name').hide('slow');
                 if (selected=='In-Company-121') {
-                    $('.companyname').show('slow')
+                    $('.companyname').show('slow');
                 }
             }
             else if ($('#step').val() != 'None' && $('#academy').val() != 'None' && $("#lengthofclass").val() != 'None') {
-                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of)
+                run_ajax('#form1', $('#lesson_name'), $('.lesson'), $('#step'),  $('#exam'), $('#kid'), $('#age'), type_of);
             }
         });       
     
@@ -333,154 +325,141 @@ $(document).ready(function() {
     $('#submit1').click(function(event) {
         if ($('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $('#typeofclass').val() != 'None') {
                 if (type_of == null) {
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (step_options.includes(type_of) && $('#step').val() == 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (exam_options.includes(type_of) && $('#exam').val() == 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (kids_options.includes(type_of) && $('#kid').val() == 'None' || $('#age').val() != 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } 
         } else {
-            alert('Please fill out all fields')
-            event.preventDefault()
+            alert('Please fill out all fields');
+            event.preventDefault();
         }
     });
-
-
     // Additional Forms Programming
     $("#add_additional").click(function() {
-        count = count + 1
+        count = count + 1;
         if(count == 1) {
-            $("#additional1").show('slow')
-            
+            $("#additional1").show('slow');            
         } else if (count == 2) {
-            $("#additional2").show('slow')
-            $(this).hide('slow')
+            $("#additional2").show('slow');
+            $(this).hide('slow');
         }
     });
 
     if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $('#lengthofclass2').val() != 'None' && $("#step2").val() != 'None') {
-        $("#additional1").show('slow')
-        show_options('#typeofclass2')
+        $("#additional1").show('slow');
+        show_options('#typeofclass2');
     }
     if ($('#typeofclass2').val() != 'None') {
-        $("#additional1").show('slow')
-        show_options('#typeofclass2')
+        $("#additional1").show('slow');
+        show_options('#typeofclass2');
     }
     $('#step2').change(function() {
-        $('.companyname_').hide('slow')
+        $('.companyname_').hide('slow');
             var selected = $('#typeofclass2').children("option:selected").val();
             if (options_121.includes(selected)) {
-                $('.lesson_').hide('slow')
-                $('#lesson_name2').hide('slow')
+                $('.lesson_').hide('slow');
+                $('#lesson_name2').hide('slow');
                 if (selected=='In-Company-121') {
-                    $('.companyname_').show('slow')
+                    $('.companyname_').show('slow');
                 }
             }
             else if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
-                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2)
+                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2);
         }
     });
     $('#lengthofclass2').change(function() {
         if ($('#typeofclass2').val() != 'None' && $('#academy2').val() != 'None' && $("#step2").val() != 'None') {
-            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2)
+            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2);
         }
     });
     $('#typeofclass2').change(function(){
-        show_options('#typeofclass2')
-        $('#typeofclass2_message').hide()
-        $('#typeofclass2_message').html("")
+        show_options('#typeofclass2');
+        $('#typeofclass2_message').hide();
+        $('#typeofclass2_message').html("");
         if ($(this).children("option:selected").val() == $('#typeofclass').children("option:selected").val()) {
             if ($('#academy').children("option:selected").val() != 'Online') {
                 if ($('#academy2').children("option:selected").val() != 'Online') {
                     $('#typeofclass2_message').html( "<p>Don't put a student in the same type of group, unless online!</p>" );
-                    $('#typeofclass2_message').show('slow')
+                    $('#typeofclass2_message').show('slow');
                 }
             }
         }
 
         
-        $('.companyname_').hide('slow')
+        $('.companyname_').hide('slow');
         var selected = $(this).children("option:selected").val();
         if (options_121.includes(selected)) {
-            $('.lesson_').hide('slow')
-            $('#lesson_name2').hide('slow')
+            $('.lesson_').hide('slow');
+            $('#lesson_name2').hide('slow');
             if (selected=='In-Company-121') {
-                $('.companyname_').show('slow')
+                $('.companyname_').show('slow');
             }
         }
         else if ($('#step2').val() != 'None' && $('#academy2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
-            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2)
+            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2);
         }
     });  
     $('#academy2').change(function(){
-        $('#academy2_message').hide()
-        $('#academy2_message').html("")
+        $('#academy2_message').hide();
+        $('#academy2_message').html("");
         if ($(this).children("option:selected").val() != $('#academy').children("option:selected").val()) {
             if ($('#academy').children("option:selected").val() != 'Online') {
                 if ($(this).children("option:selected").val() != 'Online') {
                     $('#academy2_message').html( "<p>A student cannot be in two academies at once, unless one is online!</p>" );
-                    $('#academy2_message').show('slow')
+                    $('#academy2_message').show('slow');
                 }
             }
         }
         if ($('#typeofclass2').val() != 'None' && $('#step2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
-            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#age2'), type_of2)
+            run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#age2'), type_of2);
         }
     });
         
     if ($('#typeofclass2').val() != 'None' && $('#step2').val() != 'None' && $("#lengthofclass2").val() != 'None') {
-        $("#additional1").show('slow')    
-        show_options('#typeofclass2')
+        $("#additional1").show('slow');
+        show_options('#typeofclass2');
             if ($("#lesson_name2").val() == null) {
-                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2)
+                run_ajax('#form2', $('#lesson_name2'), $('.lesson_'), $('#step2'),  $('#exam2'), $('#kid2'), $('#agerange2'), type_of2);
             }           
         }
-        
-        
     if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $('#lengthofclass3').val() != 'None' && $("#step3").val() != 'None') {
-        $("#additional2").show('slow')
-        show_options('#typeofclass3')
+        $("#additional2").show('slow');
+        show_options('#typeofclass3');
     }
     if ($('#typeofclass3').val() != 'None') {
-        $("#additional2").show('slow')
-
-        show_options('#typeofclass3')
+        $("#additional2").show('slow');
+        show_options('#typeofclass3');
     }
-
     $('#step3').change(function() {
-    
-        $('.companyname3').hide('slow')
+        $('.companyname3').hide('slow');
         var selected = $('#typeofclass3').children("option:selected").val();
         if (options_121.includes(selected)) {
-            $('.lesson3').hide('slow')
-            $('#lesson_name3').hide('slow')
+            $('.lesson3').hide('slow');
+            $('#lesson_name3').hide('slow');
             if (selected=='In-Company-121') {
-                $('.companyname3').show('slow')
+                $('.companyname3').show('slow');
             }
         }
         else if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
-            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3) 
+            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3);
         }
     });
     $('#lengthofclass3').change(function() {
-        
-        show_options('#typeofclass3')
+        show_options('#typeofclass3');
         if ($('#typeofclass3').val() != 'None' && $('#academy3').val() != 'None' && $("#step3").val() != 'None') {
-            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3) 
+            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3); 
         }
     });
-    
     $('#typeofclass3').change(function(){
-        show_options('#typeofclass3')
+        show_options('#typeofclass3');
         $('#typeofclass3_message').hide();
         $('#typeofclass3_message').html("");
         if ($(this).children("option:selected").val() == $('#typeofclass').children("option:selected").val()) {
@@ -495,53 +474,49 @@ $(document).ready(function() {
                 $('#academy3_message').show('slow');
             }
         }
-        $('.companyname3').hide('slow')
+        $('.companyname3').hide('slow');
         var selected = $(this).children("option:selected").val();
         if (options_121.includes(selected)) {
-            $('.lesson3').hide('slow')
-            $('#lesson_name3').hide('slow')
+            $('.lesson3').hide('slow');
+            $('#lesson_name3').hide('slow');
             if (selected=='In-Company-121') {
-                $('.companyname3').show('slow')
+                $('.companyname3').show('slow');
             }
         }
         else if ($('#step3').val() != 'None' && $('#academy3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
-            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3) 
+            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3);
         }
     });
     
       
     $('#academy3').change(function(){
-        $('#academy3_message').hide()
-        $('#academy3_message').html("")
+        $('#academy3_message').hide();
+        $('#academy3_message').html("");
         if ($(this).children("option:selected").val() != $('#academy').children("option:selected").val()) {
             if ($('#academy').children("option:selected").val() != 'Online') {
                 if ($(this).children("option:selected").val() != 'Online') {
                     $('#academy3_message').html( "<p>A student cannot be in two academies at once, unless one is online!</p>" );
-                    $('#academy3_message').show('slow')
+                    $('#academy3_message').show('slow');
                 }
             }
             if ($('#academy2').children("option:selected").val() != $('#academy').children("option:selected").val() && $('#academy3').children("option:selected").val() != $('#academy2').children("option:selected").val()) {
                 $('#academy3_message').html( "<p>A student cannot be in three academies at once!</p>" );
-                $('#academy3_message').show('slow')
+                $('#academy3_message').show('slow');
             }
         }
         if ($('#typeofclass3').val() != 'None' && $('#step3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
-            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3)
+            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3);
         }
     });
         
     if ($('#typeofclass3').val() != 'None' && $('#step3').val() != 'None' && $("#lengthofclass3").val() != 'None') {
-        $("#additional2").show('slow')
-        show_options('#typeofclass3')
+        $("#additional2").show('slow');
+        show_options('#typeofclass3');
         if ($("#lesson_name3").val() == null) {
-            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3) 
+            run_ajax('#form3', $('#lesson_name3'), $('.lesson3'), $('#step3'),  $('#exam3'), $('#kid3'), $('#age3'), type_of3);
         }           
     }
-
 });
-
-
-
 </script>
 
 {% endblock %}

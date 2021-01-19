@@ -26,16 +26,19 @@ def add_student():
         type_of_class = TypeOfClass.query.filter_by(name=form.typeofclass.data).first()
 
         if not current_user.is_master() and current_user.position != "Upper Management":
-            if current_user.academy_id != academy.id: # todo: adjust to utilize method has_academy_access 
+            if not current_user.has_academy_access(academy.id):
                 flash('You can only add people to your own academy.')
                 return redirect(url_for('students.add_student'))
 
         if form.lesson.data == None:
             flash('Ensure class is chosen!')
-            return redirect(url_for('add_student'))
+            return redirect(url_for('students.add_student'))
 
         if type_of_class.name == 'Group General English':
             lesson = Lessons.query.filter_by(id=form.lesson.data).first()
+            if lesson == None:
+                flash('Ensure class is chosen!')
+                return redirect(url_for('students.add_student'))
             step = Step.query.filter_by(name=form.step.data).first()
             student = Student(
                 name = form.name.data,
@@ -152,7 +155,7 @@ def student_profile(academy, name):
             additional_lesson_2 = Lessons.query.filter_by(student_on_class=link.id).join(TypeOfClass).join(Step).join(Academy).first()
         else:
             additional_lesson_2 = lesson
-    # todo: Assess how this will work with multiple different classes of exam, step, 121, etc
+    # todo: Implement multiple different classes of exam, step, 121.
     return render_template('students/student_profile.html', 
         title="Student Profile",
         student=student, 
@@ -242,13 +245,12 @@ def edit_student(name, academy):
     
     if type_of_class.name == 'Group General English':
         step = Step.query.filter_by(id=student.step_id).first()
-        # todo: add conditionals for different class types
+        # todo: Implement other class types
 
     form = EditStudentForm(obj=student.id)
     form2 = AdditionalClassForm(obj=student.id)
     form3 = AdditionalClassForm2(obj=student.id)
 
-    # Fill current form details
     form.name.data = student.name
     form.phone.data = student.phone
     form.email.data = student.email
@@ -272,7 +274,7 @@ def edit_student(name, academy):
         if type_of.name == 'Group General English':
             step_additional = Step.query.filter_by(id=lesson.step_id).first()
             form2.step.data = step_additional.name
-            # todo: add conditionals for different class types
+            # todo: Implement other class types
         form2.lengthofclass.data = length_of.name
         form2.academy.data = acad.name
         form2.typeofclass.data = type_of.name
@@ -288,7 +290,7 @@ def edit_student(name, academy):
         if type_of.name == 'Group General English':
             step_additional = Step.query.filter_by(id=lesson.step_id).first()
             form3.step.data = step_additional.name
-            # todo: add conditionals for different class types
+            # todo: Implement other class types
         form3.lengthofclass.data = length_of.name
         form3.academy.data = acad.name
         form3.typeofclass.data = type_of.name
@@ -320,7 +322,7 @@ def edit_student(name, academy):
             if type_of_class.name != form.typeofclass.data:
                 if form.typeofclass.data == 'Group General English':
                     student.step_id = new_lesson.step_id
-                    # todo: add conditionals for different class types
+                    # todo: Implement other class types
             if step:
                 if step.name != form.step.data:
                     step = Step.query.filter_by(name=form.step.data).first()
@@ -328,7 +330,7 @@ def edit_student(name, academy):
             student.user_id = current_user.id
             
         elif form.typeofclass.data in options_121:
-            # todo: implement 121 classes here
+            # todo: Implement 121 classes
             lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname.data)
         db.session.commit()
         flash('Student Editted')
@@ -423,9 +425,9 @@ def additional_form(student):
                     db.session.commit()
                     flash('Additional Class Added Successfully')
                     return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-        # todo: add conditionals for different class types
+        # todo: Implement other class types
         elif form.typeofclass.data in options_121:
-            # todo: implement 121 classes here
+            # todo: Implement 121 classes
             lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname_.data)
         
 
@@ -445,7 +447,6 @@ def get_classes_add1():
             .filter_by(length_of_class=length_of.id)\
             .filter_by(type_of_class=type_of_class.id)\
             .filter_by(step_id=step.id).all()
-        
         for i in lessons:
             if i.amount_of_students < 8:
                 choice_final = {
@@ -509,7 +510,6 @@ def additional_form2(student):
                     if int(original_lesson.step.name) <= int(step) - 3 or int(original_lesson.step.name) >= int(step) + 3:
                         flash('Please Keep the step levels in all classes as close to eachother as possible.')
                         return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-            # changing additional classes
             if student.student_on_class2:
                 original_link = Studentonclass2.query.filter_by(id=student.student_on_class2).first()
                 original_additional = Lessons.query.filter_by(student_on_class2=original_link.id).first()
@@ -551,7 +551,7 @@ def additional_form2(student):
                     db.session.commit()
                     flash('Additional Class Added Successfully')
                     return redirect(url_for('students.edit_student', name=student.name, academy=academy.name))
-        # todo: Add conditionals for different class types
+        # todo: Implement other class types.
         elif form.typeofclass.data in options_121:
             # todo: Implement 121 class.
             lesson_name = get_name(name=form.name.data, academy=academy.id, types=form.typeofclass.data, companyname=form.companyname3.data)

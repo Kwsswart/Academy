@@ -52,10 +52,21 @@ def send_user_email(recipients, subject, body, user):
 
 
 def send_class_alert_email(recipients, subject, class_group, academy, issue):
+    """ Alerts for issues with the class groups """
 
     send_email('[Number 16]' + subject,
                 sender=current_user.email,
                 recipients=recipients,
                 text_body=None,
                 html_body=render_template('email/class_alert.html', academy=academy, class_group=class_group, issue=issue)
+                )
+
+def send_student_alert_email(recipients, subject, class_group, academy, issue, student):
+    """ Alerts for issues with the students """
+    
+    send_email('[Number 16]' + subject,
+                sender=current_user.email,
+                recipients=recipients,
+                text_body=None,
+                html_body=render_template('email/student_alert.html', student=student, academy=academy, class_group=class_group, issue=issue)
                 )

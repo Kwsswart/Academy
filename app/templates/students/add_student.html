@@ -70,37 +70,33 @@
     // global variables
     var type_of = null;
     var step_options = ['121-General English', '121-Business English', 'Group General English', 'Group Business English', 'In-Company-121', 'In-Company General English', 'In-Company Business English', 'Group Intensive'];
-    var exam_options = ['121-Exam Class', 'Group Exam']
-    var kids_options = ['121-Children', 'Group Children']
-    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ]
-
+    var exam_options = ['121-Exam Class', 'Group Exam'];
+    var kids_options = ['121-Children', 'Group Children'];
+    var options_121 =['121-General English', '121-Business English', '121-Exam Class', '121-Children', 'In-Company-121' ];
     // Function for displaying options as required
     function show_options() {
         var selected = $('#typeofclass').children("option:selected").val();
         type_of = selected;
         if (step_options.includes(selected)) {
-            $('.exams').hide()
-            $('.kids').hide()
-            $('.step').show('slow')
-            $('.agerange').hide()
+            $('.exams').hide();
+            $('.kids').hide();
+            $('.step').show('slow');
+            $('.agerange').hide();
         } else if (exam_options.includes(selected)){
-            $('.exams').show('slow')
-            $('.kids').hide()
-            $('.step').hide()
-            $('.agerange').hide()
+            $('.exams').show('slow');
+            $('.kids').hide();
+            $('.step').hide();
+            $('.agerange').hide();
         } else if (kids_options.includes(selected)){
-            $('.exams').hide()
-            $('.kids').show('slow')
-            $('.agerange').show('slow')
-            $('.step').hide()
+            $('.exams').hide();
+            $('.kids').show('slow');
+            $('.agerange').show('slow');
+            $('.step').hide();
         }
     }
-
-    // Run ajax function
     function run_ajax() {
-        $('.lesson').show('slow')
-        $('#lesson_name').show('slow')
-        
+        $('.lesson').show('slow');
+        $('#lesson_name').show('slow');
         if (step_options.includes(type_of) && $('#step').val() != 'None') {
             $.ajax(
                 {
@@ -109,50 +105,41 @@
                 data: $('#form').serialize(),
                 context: form,
                 success: function(selectOptions){
-                    
                     $("#lesson_name").empty();
                     if (selectOptions.length == 0) {
                         $("#lesson_name").append(
                             $("<option></option>")
                             .attr("value", 'None')
-                            .text('No classes of this type are available please create a class.'))
+                            .text('No classes of this type are available please create a class.'));
                     }
                     for (var i = 0; i < selectOptions.length; i++){
                         $("#lesson_name").append(
                             $("<option></option>")
                             .attr("value", selectOptions[i]['lesson_id'])
-                            .text(selectOptions[i]['lesson_name'] + ' Students: ' + selectOptions[i]['amount_of_students'] + '/8' + ' ' + selectOptions[i]['lesson_time']))
-                                                   
+                            .text(selectOptions[i]['lesson_name'] + ' Students: ' + selectOptions[i]['amount_of_students'] + '/8' + ' ' + selectOptions[i]['lesson_time']));                          
                     }
                 }          
             });
-        
-        } else if (exam_options.includes(type_of) && $('#exam').val() != 'None'){
-
-            alert('Please select the level')
-            
+        } else if (exam_options.includes(type_of) && $('#exam').val() != 'None') {
+            alert('Please select the level');
         } else if (kids_options.includes(type_of) && $('#kid').val() != 'None' || $('#age').val() != 'None'){
-
-            alert('Please select the level')
-            
+            alert('Please select the level');
         }
 
     }
     
     $(document).ready(function(){
-
+        show_options();
         if ($('#typeofclass').val() != 'None' && $('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $("#step").val() != 'None') {
-            show_options()
-            run_ajax()
+            show_options();
+            run_ajax();
         }
-        
         if ($('#academy').val() != 'None') {
             $('#lengthofclass').show('slow')
             $('.lengthofclass').show('slow')
             $('#typeofclass').show('slow')
             $('.typeofclass').show('slow')
         }
-
         if ($('#typeofclass').val() != 'None') {
             show_options()
         }
@@ -200,37 +187,27 @@
                 run_ajax()
             }
         });       
-    
-
     });
-
-    
-
-
     // Prevent Submitting without all options selected
     $('#submit').click(function(event) {
         if ($('#academy').val() != 'None' && $('#lengthofclass').val() != 'None' && $('#typeofclass').val() != 'None') {
                 if (type_of == null) {
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (step_options.includes(type_of) && $('#step').val() == 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (exam_options.includes(type_of) && $('#exam').val() == 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 } else if (kids_options.includes(type_of) && $('#kid').val() == 'None' || $('#age').val() != 'None'){
-
-                    alert('Please select the level')
-                    event.preventDefault()
+                    alert('Please select the level');
+                    event.preventDefault();
                 }
         } else {
-            alert('Please fill out all fields')
-            event.preventDefault()
+            alert('Please fill out all fields');
+            event.preventDefault();
         }
     });
 </script>
-
 {% endblock %}

@@ -4,7 +4,6 @@
 
 {% block styles %}
 {{ super() }}
-
 <style>
     #comment {
         resize:vertical;
@@ -296,50 +295,42 @@
 
 {% block scripts %}
 {{ super() }}
-
 <script>
-    
     function get_lessons(step) {
-        var lesson = step * 10 - 9
+        var lesson = step * 10 - 9;
         $("#lesson_number").empty();
         for (var i = 0; i < 10; i++) {
-           
             $("#lesson_number").append(
                 $("<option></option>")
                 .attr("value", lesson)
-                .text(lesson))
-            lesson = lesson + 1
-
+                .text(lesson));
+            lesson = lesson + 1;
         }
     }
     function get_pages(step, current_page) {
         var upperlimits = {1: 187, 2: 207, 3: 202, 4: 243, 5: 249, 6: 284, 7: 271, 8: 265, 9: 316, 10: 294, 11: 202, 12: 278, 13: 290, 14: 318, 15: 308, 16: 336};
-        console.log(current_page)
         if (current_page === 'None') {
             for (var i=1; i <= upperlimits[step]; i++) {
                 $("#last_page").append(
                     $("<option></option>")
                     .attr("value", i)
-                    .text(i))
+                    .text(i));
             }
         } else {
             for (var i=current_page; i <= upperlimits[step]; i++) {
                 $("#last_page").append(
                     $("<option></option>")
                     .attr("value", i)
-                    .text(i))
+                    .text(i));
             }
         }        
     }
     
     function send_attendance(name, lesson, form_id, i) {
-        
-        var url = '/attendance/' + name + '/' + lesson
-        $('#error-' + i).hide('slow')
-        $('#error-' + i).html('')
-        var form = $('#' + form_id)
-        
-
+        var url = '/attendance/' + name + '/' + lesson;
+        $('#error-' + i).hide('slow');
+        $('#error-' + i).html('');
+        var form = $('#' + form_id);
         return $.ajax({
             type: "POST",
             url: url,
@@ -348,18 +339,16 @@
         }).then(function(data) {
             return $.Deferred(function (deferred) {
                 if (data.data.message == undefined) {
-                    
                     if (data.data.score[1] == undefined) {
-                        var error_data = data.data.score[0]
+                        var error_data = data.data.score[0];
                     } else {
-                        var error_data = data.data.score[1]
+                        var error_data = data.data.score[1];
                     }
-                    $('#error-' + i).show('slow')
-                    $('#error-' + i).html('<p  style="color:red;">' + error_data + '</p>')
+                    $('#error-' + i).show('slow');
+                    $('#error-' + i).html('<p  style="color:red;">' + error_data + '</p>');
                     deferred.reject('Not allowed'); // Throw here to propagate to the catch handler
                 } else { 
-                    console.log(data.data.message)  // display the returned data in the console.
-                    deferred.resolve(data)
+                    deferred.resolve(data);
                 }
             })
         }); 
@@ -379,7 +368,6 @@
         }
     }
     $(document).ready(function() {
-
         get_lessons({{step | safe}});
         get_pages({{step | safe}}, '{{current_last_page | safe}}');
 
@@ -388,8 +376,6 @@
         var st = {{st | tojson}};
         var studentcount = {{studentcount | safe}};
 
-    
-    
         $('#update_form').submit(function (e) {
             /* 
                 Function to submit all ajax calls, while waiting for response. Once Submitted allow final form submittion. 
@@ -399,39 +385,30 @@
             e.preventDefault();
             var deferred = [];
             const thisform = this;
-
             for (var i = 0; i < studentcount ; i++) {
                 deferred.push(
                     send_attendance(st[i], lesson, 'attendance-' + i, i));
             }
-            
             $.when(...deferred).then(function() {
                     thisform.submit();
-            
-                }).fail(function() {
-                    
-                })
-
-            
+                }).fail(function() {});            
         });
 
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                }
-                
+                }   
             }
-        })
+        });
     });
-
     // Character counters for text fields
     $('#comment').keydown(function(e) {
         var len = $("#comment").val().length;
         const key = e.key; 
         if (key === "Backspace" || key === "Delete") { 
         } else if (len >= 450) {
-          e.preventDefault()
+          e.preventDefault();
           $('#comment').text('Characters Remaining: 0');
         }
       }).keyup(function() {
@@ -446,7 +423,7 @@
         const key = e.key; 
         if (key === "Backspace" || key === "Delete") { 
         } else if (len >= 100) {
-          e.preventDefault()
+          e.preventDefault();
           $('#exercises').text('Characters Remaining: 0');
         }
       }).keyup(function() {
@@ -461,7 +438,7 @@
         const key = e.key; 
         if (key === "Backspace" || key === "Delete") { 
         } else if (len >= 38) {
-          e.preventDefault()
+          e.preventDefault();
           $('#last_word').text('Characters Remaining: 0');
         }
       }).keyup(function() {

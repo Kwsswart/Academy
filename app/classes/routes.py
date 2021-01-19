@@ -8,7 +8,7 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from wtforms.validators import ValidationError
 from app import  db
-from app.email import send_class_alert_email
+from app.email import send_class_alert_email, send_student_alert_email
 from app.models import User, group_required, Academy, Lessons, Student, LengthOfClass, TypeOfClass, DaysDone, Step, StepMarks, Classes121, Class121, StepExpectedTracker, StepExpectedProgress, StepActualProgress, StepActualTracker, Studentonclass, Studentonclass2, CustomInsert
 from app.classes import bp
 from app.classes.forms import CreateClassForm, AttendanceForm, StepProgressForm, InsertCustom
@@ -207,6 +207,7 @@ def view_class(name, academy):
             non_validate = ['REVISION', 'GRAMMAR REVIEW', 'FINISH BOOK', 'EXAM PREP', 'END OF STEP EXAM', 'GO THROUGH EXAM', "SPEAKER'S CORNER"]
 
             if expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2 Hours' or expected_progress.class_number % 2 == 0 and lesson.LengthOfClass.name == '2,5 Hours':
+                # Progress problems emails
                 if custom_progress == None and expected_progress.last_word not in non_validate:
                     lp_upper = expected_progress.last_page + 15
                     lp_lower = expected_progress.last_page - 15
@@ -217,10 +218,10 @@ def view_class(name, academy):
                             recipients.append(r.email)
                         send_class_alert_email(
                             recipients=recipients, 
-                            subject='Class is too far ahead of the programmed progress', 
+                            subject='The class is more than fifteen pages ahead of the expected progress.', 
                             class_group=lesson, 
                             academy=academy,
-                            issue='Ahead')
+                            issue='The class is more than fifteen pages ahead of the expected progress.')
                     elif new.last_page <= lp_lower:
                         rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
                         recipients = list()
@@ -228,12 +229,13 @@ def view_class(name, academy):
                             recipients.append(r.email)
                         send_class_alert_email(
                             recipients=recipients, 
-                            subject='Class is too far behind of the programmed progress', 
+                            subject='The class is more than fifteen pages behind the expected progress.', 
                             class_group=lesson, 
                             academy=academy,
-                            issue='Behind')
+                            issue='The class is more than fifteen pages behind the expected progress.')
 
             if lesson.LengthOfClass.name == '1 Hour' or lesson.LengthOfClass.name == '1,5 Hours':
+                # Progress problems emails
                 if custom_progress == None and expected_progress.last_word not in non_validate:
                     lp_upper = int(expected_progress.last_page) + 15
                     lp_lower = int(expected_progress.last_page) - 15
@@ -244,10 +246,10 @@ def view_class(name, academy):
                             recipients.append(r.email)
                         send_class_alert_email(
                             recipients=recipients, 
-                            subject='Class is too far ahead of the programmed progress', 
+                            subject='The class is more than fifteen pages ahead of the expected progress.', 
                             class_group=lesson, 
                             academy=academy,
-                            issue='Ahead')
+                            issue='The class is more than fifteen pages behind of the expected progress.')
                     elif new.last_page <= lp_lower:
                         rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
                         recipients = list()
@@ -255,11 +257,23 @@ def view_class(name, academy):
                             recipients.append(r.email)
                         send_class_alert_email(
                             recipients=recipients, 
-                            subject='Class is too far behind of the programmed progress', 
+                            subject='The class is more than fifteen pages behind the expected progress.', 
                             class_group=lesson, 
                             academy=academy,
-                            issue='Behind')
-                # todo: Notify if finished book or close to finishing book
+                            issue='The class is more than fifteen pages behind the expected progress.')
+            
+            # Finshed book email
+            if expected_progress.last_word == 'END OF STEP EXAM':
+                rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                recipients = list()
+                for r in rec:
+                    recipients.append(r.email)
+                send_class_alert_email(
+                    recipients=recipients, 
+                    subject='The class is finished with the book and has done the exam.', 
+                    class_group=lesson, 
+                    academy=academy,
+                    issue='The class is finished with the book and has done the exam.')   
         if custom_progress == None:
             lesson.class_number = lesson.class_number + 1
         db.session.commit()
@@ -291,10 +305,11 @@ def attendance(name, lesson):
 
     student = Student.query.filter_by(id=name).first()
     lesson = Lessons.query.filter_by(id=lesson).join(TypeOfClass).first()
+    academy = Academy.query.filter_by(id=lesson.academy_id).first()
     form = AttendanceForm()
 
     if form.validate_on_submit():
-        # todo: Separate between exams, kids, companies, 121s using (if lesson.TypeOfClass.name == 'Group General English')
+        # todo: Separate between exams, kids, companies, 121s using 
         stepmarks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).order_by(StepMarks.datetime.desc()).first()
         if form.attended.data == 'Yes':
             student.days_missed = 0
@@ -328,20 +343,46 @@ def attendance(name, lesson):
                 marks = StepMarks.query.filter_by(student_id=student.id).filter_by(lesson_id=lesson.id).order_by(StepMarks.id.desc()).all()
                 total = 0 
                 count = 0
+                bad_score = 0
+                bad_count = 0
                 for m in marks:
+                    if bad_count < 3:
+                        if m.mark == 3:
+                            bad_score = bad_score + 1
                     total = total + m.mark 
                     count = count + 1
+                    bad_count = bad_count + 1
                 student.mark_average = round(total/count,1)
-                
-                # todo: check if student has recieved 3 for the consecutive three times to email dos
+                if bad_score == 3:
+                    # Bad marks email
+                    rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                    recipients = list()
+                    for r in rec:
+                        recipients.append(r.email)
+                    send_student_alert_email(
+                        recipients=recipients, 
+                        subject='Student has been marked "3" for three or more consecutive times.', 
+                        class_group=lesson, 
+                        academy=academy,
+                        issue='Student has been marked "3" for three or more consecutive times.',
+                        student=student)
                 db.session.commit() 
         else:
             student.days_missed = student.days_missed + 1
             db.session.commit()
             if student.days_missed >= 3:
-                # todo: message the dos here
-                print('Over the limit.')
-
+                # Consecutive absence email
+                rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+                recipients = list()
+                for r in rec:
+                    recipients.append(r.email)
+                send_student_alert_email(
+                    recipients=recipients, 
+                    subject='Student has been absent for three consecutive times.', 
+                    class_group=lesson, 
+                    academy=academy,
+                    issue='Student has been absent for three consecutive times.',
+                    student=student)
         return jsonify(data={'message': 'recieved {}'.format(student.name)})
     return jsonify(data=form.errors)
 
@@ -450,7 +491,6 @@ def move_class(move, lesson):
     """ End-point to handle moving the class progress back or forward """
 
     lesson = Lessons.query.filter_by(id=lesson).join(Academy).first()
-    # todo: double check this once done
     if move == "FORWARD":
         lesson.class_number = lesson.class_number + 1
         db.session.commit()
@@ -465,8 +505,9 @@ def move_class(move, lesson):
 @login_required
 def no_show(class_id):
     """ End-point to handle submission of no show lessons """
-    # todo: check this
+    
     lesson = Lessons.query.filter_by(id=class_id).join(Academy).join(LengthOfClass).join(Step).join(TypeOfClass).first()
+    academy = Academy.query.filter_by(id=lesson.academy_id).first()
     students = Student.query.filter_by(class_id=class_id).all()
     link_1 = None
     link_2 = None
@@ -527,6 +568,17 @@ def no_show(class_id):
             lesson_id=lesson.id)
     db.session.add(new)
     db.session.commit()
+    # No show notification email
+    rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+    recipients = list()
+    for r in rec:
+        recipients.append(r.email)
+    send_class_alert_email(
+        recipients=recipients, 
+        subject='The entire class was a no show.', 
+        class_group=lesson, 
+        academy=academy,
+        issue='The entire class was a no show.')
     flash('Submitted No Show')
     return redirect(url_for('classes.view_class', name=lesson.name, academy=lesson.academy.name))
 
@@ -542,11 +594,22 @@ def remove_class(class_id):
     if lesson.has_students():
         flash('Please ensure students are either moved to another class or removed from system first.')
         return redirect(url_for('classes.view_class', name=lesson.name, academy=academy.name))
+    # Removal email
+    rec = User.query.filter_by(academy_id=academy.id).filter_by(position='Management').all()
+    recipients = list()
+    for r in rec:
+        recipients.append(r.email)
+    send_class_alert_email(
+        recipients=recipients, 
+        subject='The class has been removed.', 
+        class_group=lesson, 
+        academy=academy,
+        issue='The class has been removed.')
     db.session.delete(lesson)
     db.session.commit()
     flash('Class Group has been removed from the system.')
-    
     return redirect(url_for('classes.classes', academy=academy.name))
+
 
 @bp.route('/edit_class/<class_id>', methods=['GET','POST'])
 @group_required(['Master', 'Upper Management', 'Management'])
@@ -567,12 +630,10 @@ def edit_class(class_id):
         start_lesson = start_lesson + 1
     for day in days:
         days_arr.append(day.name)
-    
     if form.validate_on_submit():
         if lesson.time != form.time.data:
             lesson.time = str(form.time.data)
         step = Step.query.filter_by(name=form.step.data).first()
-        print(step.id)
         if lesson.step_id != step.id:
             actualtracker = StepActualTracker.query.filter_by(id=lesson.step_actual_id).first()
             current_prog = StepActualProgress.query.filter_by(step_actual_id=actualtracker.id).filter_by(lesson_id=lesson.id).all()
@@ -621,4 +682,3 @@ def edit_class(class_id):
         if class_num.lesson_number != '':
             form.startat.data = int(class_num.lesson_number)
     return render_template('class/create_class.html', title='Edit Class', option='Edit', form=form, lesson=lesson)
-

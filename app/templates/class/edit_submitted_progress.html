@@ -16,16 +16,14 @@
 
 <script>
     function get_lessons(step) {
-        var lesson = step * 10 - 9
+        var lesson = step * 10 - 9;
         $("#lesson_number").empty();
         for (var i = 0; i < 10; i++) {
-           
             $("#lesson_number").append(
                 $("<option></option>")
                 .attr("value", lesson)
-                .text(lesson))
-            lesson = lesson + 1
-
+                .text(lesson));
+            lesson = lesson + 1;
         }
     }
     function get_pages(step) {
@@ -34,7 +32,7 @@
             $("#last_page").append(
                 $("<option></option>")
                 .attr("value", i)
-                .text(i))
+                .text(i));
         }
     }
     $(document).ready(function() {

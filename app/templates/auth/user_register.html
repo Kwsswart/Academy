@@ -14,32 +14,27 @@
 {{ super() }}
 <script>
     function get_positions(position) {
-        var options_management = {1: 'Management', 2: 'Admin', 3: 'Teacher', 4: 243,}
-        var options_upper = {1: 'Upper Management', 2: 'Management', 3: 'Admin', 4: 'Teacher',}
+        var options_management = {1: 'Management', 2: 'Admin', 3: 'Teacher', 4: 243,};
+        var options_upper = {1: 'Upper Management', 2: 'Management', 3: 'Admin', 4: 'Teacher',};
         if (position === 'Upper Management' || position === 'Master') {
              for (var i = 1; i < 5; i++) {
-           
                 $("#position").append(
                     $("<option></option>")
                     .attr("value", options_upper[i])
-                    .text(options_upper[i]))
+                    .text(options_upper[i]));
             }
-
         }
         else {
             for (var i = 1; i < 4; i++) {
-           
                 $("#position").append(
                     $("<option></option>")
                     .attr("value", options_management[i])
-                    .text(options_management[i]))
+                    .text(options_management[i]));
              }
         }
     }
     $(document).ready(function() {
-
         get_positions('{{position | safe}}');
-
     });
         
 </script>

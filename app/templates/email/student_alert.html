@@ -1,0 +1,12 @@
+<h3>This e-mail was sent from the Number 16 class management application.</h3>
+
+<b>{{ student.name }}</b> in group - <b>{{ class_group.name }}</b> in <b> Number 16 - {{ academy.name }}</b> <br>
+
+<table>
+    <tr>
+        <th>Issue:</th> <td>{{ issue }}</td>
+    </tr>
+</table>
+
+If you would like to take a look at the progress yourself <a href="{{ url_for('classes.view_class', name=class_group.name, academy=academy.name, _external=True) }}">Click Here</a><br>
+If you would like to take a look at the student profile yourself <a href="{{ url_for('students.student_profile', name=student.name, academy=academy.name, _external=True) }}">Click Here</a>
